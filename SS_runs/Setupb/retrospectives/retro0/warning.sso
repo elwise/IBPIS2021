@@ -1,0 +1,19 @@
+#V3.30.16.02;_2020_09_21;_safe;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.2
+#Stock Synthesis (SS) is a work of the U.S. Government and is not subject to copyright protection in the United States.
+#Foreign copyrights may apply. See copyright.txt for more information.
+Wed Oct 20 13:17:13 2021
+
+Forecast=0 or -1, so rest of forecast file will not be read and can be omitted;
+bias adjustment ramp extends into forecast; biasadj set to 0.0 internally for forecast years
+ Are you sure you want so few early recrdevs? Better to include in range of main recdevs 5
+ adjusted selparm out of base parm bounds (Phase, Iter, Parm#, yr, min, max, base, value) 5 488 2 2019 -3 3 2.15157 3.1944
+ adjusted selparm out of base parm bounds (Phase, Iter, Parm#, yr, min, max, base, value) 5 488 2 2020 -3 3 2.15157 3.19196
+ Early recdev biasadj is >2 times ratio of rmse to sigmaR
+ warning: poor convergence in Fmsy, final dy/dy2= -0.305576
+ Fmsy is >3x of Fspr are you sure?  check for convergence 
+ Fmsy is close to max allowed; check for convergence 
+ adjusted selparm out of base parm bounds (Phase, Iter, Parm#, yr, min, max, base, value) 5 1066 2 2019 -3 3 2.15157 3.1944
+ adjusted selparm out of base parm bounds (Phase, Iter, Parm#, yr, min, max, base, value) 5 1066 2 2020 -3 3 2.15157 3.19196
+ adjusted selparm out of base parm bounds (Phase, Iter, Parm#, yr, min, max, base, value) 5 1066 2 2019 -3 3 2.15157 3.1944
+ adjusted selparm out of base parm bounds (Phase, Iter, Parm#, yr, min, max, base, value) 5 1066 2 2020 -3 3 2.15157 3.19196
+ N warnings: 13

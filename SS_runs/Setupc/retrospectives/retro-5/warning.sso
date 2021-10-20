@@ -1,0 +1,15 @@
+#V3.30.16.02;_2020_09_21;_safe;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.2
+#Stock Synthesis (SS) is a work of the U.S. Government and is not subject to copyright protection in the United States.
+#Foreign copyrights may apply. See copyright.txt for more information.
+Wed Oct 20 13:23:06 2021
+
+Forecast=0 or -1, so rest of forecast file will not be read and can be omitted;
+bias adjustment ramp extends into forecast; biasadj set to 0.0 internally for forecast years
+ Are you sure you want so few early recrdevs? Better to include in range of main recdevs 5
+ Early recdev biasadj is >2 times ratio of rmse to sigmaR
+ warning: poor convergence in Fmsy, final dy/dy2= -0.32005
+ Fmsy is >3x of Fspr are you sure?  check for convergence 
+ Fmsy is close to max allowed; check for convergence 
+Final gradient: 0.000139338 is larger than final_conv: 0.0001
+Number_of_active_parameters_on_or_near_bounds: 1
+ N warnings: 9

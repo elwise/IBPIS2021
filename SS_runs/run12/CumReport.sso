@@ -1,0 +1,110 @@
+1 -logL: 145.26 SSB(Vir_Start_End): 626574 478878 332483
+1 Files: sardine.dat sardine.ctl
+1 N_iter: 465 runtime(sec): 14 starttime: Mon Sep 27 10:48:44 2021
+1#V3.30.16.02;_2020_09_21;_safe;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.2
+#Stock Synthesis (SS) is a work of the U.S. Government and is not subject to copyright protection in the United States.
+#Foreign copyrights may apply. See copyright.txt for more information.
+1 F_Method: 3 Retro_YR: 2020 Forecast_Type: -1 MSY_Type: 2
+1 Comment S_1 #C Sardine in VIIIc and IXa
+1 Comment D_1 #C data file created using the SS_writedat function in the R package r4ss
+1 Comment D_2 #C should work with SS version: 
+1 Comment D_3 #C file write time: 2021-05-25 20:06:11
+1 Comment C_1 #C file created using the SS_writectl function in the R package r4ss
+1 Comment C_2 #C file write time: 2021-05-23 18:08:06
+1 Comment F_1 #C forecast file written by R function SS_writeforecast
+1 Comment F_2 #C rerun model to get more complete formatting in forecast.ss_new
+1 Comment F_3 #C should work with SS version: 3.3
+1 Comment F_4 #C file write time: 2021-05-23 18:09:40
+1 Like_Emph Total 1 
+1 Like_Value Total 145.26
+1 Like_Emph Indices All  0 1 1 1
+1 Like_Value Indices -16.1289  0 -16.7695 -4.81707 5.45769
+1 Like_Emph AgeComp All  1 1 0 0
+1 Like_Value AgeComp 136.023  96.8797 39.1435 0 0
+1 Like_Emph Catch All  1 1 1 1
+1 Like_Value Catch 1.139e-09  1.139e-09 0 0 0
+1 Like_Emph init_equ All  1 1 1 1
+1 Like_Value Init_Equ 0.325008  1.139e-09 0 0 0
+1 Like_Comp Recruits Regime Fcast_Recr Biasadj Priors ParmDevs CrashPen
+1 Like_Emph 1 1 1 1 1 1
+1 Like_Value*Emph 25.0401 5.031e-32 0 0 0 0
+1 TimeSeries Yr Vir Equ  1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1998 1999 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2020 2021F 
+1 Timeseries SpawnBio  626574 257996 478878 623317 785026 942581 895714 719351 1.05429e+06 940596 762831 613136 651745 589866 531308 484935 766094 894782 777313 645780 517364 450458 366789 357508 298876 404282 426394 429294 378940 433390 586441 490740 381937 285819 242498 174540 129246 118971 129871 120240 156950 185045 168396 169097 332483
+1 Timeseries Recruit  1.51193e+07 1.51193e+07 3.63181e+07 4.23058e+07 4.82598e+07 2.98014e+07 1.59564e+07 7.11268e+07 2.11315e+07 1.84869e+07 1.57114e+07 3.42751e+07 1.85631e+07 1.77137e+07 1.85312e+07 5.42865e+07 3.69457e+07 1.61792e+07 1.40855e+07 1.10274e+07 1.57507e+07 1.06037e+07 1.34783e+07 1.04193e+07 3.21717e+07 1.9944e+07 1.1257e+07 8.80806e+06 3.74375e+07 1.29926e+07 4.19937e+06 5.7672e+06 7.45923e+06 8.54909e+06 4.88148e+06 4.04175e+06 4.35103e+06 5.27687e+06 3.59256e+06 7.00992e+06 7.76912e+06 3.13411e+06 5.48461e+06 2.02748e+07 3.05793e+07
+1 Timeseries TotBio  0 652355 281332 527977 681079 852910 1.02026e+06 947567 747842 1.1611e+06 983884 793664 639226 704146 622902 560402 514971 848447 958920 807891 669565 536259 475550 384976 369092 316351 476468 490371 465943 406920 544870 638296 502296 388968 292084 245530 176247 130638 120496 129871 121105 156950 186317 169823 173164 332483
+1 Timeseries SmryBio-1  0 0 527977 527977 681079 852910 1.02026e+06 947567 747842 1.1611e+06 983884 793664 639226 704146 622902 560402 514971 848447 958920 807891 669565 536259 475550 384976 353673 329010 511608 512035 447435 396540 545728 592795 483605 375116 307914 261153 187607 124935 114309 125016 125868 162188 194834 169823 180978 334484
+1 Timeseries TotCatch  0 0 129133 145609 157241 194802 216517 206946 183837 206005 208439 187363 177696 161531 140961 149429 132587 130250 142495 136582 125280 116736 115814 108924 94091 85786 101957 99673 97831 98020 97345 87023 96469 101464 87740 89571.1 80403.2 54857 45818 27937 20595 22704 21911 15062 13759 22143
+1 Timeseries RetCatch  0 0 129133 145609 157241 194802 216517 206946 183837 206005 208439 187363 177696 161531 140961 149429 132587 130250 142495 136582 125280 116736 115814 108924 94091 85786 101957 99673 97831 98020 97345 87023 96469 101464 87740 89571.1 80403.2 54857 45818 27937 20595 22704 21911 15062 13759 22143
+1 Mgmt_Quant  696142 696142 696142 1.51193e+07 278457 0.461268
+1 Parm Labels  L_at_Amin_Fem_GP_1 L_at_Amax_Fem_GP_1 VonBert_K_Fem_GP_1 CV_young_Fem_GP_1 CV_old_Fem_GP_1 Wtlen_1_Fem_GP_1 Wtlen_2_Fem_GP_1 Mat50%_Fem_GP_1 Mat_slope_Fem_GP_1 Eggs/kg_inter_Fem_GP_1 Eggs/kg_slope_wt_Fem_GP_1 CohortGrowDev FracFemale_GP_1 SR_LN(R0) SR_BH_steep SR_sigmaR SR_regime SR_autocorr Early_InitAge_4 Early_InitAge_3 Early_InitAge_2 Early_InitAge_1 Main_RecrDev_1978 Main_RecrDev_1979 Main_RecrDev_1980 Main_RecrDev_1981 Main_RecrDev_1982 Main_RecrDev_1983 Main_RecrDev_1984 Main_RecrDev_1985 Main_RecrDev_1986 Main_RecrDev_1987 Main_RecrDev_1988 Main_RecrDev_1989 Main_RecrDev_1990 Main_RecrDev_1991 Main_RecrDev_1992 Main_RecrDev_1993 Main_RecrDev_1994 Main_RecrDev_1995 Main_RecrDev_1996 Main_RecrDev_1997 Main_RecrDev_1998 Main_RecrDev_1999 Main_RecrDev_2000 Main_RecrDev_2001 Main_RecrDev_2002 Main_RecrDev_2003 Main_RecrDev_2004 Main_RecrDev_2005 Main_RecrDev_2006 Main_RecrDev_2007 Main_RecrDev_2008 Main_RecrDev_2009 Main_RecrDev_2010 Main_RecrDev_2011 Main_RecrDev_2012 Main_RecrDev_2013 Main_RecrDev_2014 Main_RecrDev_2015 Main_RecrDev_2016 Main_RecrDev_2017 Main_RecrDev_2018 Main_RecrDev_2019 Main_RecrDev_2020 InitF_seas_1_flt_1purse_seine LnQ_base_Acoustic_survey(2) LnQ_base_DEPM_survey(3) LnQ_base_Rec_survey(4) AgeSel_P1_purse_seine(1) AgeSel_P2_purse_seine(1) AgeSel_P3_purse_seine(1) AgeSel_P4_purse_seine(1) AgeSel_P5_purse_seine(1) AgeSel_P6_purse_seine(1) AgeSel_P7_purse_seine(1) AgeSel_P1_Acoustic_survey(2) AgeSel_P2_Acoustic_survey(2) AgeSel_P3_Acoustic_survey(2) AgeSel_P4_Acoustic_survey(2) AgeSel_P5_Acoustic_survey(2) AgeSel_P6_Acoustic_survey(2) AgeSel_P7_Acoustic_survey(2) minage@sel=1_Rec_survey(4) maxage@sel=1_Rec_survey(4) AgeSel_P2_purse_seine(1)_BLK1delta_1988 AgeSel_P2_purse_seine(1)_BLK1delta_2006 AgeSel_P3_purse_seine(1)_BLK1delta_1988 AgeSel_P3_purse_seine(1)_BLK1delta_2006 AgeSel_P4_purse_seine(1)_BLK1delta_1988 AgeSel_P4_purse_seine(1)_BLK1delta_2006 AgeSel_P7_purse_seine(1)_BLK1delta_1988 AgeSel_P7_purse_seine(1)_BLK1delta_2006
+1 Parm Values   14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 1 0.5  16.5315 0.71 0.7 0 0  0.502165 0.49454 0.485911 0.765605  0.907349 1.02948 1.1398 0.643747 0.0227222 1.53523 0.292482 0.1664 0.0200017 0.82068 0.201249 0.164697 0.221624 1.30769 0.874702 0.0366627 -0.0908295 -0.318634 0.0622382 -0.315624 -0.0450629 -0.298275 0.861238 0.331579 -0.248162 -0.49445 0.971295 -0.107085 -1.27408 -0.935917 -0.643167 -0.45527 -0.980616 -1.08465 -0.91416 -0.691006 -1.10742 -0.410976 -0.3992 -1.35558 -0.768864 0.537337 0.790821  0.727882  0.26706 0.214237 -0.823999  0 1.65438 0.766138 -0.172995 0 0 -0.203032 -1000 0 0 0 0 0 0 0 0 -0.349756 0.0507668 -0.0314835 -0.237106 0.815193 -0.576812 -0.509086 0.521045 
+1 MG_parm  L_at_Amin_Fem_GP_1 L_at_Amax_Fem_GP_1 VonBert_K_Fem_GP_1 CV_young_Fem_GP_1 CV_old_Fem_GP_1 Wtlen_1_Fem_GP_1 Wtlen_2_Fem_GP_1 Mat50%_Fem_GP_1 Mat_slope_Fem_GP_1 Eggs/kg_inter_Fem_GP_1 Eggs/kg_slope_wt_Fem_GP_1 CohortGrowDev FracFemale_GP_1
+1 MG_parm  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 1 0.5
+1 SR_parm  SR_LN(R0) SR_BH_steep SR_sigmaR SR_regime SR_autocorr
+1 SR_parm  16.5315 0.71 0.7 0 0 
+1 Recr_early  Early_InitAge_4 Early_InitAge_3 Early_InitAge_2 Early_InitAge_1
+1 Recr_early  0.502165 0.49454 0.485911 0.765605
+1 Recr_main  Main_RecrDev_1978 Main_RecrDev_1979 Main_RecrDev_1980 Main_RecrDev_1981 Main_RecrDev_1982 Main_RecrDev_1983 Main_RecrDev_1984 Main_RecrDev_1985 Main_RecrDev_1986 Main_RecrDev_1987 Main_RecrDev_1988 Main_RecrDev_1989 Main_RecrDev_1990 Main_RecrDev_1991 Main_RecrDev_1992 Main_RecrDev_1993 Main_RecrDev_1994 Main_RecrDev_1995 Main_RecrDev_1996 Main_RecrDev_1997 Main_RecrDev_1998 Main_RecrDev_1999 Main_RecrDev_2000 Main_RecrDev_2001 Main_RecrDev_2002 Main_RecrDev_2003 Main_RecrDev_2004 Main_RecrDev_2005 Main_RecrDev_2006 Main_RecrDev_2007 Main_RecrDev_2008 Main_RecrDev_2009 Main_RecrDev_2010 Main_RecrDev_2011 Main_RecrDev_2012 Main_RecrDev_2013 Main_RecrDev_2014 Main_RecrDev_2015 Main_RecrDev_2016 Main_RecrDev_2017 Main_RecrDev_2018 Main_RecrDev_2019 Main_RecrDev_2020
+1 Recr_main  0.907349 1.02948 1.1398 0.643747 0.0227222 1.53523 0.292482 0.1664 0.0200017 0.82068 0.201249 0.164697 0.221624 1.30769 0.874702 0.0366627 -0.0908295 -0.318634 0.0622382 -0.315624 -0.0450629 -0.298275 0.861238 0.331579 -0.248162 -0.49445 0.971295 -0.107085 -1.27408 -0.935917 -0.643167 -0.45527 -0.980616 -1.08465 -0.91416 -0.691006 -1.10742 -0.410976 -0.3992 -1.35558 -0.768864 0.537337 0.790821
+1 init_F  InitF_seas_1_flt_1purse_seine
+1 init_F  0.727882
+1 Q_parm  LnQ_base_Acoustic_survey(2) LnQ_base_DEPM_survey(3) LnQ_base_Rec_survey(4)
+1 Q_parm  0.26706 0.214237 -0.823999
+1 Sel_parm  AgeSel_P1_purse_seine(1) AgeSel_P2_purse_seine(1) AgeSel_P3_purse_seine(1) AgeSel_P4_purse_seine(1) AgeSel_P5_purse_seine(1) AgeSel_P6_purse_seine(1) AgeSel_P7_purse_seine(1) AgeSel_P1_Acoustic_survey(2) AgeSel_P2_Acoustic_survey(2) AgeSel_P3_Acoustic_survey(2) AgeSel_P4_Acoustic_survey(2) AgeSel_P5_Acoustic_survey(2) AgeSel_P6_Acoustic_survey(2) AgeSel_P7_Acoustic_survey(2) minage@sel=1_Rec_survey(4) maxage@sel=1_Rec_survey(4) AgeSel_P2_purse_seine(1)_BLK1delta_1988 AgeSel_P2_purse_seine(1)_BLK1delta_2006 AgeSel_P3_purse_seine(1)_BLK1delta_1988 AgeSel_P3_purse_seine(1)_BLK1delta_2006 AgeSel_P4_purse_seine(1)_BLK1delta_1988 AgeSel_P4_purse_seine(1)_BLK1delta_2006 AgeSel_P7_purse_seine(1)_BLK1delta_1988 AgeSel_P7_purse_seine(1)_BLK1delta_2006
+1 Sel_parm  0 1.65438 0.766138 -0.172995 0 0 -0.203032 -1000 0 0 0 0 0 0 0 0 -0.349756 0.0507668 -0.0314835 -0.237106 0.815193 -0.576812 -0.509086 0.521045
+
+2 -logL: 204.298 SSB(Vir_Start_End): 637985 484964 398243
+2 Files: sardine.dat sardine.ctl
+2 N_iter: 487 runtime(sec): 12 starttime: Wed Oct 13 12:15:24 2021
+2#V3.30.16.02;_2020_09_21;_safe;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.2
+#Stock Synthesis (SS) is a work of the U.S. Government and is not subject to copyright protection in the United States.
+#Foreign copyrights may apply. See copyright.txt for more information.
+2 F_Method: 3 Retro_YR: 2020 Forecast_Type: -1 MSY_Type: 2
+2 Comment S_1 #C Sardine in VIIIc and IXa
+2 Comment D_1 #C data file created using the SS_writedat function in the R package r4ss
+2 Comment D_2 #C should work with SS version: 
+2 Comment D_3 #C file write time: 2021-05-25 20:06:11
+2 Comment C_1 #C file created using the SS_writectl function in the R package r4ss
+2 Comment C_2 #C file write time: 2021-05-23 18:08:06
+2 Comment F_1 #C forecast file written by R function SS_writeforecast
+2 Comment F_2 #C rerun model to get more complete formatting in forecast.ss_new
+2 Comment F_3 #C should work with SS version: 3.3
+2 Comment F_4 #C file write time: 2021-05-23 18:09:40
+2 Like_Emph Total 1 
+2 Like_Value Total 204.298
+2 Like_Emph Indices All  0 1 1 1
+2 Like_Value Indices 25.0699  0 -15.4449 -5.85691 46.3718
+2 Like_Emph AgeComp All  1 1 0 0
+2 Like_Value AgeComp 152.136  102.54 49.5958 0 0
+2 Like_Emph Catch All  1 1 1 1
+2 Like_Value Catch 1.7275e-09  1.7275e-09 0 0 0
+2 Like_Emph init_equ All  1 1 1 1
+2 Like_Value Init_Equ 0.244148  1.7275e-09 0 0 0
+2 Like_Comp Recruits Regime Fcast_Recr Biasadj Priors ParmDevs CrashPen
+2 Like_Emph 1 1 1 1 1 1
+2 Like_Value*Emph 26.8469 0 0 0 0 0
+2 TimeSeries Yr Vir Equ  1978 1979 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1998 1999 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 2020 2021F 
+2 Timeseries SpawnBio  637985 267324 484964 629967 792302 950479 903078 725394 1.06036e+06 945562 766675 616100 654430 592323 533622 487262 769800 899220 781479 649585 520808 453845 369849 360570 301499 406734 428403 430707 379582 432289 583352 488088 379996 284336 241036 173021 127374 116386 128826 96064.8 144156 195148 190636 213980 398243
+2 Timeseries Recruit  1.53947e+07 1.53947e+07 3.65203e+07 4.25252e+07 4.84916e+07 2.99171e+07 1.5989e+07 7.12983e+07 2.1153e+07 1.85001e+07 1.57208e+07 3.43364e+07 1.86068e+07 1.77625e+07 1.85911e+07 5.45038e+07 3.70961e+07 1.62428e+07 1.41452e+07 1.10856e+07 1.58358e+07 1.06512e+07 1.35475e+07 1.04547e+07 3.22336e+07 1.99367e+07 1.1218e+07 8.74369e+06 3.7153e+07 1.29498e+07 4.20264e+06 5.77174e+06 7.4384e+06 8.49644e+06 4.83222e+06 3.98054e+06 4.26083e+06 5.36733e+06 1.52653e+06 7.6535e+06 9.75911e+06 4.25392e+06 8.35661e+06 2.30776e+07 4.27324e+07
+2 Timeseries TotBio  0 664236 291161 534388 688089 860568 1.02855e+06 955156 753961 1.16744e+06 988918 797533 642204 706916 625435 562796 517395 852486 963626 812182 673472 539802 479075 388123 372215 319043 479074 492381 467244 407366 542914 634965 499660 387047 290609 244055 174715 128749 117881 128826 96938.8 144156 196526 192435 220190 398243
+2 Timeseries SmryBio-1  0 0 534388 534388 688089 860568 1.02855e+06 955156 753961 1.16744e+06 988918 797533 642204 706916 625435 562796 517395 852486 963626 812182 673472 539802 479075 388123 356740 331720 514258 514014 448643 396934 543664 589740 481037 373176 306381 259602 185968 123169 111842 123962 100139 148788 206108 192435 230376 401715
+2 Timeseries TotCatch  0 0 129901 145609 157241 194802 216517 206946 183837 206005 208439 187363 177696 161531 140961 149429 132587 130250 142495 136582 125280 116736 115814 108924 94091 85786 101957 99673 97831 98020 97345 87023 96469 101464 87740 89571.1 80403.2 54857 45818 27937 20595 22704 21911 15062 13759 22143
+2 Timeseries RetCatch  0 0 129901 145609 157241 194802 216517 206946 183837 206005 208439 187363 177696 161531 140961 149429 132587 130250 142495 136582 125280 116736 115814 108924 94091 85786 101957 99673 97831 98020 97345 87023 96469 101464 87740 89571.1 80403.2 54857 45818 27937 20595 22704 21911 15062 13759 22143
+2 Mgmt_Quant  708820 708820 708820 1.53947e+07 283528 0.461268
+2 Parm Labels  L_at_Amin_Fem_GP_1 L_at_Amax_Fem_GP_1 VonBert_K_Fem_GP_1 CV_young_Fem_GP_1 CV_old_Fem_GP_1 Wtlen_1_Fem_GP_1 Wtlen_2_Fem_GP_1 Mat50%_Fem_GP_1 Mat_slope_Fem_GP_1 Eggs/kg_inter_Fem_GP_1 Eggs/kg_slope_wt_Fem_GP_1 CohortGrowDev FracFemale_GP_1 SR_LN(R0) SR_BH_steep SR_sigmaR SR_regime SR_autocorr Early_InitAge_4 Early_InitAge_3 Early_InitAge_2 Early_InitAge_1 Main_RecrDev_1978 Main_RecrDev_1979 Main_RecrDev_1980 Main_RecrDev_1981 Main_RecrDev_1982 Main_RecrDev_1983 Main_RecrDev_1984 Main_RecrDev_1985 Main_RecrDev_1986 Main_RecrDev_1987 Main_RecrDev_1988 Main_RecrDev_1989 Main_RecrDev_1990 Main_RecrDev_1991 Main_RecrDev_1992 Main_RecrDev_1993 Main_RecrDev_1994 Main_RecrDev_1995 Main_RecrDev_1996 Main_RecrDev_1997 Main_RecrDev_1998 Main_RecrDev_1999 Main_RecrDev_2000 Main_RecrDev_2001 Main_RecrDev_2002 Main_RecrDev_2003 Main_RecrDev_2004 Main_RecrDev_2005 Main_RecrDev_2006 Main_RecrDev_2007 Main_RecrDev_2008 Main_RecrDev_2009 Main_RecrDev_2010 Main_RecrDev_2011 Main_RecrDev_2012 Main_RecrDev_2013 Main_RecrDev_2014 Main_RecrDev_2015 Main_RecrDev_2016 Main_RecrDev_2017 Main_RecrDev_2018 Main_RecrDev_2019 Main_RecrDev_2020 InitF_seas_1_flt_1purse_seine LnQ_base_Acoustic_survey(2) LnQ_base_DEPM_survey(3) LnQ_base_Rec_survey(4) AgeSel_P1_purse_seine(1) AgeSel_P2_purse_seine(1) AgeSel_P3_purse_seine(1) AgeSel_P4_purse_seine(1) AgeSel_P5_purse_seine(1) AgeSel_P6_purse_seine(1) AgeSel_P7_purse_seine(1) AgeSel_P1_Acoustic_survey(2) AgeSel_P2_Acoustic_survey(2) AgeSel_P3_Acoustic_survey(2) AgeSel_P4_Acoustic_survey(2) AgeSel_P5_Acoustic_survey(2) AgeSel_P6_Acoustic_survey(2) AgeSel_P7_Acoustic_survey(2) minage@sel=1_Rec_survey(4) maxage@sel=1_Rec_survey(4) AgeSel_P2_purse_seine(1)_BLK1delta_1988 AgeSel_P2_purse_seine(1)_BLK1delta_2006 AgeSel_P3_purse_seine(1)_BLK1delta_1988 AgeSel_P3_purse_seine(1)_BLK1delta_2006 AgeSel_P4_purse_seine(1)_BLK1delta_1988 AgeSel_P4_purse_seine(1)_BLK1delta_2006 AgeSel_P7_purse_seine(1)_BLK1delta_1988 AgeSel_P7_purse_seine(1)_BLK1delta_2006
+2 Parm Values   14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 1 0.5  16.5495 0.71 0.7 0 0  0.466943 0.458599 0.461642 0.751947  0.895557 1.01737 1.12728 0.63026 0.00744455 1.52047 0.276233 0.149974 0.00367313 0.805805 0.186938 0.150909 0.208435 1.29535 0.861849 0.0235106 -0.103575 -0.330203 0.0509676 -0.32775 -0.0564053 -0.311345 0.84691 0.314973 -0.267759 -0.517717 0.948227 -0.125496 -1.28879 -0.950171 -0.660337 -0.474812 -1.00328 -1.11012 -0.941434 -0.676877 -1.972 -0.243946 -0.155863 -1.07777 -0.396166 0.589106 1.08059  0.702155  0.251093 0.188693 -0.892465  0 1.65318 0.764853 -0.17774 0 0 -0.230263 -1000 0 0 0 0 0 0 0 0 -0.349353 0.0556033 -0.0308763 -0.196138 0.817406 -0.546995 -0.499183 0.537144 
+2 MG_parm  L_at_Amin_Fem_GP_1 L_at_Amax_Fem_GP_1 VonBert_K_Fem_GP_1 CV_young_Fem_GP_1 CV_old_Fem_GP_1 Wtlen_1_Fem_GP_1 Wtlen_2_Fem_GP_1 Mat50%_Fem_GP_1 Mat_slope_Fem_GP_1 Eggs/kg_inter_Fem_GP_1 Eggs/kg_slope_wt_Fem_GP_1 CohortGrowDev FracFemale_GP_1
+2 MG_parm  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 1 0.5
+2 SR_parm  SR_LN(R0) SR_BH_steep SR_sigmaR SR_regime SR_autocorr
+2 SR_parm  16.5495 0.71 0.7 0 0 
+2 Recr_early  Early_InitAge_4 Early_InitAge_3 Early_InitAge_2 Early_InitAge_1
+2 Recr_early  0.466943 0.458599 0.461642 0.751947
+2 Recr_main  Main_RecrDev_1978 Main_RecrDev_1979 Main_RecrDev_1980 Main_RecrDev_1981 Main_RecrDev_1982 Main_RecrDev_1983 Main_RecrDev_1984 Main_RecrDev_1985 Main_RecrDev_1986 Main_RecrDev_1987 Main_RecrDev_1988 Main_RecrDev_1989 Main_RecrDev_1990 Main_RecrDev_1991 Main_RecrDev_1992 Main_RecrDev_1993 Main_RecrDev_1994 Main_RecrDev_1995 Main_RecrDev_1996 Main_RecrDev_1997 Main_RecrDev_1998 Main_RecrDev_1999 Main_RecrDev_2000 Main_RecrDev_2001 Main_RecrDev_2002 Main_RecrDev_2003 Main_RecrDev_2004 Main_RecrDev_2005 Main_RecrDev_2006 Main_RecrDev_2007 Main_RecrDev_2008 Main_RecrDev_2009 Main_RecrDev_2010 Main_RecrDev_2011 Main_RecrDev_2012 Main_RecrDev_2013 Main_RecrDev_2014 Main_RecrDev_2015 Main_RecrDev_2016 Main_RecrDev_2017 Main_RecrDev_2018 Main_RecrDev_2019 Main_RecrDev_2020
+2 Recr_main  0.895557 1.01737 1.12728 0.63026 0.00744455 1.52047 0.276233 0.149974 0.00367313 0.805805 0.186938 0.150909 0.208435 1.29535 0.861849 0.0235106 -0.103575 -0.330203 0.0509676 -0.32775 -0.0564053 -0.311345 0.84691 0.314973 -0.267759 -0.517717 0.948227 -0.125496 -1.28879 -0.950171 -0.660337 -0.474812 -1.00328 -1.11012 -0.941434 -0.676877 -1.972 -0.243946 -0.155863 -1.07777 -0.396166 0.589106 1.08059
+2 init_F  InitF_seas_1_flt_1purse_seine
+2 init_F  0.702155
+2 Q_parm  LnQ_base_Acoustic_survey(2) LnQ_base_DEPM_survey(3) LnQ_base_Rec_survey(4)
+2 Q_parm  0.251093 0.188693 -0.892465
+2 Sel_parm  AgeSel_P1_purse_seine(1) AgeSel_P2_purse_seine(1) AgeSel_P3_purse_seine(1) AgeSel_P4_purse_seine(1) AgeSel_P5_purse_seine(1) AgeSel_P6_purse_seine(1) AgeSel_P7_purse_seine(1) AgeSel_P1_Acoustic_survey(2) AgeSel_P2_Acoustic_survey(2) AgeSel_P3_Acoustic_survey(2) AgeSel_P4_Acoustic_survey(2) AgeSel_P5_Acoustic_survey(2) AgeSel_P6_Acoustic_survey(2) AgeSel_P7_Acoustic_survey(2) minage@sel=1_Rec_survey(4) maxage@sel=1_Rec_survey(4) AgeSel_P2_purse_seine(1)_BLK1delta_1988 AgeSel_P2_purse_seine(1)_BLK1delta_2006 AgeSel_P3_purse_seine(1)_BLK1delta_1988 AgeSel_P3_purse_seine(1)_BLK1delta_2006 AgeSel_P4_purse_seine(1)_BLK1delta_1988 AgeSel_P4_purse_seine(1)_BLK1delta_2006 AgeSel_P7_purse_seine(1)_BLK1delta_1988 AgeSel_P7_purse_seine(1)_BLK1delta_2006
+2 Sel_parm  0 1.65318 0.764853 -0.17774 0 0 -0.230263 -1000 0 0 0 0 0 0 0 0 -0.349353 0.0556033 -0.0308763 -0.196138 0.817406 -0.546995 -0.499183 0.537144
+
