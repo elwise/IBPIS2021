@@ -61,10 +61,10 @@ run2 <-  SS_output(dir = paste0(res.ss,'/run2'),forecast=FALSE,ncols=62,verbose 
 run3 <-  SS_output(dir = paste0(res.ss,'/run3'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN all years
 run4 <-  SS_output(dir = paste0(res.ss,'/run4'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC from 1997
 run5 <-  SS_output(dir = paste0(res.ss,'/run5'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS from 1997
-run6 <-  SS_output(dir = paste0(res.ss,'/run6'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN all years
+run6 <-  SS_output(dir = paste0(res.ss,'/run6'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN from 1997
 run7 <-  SS_output(dir = paste0(res.ss,'/run7'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC from 2013
-run8 <-  SS_output(dir = paste0(res.ss,'/run8'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS from 1997
-run9 <-  SS_output(dir = paste0(res.ss,'/run9'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN all years
+run8 <-  SS_output(dir = paste0(res.ss,'/run8'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS from 2013
+run9 <-  SS_output(dir = paste0(res.ss,'/run9'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN from 2013
 run10 <- SS_output(dir = paste0(res.ss,'/run10'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas and years
 run11 <- SS_output(dir = paste0(res.ss,'/run11'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas from 1997
 run12 <- SS_output(dir = paste0(res.ss,'/run12'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas from 2013
@@ -198,6 +198,7 @@ ssos %>%
   ggplot(aes(x=Yr,y=delta,color=Run))+
   geom_line()+
   facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"SE_DiffBetweenSetups.png"))
 
 ssos %>% 
   group_by(Variable, Type, Run)%>% 
