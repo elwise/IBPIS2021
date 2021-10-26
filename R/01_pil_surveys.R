@@ -97,7 +97,7 @@ srv %>%
   theme(legend.position="bottom") +
   ylab("Age Zero") +
   xlab("Year") 
-#ggsave(paste0(res.plots,'/',"EstimatesAgeZero.png"))
+ggsave(paste0(res.plots,'/',"EstimatesAgeZeroRecruitmentsurveys.png"))
 
 # - For age zero in npor (9aCN)
 srv %>%
@@ -162,6 +162,12 @@ nZeroTotNpor <- srv%>%
   arrange(.,year)%>%
   summarise(NCN=sum(number,na.rm=T),logNCN = log(NCN))
 
+nZeroECOCADIZ <- srv%>%
+  filter(.,age==0 & survey2=="ECOCADIZ-REC")%>%
+  group_by(cohort)%>%
+  arrange(.,year)%>%
+  summarise(NEco=sum(number,na.rm=T),logNEco = log(NEco))
+
 nOneTot <- srv%>%
   filter(.,type=="B1plus" & age==1)%>%
   filter(.,!year %in% c(2004,2012))%>% #remove years where PELAGO was not carried out
@@ -172,6 +178,7 @@ nOneTot <- srv%>%
 ff <- as.data.frame(full_join(nZeroTot,nZeroTotCadiz,by=c("cohort"))%>%
                       full_join(.,nZeroTotCommon,by='cohort')%>%
                       full_join(.,nZeroTotNpor,by='cohort')%>%
+                      full_join(.,nZeroECOCADIZ,by='cohort')%>%
                       full_join(.,nOneTot, by='cohort'))
 
 remove(nZeroTot,nZeroTotCadiz,nZeroTotCommon,nZeroTotNpor,nOneTot)

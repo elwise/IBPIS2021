@@ -87,10 +87,22 @@ runc <- SS_output(dir = paste0(res.ss,'/Setupc'),forecast=FALSE,ncols=62,verbose
 #==============================================================================
 cpl <- list(run10,run1,run2,run3,run11,run4,run5,run6,run12,run7,run8,run9)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.dir)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.dir)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.dir)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.dir)
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("G1, All","G1, w/o","G1, OC", "G1, CN",
+                                   "G2, All","G2, w/o","G2, OC", "G2, CN",
+                                   "G3, All","G3, w/o","G3, OC", "G3, CN"),legendloc = "topright")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("G1, All","G1, w/o","G1, OC", "G1, CN",
+                                   "G2, All","G2, w/o","G2, OC", "G2, CN",
+                                   "G3, All","G3, w/o","G3, OC", "G3, CN"),legendloc = "topright")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("G1, All","G1, w/o","G1, OC", "G1, CN",
+                                   "G2, All","G2, w/o","G2, OC", "G2, CN",
+                                   "G3, All","G3, w/o","G3, OC", "G3, CN"),legendloc = "topright")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("G1, All","G1, w/o","G1, OC", "G1, CN",
+                                   "G2, All","G2, w/o","G2, OC", "G2, CN",
+                                   "G3, All","G3, w/o","G3, OC", "G3, CN"),legendloc = "topright")
 
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
                          names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
@@ -124,6 +136,140 @@ ggplot(subset(PearsonRes,!(Fleet==2 & Bin==0)), aes(Pearson,colour=Model))+
   theme(legend.position = "bottom")
 ggsave(paste0(res.plots,'/',"PearsonDensity.png"))
 
+diff <- function(file.path, name){
+  
+sso.run <- SS_read_summary(file = paste0(file.path,"/ss_summary.sso"),verbose = TRUE)
+sso.dq <- sso.run$derived_quants[1:219,] %>% rownames_to_column("rn") %>% separate(rn, into = c("Variable", "Yr"))
+sso.dq$Run <- name
+
+return(sso.dq)
+
+  }
+
+sso.dq2020 <- diff(file.path=paste0(res.ss,'/2020_Update'),"Assm2020")
+sso.run1 <- diff(file.path=paste0(res.ss,'/run10'),"G1, All")
+sso.run2 <- diff(file.path=paste0(res.ss,'/run1'),"G1, w/o")
+sso.run3 <- diff(file.path=paste0(res.ss,'/run2'),"G1, OC")
+sso.run4 <- diff(file.path=paste0(res.ss,'/run3'),"G1, CN")
+sso.run5 <- diff(file.path=paste0(res.ss,'/run11'),"G2, All")
+sso.run6 <- diff(file.path=paste0(res.ss,'/run4'),"G2, w/o")
+sso.run7 <- diff(file.path=paste0(res.ss,'/run5'),"G2, OC")
+sso.run8 <- diff(file.path=paste0(res.ss,'/run6'),"G2, CN")
+sso.run9 <- diff(file.path=paste0(res.ss,'/run12'),"G3, All")
+sso.run10 <- diff(file.path=paste0(res.ss,'/run7'),"G3, w/o")
+sso.run11 <- diff(file.path=paste0(res.ss,'/run8'),"G3, OC")
+sso.run12 <- diff(file.path=paste0(res.ss,'/run9'),"G4, CN")
+
+df <- 
+  
+  full_join(
+    sso.dq2020 %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type") %>%
+      select(Variable, Yr, Type, Ass2020 = "value"),
+    bind_rows(sso.dq2020,sso.run1,sso.run2,sso.run3,sso.run4,sso.run5,sso.run6,sso.run7,sso.run8,sso.run9,sso.run10,sso.run11,sso.run12) %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type"),
+    by = c("Variable", "Yr", "Type")
+  ) %>%
+  mutate(delta = Ass2020 - value)
+
+
+df %>%
+  filter(Yr %in% 1978:2020,Type == "Value", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"DiffBetweenAreasyears.png"))
+
+df %>%
+  filter(Yr %in% 1978:2020,Type == "SE", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"SE_DiffBetweenAreasyears.png"))
+
+
+rm(list = ls(pattern = "^sso\\."))
+
+#==============================================================================
+#  Compare models with for 9aCN but different time series                  ----
+#==============================================================================
+
+cpl <- list(run2020,run2020.DEPM,run3,run6,run9)
+cpl.sum <- SSsummarize(biglist=cpl)
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+
+xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
+                         names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
+                         verbose = TRUE,mcmc = FALSE)
+xx <- rbind(xx,c("Maximum Gradient", as.numeric(format(cpl.sum$maxgrad,digits = 3))))
+xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
+xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
+AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+xx <- rbind(xx,AIC)
+xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
+xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
+              "Recr_2020","F_2019","AIC","Max Grad")
+xx[xx$Label=="Catch",2:6] <- format(as.numeric(xx[xx$Label=="Catch",2:6]),digits=3)
+xx[xx$Label=="Equil_catch",2:6] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:6]),digits=3)
+xx[xx$Label=="Recruitment",2:6] <- format(as.numeric(xx[xx$Label=="Recruitment",2:6]),digits=3)
+xx[xx$Label=="Parm_softbounds",2:6] <- format(as.numeric(xx[xx$Label=="Parm_softbounds",2:6]),scientific = T,digits=3)
+
+colnames(xx) <- c("Label", "Assm2020","AssmDEPM","1984-2020","1997-2020","2013-2020")
+
+xx%>%
+  gt::gt()%>%
+  gt::gtsave("tblCompModel9aCNDiffYears.tex")
+
+xx%>%
+  gt::gt()%>%
+  gt::gtsave("tblCompModel9aCNDiffYears.png")
+
+sso.dq2020 <- diff(file.path=paste0(res.ss,'/2020_Update'),"Assm2020")
+sso.run1 <- diff(file.path=paste0(res.ss,'/run3'),"1984-2020")
+sso.run2 <- diff(file.path=paste0(res.ss,'/run6'),"1997-2020")
+sso.run3 <- diff(file.path=paste0(res.ss,'/run9'),"2013-2020")
+
+dd <- 
+  
+  full_join(
+    sso.dq2020 %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type") %>%
+      select(Variable, Yr, Type, Ass2020 = "value"),
+    bind_rows(sso.dq2020,sso.run1,sso.run2,sso.run3) %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type"),
+    by = c("Variable", "Yr", "Type")
+  ) %>%
+  mutate(delta = Ass2020 - value)
+
+
+dd %>%
+  filter(Yr %in% 1978:2020,Type == "Value", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"Diff9aCNYears.png"))
+
+dd %>%
+  filter(Yr %in% 1978:2020,Type == "SE", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"SE_Diff9aCNYears.png"))
+
+
+rm(list = ls(pattern = "^sso\\."))
+
 #==============================================================================
 #  Compare models with same input data but different selectivity settings  ----
 #==============================================================================
@@ -153,21 +299,11 @@ xx%>%
   gt::gtsave("tblCompModel2020.tex")
 
 
-sso.runa <- SS_read_summary(file = "D:/ICES/IBPIS2021/SS_runs/Setupa/ss_summary.sso",verbose = TRUE)
-sso.dqa <- sso.runa$derived_quants[1:219,] %>% rownames_to_column("rn") %>% separate(rn, into = c("Variable", "Yr"))
-sso.dqa$Run <- "Setupa"
-sso.runb <- SS_read_summary(file = "D:/ICES/IBPIS2021/SS_runs/Setupb/ss_summary.sso",verbose = TRUE)
-sso.dqb <- sso.runb$derived_quants[1:219,] %>% rownames_to_column("rn") %>% separate(rn, into = c("Variable", "Yr"))
-sso.dqb$Run <- "Setupb"
-sso.runc <- SS_read_summary(file = "D:/ICES/IBPIS2021/SS_runs/Setupc/ss_summary.sso",verbose = TRUE)
-sso.dqc <- sso.runc$derived_quants[1:219,] %>% rownames_to_column("rn") %>% separate(rn, into = c("Variable", "Yr"))
-sso.dqc$Run <- "Setupc"
-sso.2020 <- SS_read_summary(file = "D:/ICES/IBPIS2021/SS_runs/2020_Update/ss_summary.sso",verbose = TRUE)
-sso.dq2020 <- sso.2020$derived_quants[1:219,] %>% rownames_to_column("rn") %>% separate(rn, into = c("Variable", "Yr"))
-sso.dq2020$Run <- "Assm2020"
-sso.DEPM <- SS_read_summary(file = "D:/ICES/IBPIS2021/SS_runs/2020_DEPM/ss_summary.sso",verbose = TRUE)
-sso.dqDEPM <- sso.DEPM$derived_quants[1:219,] %>% rownames_to_column("rn") %>% separate(rn, into = c("Variable", "Yr"))
-sso.dqDEPM$Run <- "DEPM2020"
+sso.dq2020 <- diff(file.path=paste0(res.ss,'/2020_Update'),"Assm2020")
+sso.dqDEPM <- diff(file.path=paste0(res.ss,'/2020_DEPM'),"DEPM2020")
+sso.runa <- diff(file.path=paste0(res.ss,'/Setupa'),"Assm2020")
+sso.runb <- diff(file.path=paste0(res.ss,'/Setupb'),"Assm2020")
+sso.runc <- diff(file.path=paste0(res.ss,'/Setupc'),"Assm2020")
 
   
 ssos <- 
