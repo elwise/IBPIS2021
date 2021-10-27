@@ -122,18 +122,18 @@
 #
 #_Q_setup for fleets with cpue or survey data
 #_fleet	link	link_info	extra_se	biasadj	float  #  fleetname
-    2	1	0	1	0	1	#_Acoustic_survey
-    3	1	0	1	0	1	#_DEPM_survey  
-    4	1	0	1	0	1	#_Rec_survey  
+    2	1	0	1	0	0	#_Acoustic_survey
+    3	1	0	1	0	0	#_DEPM_survey  
+    4	1	0	1	0	0	#_Rec_survey  
 -9999	0	0	0	0	0	#_terminator     
 #_Q_parms(if_any);Qunits_are_ln(q)
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE	env-var	use_dev	dev_mnyr	dev_mxyr	dev_PH	Block	Blk_Fxn  #  parm_name
--3	3	0.75	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Acoustic_survey(2)
- 0      1       0.3     0.1     0.1     0        3      0       0       0       0       0       0       0       #_Q_extraSD_Acoustic(2)
--3	3	0.26	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_DEPM_survey(3)
- 0      1       0.3     0.1     0.1     0        3      0       0       0       0       0       0       0       #_Q_extraSD_DEPM_survey(3)
--3	3	0.3	0	1	0	-1	0	0	0	0	0	0	0	#_LnQ_base_Rec_survey(4)
- 0      1       0.8     0.1     0.1     0        3      0       0       0       0       0       0       0       #_Q_extraSD_Rec_survey(4)    
+-3	3	0.75	0	1	0	 1	0	0	0	0	0	0	0	#_LnQ_base_Acoustic_survey(2)
+ 0      1       0.3     0.1     0.1     0        1      0       0       0       0       0       0       0       #_Q_extraSD_Acoustic(2)
+-3	3	0.26	0	1	0	 1	0	0	0	0	0	0	0	#_LnQ_base_DEPM_survey(3)
+ 0      1       0.3     0.1     0.1     0        1      0       0       0       0       0       0       0       #_Q_extraSD_DEPM_survey(3)
+-3	3	0.3	0	1	0	 1	0	0	0	0	0	0	0	#_LnQ_base_Rec_survey(4)
+ 0      1       0.01    0.1     0.1     0        1      0       0       0       0       0       0       0       #_Q_extraSD_Rec_survey(4)    
 #_no timevary Q parameters
 #
 #_size_selex_patterns

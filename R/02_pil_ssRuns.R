@@ -56,13 +56,10 @@ run2020.DEPM <- SS_output(dir = paste0(res.ss,"/2020_DEPM"),forecast=FALSE,ncols
 runa <- SS_output(dir = paste0(res.ss,'/Setupa'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
 #Setup a with sd extra parameter for q_All
-runa1 <- SS_output(dir = paste0(res.ss,'/SetupaSD'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+runaSD <- SS_output(dir = paste0(res.ss,'/SetupaSD'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
-#Setup a with sd extra parameter for q_Rec
-runa2 <- SS_output(dir = paste0(res.ss,'/SetupaSD_Rec'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
-
-#Setup a with power oprion for Q parameter of the recruitment survey
-runa3 <- SS_output(dir = paste0(res.ss,'/SetupaQ'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+#Setup a with power option for Q parameter of the recruitment survey
+runaSDQ <- SS_output(dir = paste0(res.ss,'/SetupaSDQ'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
 
 # Setup a - Same settings as the current model but with different recruitment index estimates (years and areas)
@@ -356,19 +353,13 @@ ssos %>%
   filter(Variable %in% c("SSB","Recr","F"))
 
 #==============================================================================
-#  Compare setupa with ExtraSD for Q                                       ----
+#  Compare setupa with ExtraSD for Q and power Q                          ----
 #==============================================================================
 
-cpl <- list(runa,runa1,runa2)
+cpl <- list(runa,runaSD,runaSDQ)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12,13),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup a","Setup aSD","Setup aSDQ"),legendloc = "topright",filenameprefix = "ExtraSDQ")
 
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
                          names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
@@ -381,7 +372,7 @@ xx <- rbind(xx,AIC)
 xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
 xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
               "Recr_2020","F_2019","AIC","Max Grad")
-colnames(xx) <- c("Label", "SetupA","SetupA_SD","SetupA_SDREC")
+colnames(xx) <- c("Label", "SetupA","SetupA_SD")
 xx[xx$Label=="Catch",2:4] <- format(as.numeric(xx[xx$Label=="Catch",2:4]),digits=3)
 xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=3)
 xx[xx$Label=="Recruitment",2:4] <- format(as.numeric(xx[xx$Label=="Recruitment",2:4]),digits=3)
@@ -391,48 +382,6 @@ xx%>%
   gt::gt()%>%
   gt::gtsave("tblCompSetupsAs.png")
 
-
-sso.dq2020 <- diff(file.path=paste0(res.ss,'/2020_Update'),"Assm2020")
-sso.dqDEPM <- diff(file.path=paste0(res.ss,'/2020_DEPM'),"DEPM2020")
-sso.runa <- diff(file.path=paste0(res.ss,'/Setupa'),"Assm2020")
-sso.runb <- diff(file.path=paste0(res.ss,'/Setupb'),"Assm2020")
-sso.runc <- diff(file.path=paste0(res.ss,'/Setupc'),"Assm2020")
-
-
-ssos <- 
-  
-  full_join(
-    sso.dq2020 %>%
-      pivot_longer(cols = c(Value, SE), names_to = "Type") %>%
-      select(Variable, Yr, Type, Ass2020 = "value"),
-    bind_rows(sso.dq2020,sso.dqDEPM,sso.dqa,sso.dqb,sso.dqc) %>%
-      pivot_longer(cols = c(Value, SE), names_to = "Type"),
-    by = c("Variable", "Yr", "Type")
-  ) %>%
-  mutate(delta = Ass2020 - value)
-
-rm(list = ls(pattern = "^sso\\."))
-
-ssos %>%
-  filter(Yr %in% 1978:2020,Type == "Value", Variable %in% c('SSB','Recr','F')) %>%
-  mutate(Yr = as.numeric(as.character(Yr))) %>%
-  ggplot(aes(x=Yr,y=delta,color=Run))+
-  geom_line()+
-  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
-ggsave(paste0(res.plots,'/',"DiffBetweenSetups.png"))
-
-ssos %>%
-  filter(Yr %in% 1978:2020,Type == "SE", Variable %in% c('SSB','Recr','F')) %>%
-  mutate(Yr = as.numeric(as.character(Yr))) %>%
-  ggplot(aes(x=Yr,y=delta,color=Run))+
-  geom_line()+
-  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
-ggsave(paste0(res.plots,'/',"SE_DiffBetweenSetups.png"))
-
-ssos %>% 
-  group_by(Variable, Type, Run)%>% 
-  summarise (mean= mean(value), sd=sd(value))%>%
-  filter(Variable %in% c("SSB","Recr","F"))
 
 #==============================================================================
 #  Compare setupa with Q power                                     ----
