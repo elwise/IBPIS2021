@@ -372,7 +372,7 @@ xx <- rbind(xx,AIC)
 xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
 xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
               "Recr_2020","F_2019","AIC","Max Grad")
-colnames(xx) <- c("Label", "SetupA","SetupA_SD")
+colnames(xx) <- c("Label", "SetupA","SetupA_SD","SetupA_SDQ")
 xx[xx$Label=="Catch",2:4] <- format(as.numeric(xx[xx$Label=="Catch",2:4]),digits=3)
 xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=3)
 xx[xx$Label=="Recruitment",2:4] <- format(as.numeric(xx[xx$Label=="Recruitment",2:4]),digits=3)
@@ -384,13 +384,14 @@ xx%>%
 
 
 #==============================================================================
-#  Compare setupa with Q power                                     ----
+#  Tune SetupaSD                                                           ----
 #==============================================================================
-
-cpl <- list(runa,runa3)
+runaSDTune <- SS_output(dir = paste0(res.ss,'/SetupaSDTune'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+runaSDTune2 <- SS_output(dir = paste0(res.ss,'/SetupaSDTune2'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+cpl <- list(runaSD,runaSDTune,runaSDTune2)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Setup a","Setup aQ"),legendloc = "topright",filenameprefix = "PowerQ")
+SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup aSD","Setup aSDTune","Setup aSDTune2"),legendloc = "topright",filenameprefix = "SDs")
 
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
                          names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
@@ -403,7 +404,70 @@ xx <- rbind(xx,AIC)
 xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
 xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
               "Recr_2020","F_2019","AIC","Max Grad")
-colnames(xx) <- c("Label", "SetupA","SetupA_Q")
+colnames(xx) <- c("Label", "SetupASD","SetupASDTune","SetupASDTune2")
+
+xx[xx$Label=="Catch",2:4] <- format(as.numeric(xx[xx$Label=="Catch",2:4]),digits=3)
+xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=3)
+xx[xx$Label=="Recruitment",2:4] <- format(as.numeric(xx[xx$Label=="Recruitment",2:4]),digits=3)
+xx[xx$Label=="Parm_devs",2:4] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:4]),scientific = T,digits=3)
+
+xx%>%
+  gt::gt()%>%
+  gt::gtsave("tblCompSDTune.png")
+
+#==============================================================================
+#  Tune SetupaSDQ                                                           ----
+#==============================================================================
+runaSDQTune <- SS_output(dir = paste0(res.ss,'/SetupaSDQTune'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+runaSDQTune2 <- SS_output(dir = paste0(res.ss,'/SetupaSDQTune2'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+cpl <- list(runaSDQ,runaSDQTune,runaSDQTune2)
+cpl.sum <- SSsummarize(biglist=cpl)
+SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup aSDQ","Setup aSDQTune","Setup aSDQTune2"),legendloc = "topright",filenameprefix = "SDQs")
+
+xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
+                         names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
+                         verbose = TRUE,mcmc = FALSE)
+xx <- rbind(xx,as.numeric(format(cpl.sum$maxgrad,digits = 3)))
+xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
+xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
+AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+xx <- rbind(xx,AIC)
+xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
+xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
+              "Recr_2020","F_2019","AIC","Max Grad")
+colnames(xx) <- c("Label", "SetupASDQ","SetupASDQTune","SetupASDQTune2")
+
+xx[xx$Label=="Catch",2:4] <- format(as.numeric(xx[xx$Label=="Catch",2:4]),digits=3)
+xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=3)
+xx[xx$Label=="Recruitment",2:4] <- format(as.numeric(xx[xx$Label=="Recruitment",2:4]),digits=3)
+xx[xx$Label=="Parm_devs",2:4] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:4]),scientific = T,digits=3)
+
+xx%>%
+  gt::gt()%>%
+  gt::gtsave("tblCompSDQTune.png")
+
+#==============================================================================
+#  Compare both tune Sd and SDQ                                            ----
+#==============================================================================
+cpl <- list(runaSDTune2,runaSDQTune2)
+cpl.sum <- SSsummarize(biglist=cpl)
+SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup aSDTune2","Setup aSDQTune2"),legendloc = "topright",filenameprefix = "TuneS")
+
+xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
+                         names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
+                         verbose = TRUE,mcmc = FALSE)
+xx <- rbind(xx,as.numeric(format(cpl.sum$maxgrad,digits = 3)))
+xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
+xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
+AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+xx <- rbind(xx,AIC)
+xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
+xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
+              "Recr_2020","F_2019","AIC","Max Grad")
+colnames(xx) <- c("Label", "SetupASDTune2","SetupASDQTune2")
+
 xx[xx$Label=="Catch",2:3] <- format(as.numeric(xx[xx$Label=="Catch",2:3]),digits=3)
 xx[xx$Label=="Equil_catch",2:3] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:3]),digits=3)
 xx[xx$Label=="Recruitment",2:3] <- format(as.numeric(xx[xx$Label=="Recruitment",2:3]),digits=3)
@@ -411,7 +475,7 @@ xx[xx$Label=="Parm_devs",2:3] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:3]
 
 xx%>%
   gt::gt()%>%
-  gt::gtsave("tblCompSetupsQ.png")
+  gt::gtsave("tblCompTuneS.png")
 
 #==============================================================================
 #  Check percentage of catch that comes from recruitment areas             ----
