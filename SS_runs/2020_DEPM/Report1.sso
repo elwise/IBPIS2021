@@ -1,0 +1,3533 @@
+#V3.30.16.02;_2020_09_21;_safe;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.2
+#Stock Synthesis (SS) is a work of the U.S. Government and is not subject to copyright protection in the United States.
+#Foreign copyrights may apply. See copyright.txt for more information.
+#_user_support_available_at:NMFS.Stock.Synthesis@noaa.gov
+#_user_info_available_at:https://vlab.ncep.noaa.gov/group/stock-synthesis
+
+StartTime: Wed Oct 27 12:07:04 2021
+EndTime: Wed Oct 27 12:07:05 2021
+This run took: 0 hours, 0 minutes, 1 seconds.
+Data_File: sardine.dat
+Control_File: control_modified.ss
+
+Convergence_Level: 81383.8 is_final_gradient
+Hessian: 
+
+Starter_Comments
+#C starter file written by R function SS_writestarter
+#C rerun model to get more complete formatting in starter.ss_new
+#C should work with SS version: 3.30
+#C file write time: 2021-10-27 12:06:59
+
+Data_Comments
+#C Sardine in 8c and 9a: ASSESSMENT 2020
+
+Control_Comments
+#C file created using the SS_writectl function in the R package r4ss
+#C file write time: 2021-05-23 18:08:06
+
+Forecast_Comments
+#C forecast file written by R function SS_writeforecast
+#C rerun model to get more complete formatting in forecast.ss_new
+#C should work with SS version: 3.3
+#C file write time: 2021-05-23 18:09:40
+
+#_KeyWords_of_tables_available_in_report_sso
+#NOTE: table_number_is_order_in_which_tables_are_output
+#_List_Tables_related_to_basic_input_pre-processing_and_output
+Y  DEFINITIONS report:1
+Y  DERIVED_QUANTITIES report:6
+N  ENVIRONMENTAL_DATA report:33
+Y  Input_Variance_Adjustment report:3
+Y  LIKELIHOOD report:2
+Y  MGparm_By_Year_after_adjustments report:7
+Y  MORPH_INDEXING report:11
+Y  OVERALL_COMPS report:30
+Y  PARAMETERS report:5
+N  Parm_devs_detail report:4
+
+# List_Tables_related_to_timeseries_output
+Y  BIOMASS_AT_AGE report:36
+Y  BIOMASS_AT_LENGTH report:38
+Y  CATCH report:15
+Y  DISCARD_AT_AGE report:41
+Y  EXPLOITATION report:14
+Y  CATCH_AT_AGE report:40
+Y  F_AT_AGE report:39
+Y  MEAN_SIZE_TIMESERIES report:49
+Y  NUMBERS_AT_AGE report:35
+Y  NUMBERS_AT_LENGTH report:37
+Y  SPAWN_RECRUIT report:19
+Y  SPAWN_RECR_CURVE report:20
+Y  SPR_SERIES report:17
+Y  TIME_SERIES report:16
+
+# List_Tables_related_to_fit_to_data
+Y  COMPOSITION_DATABASE report:52
+N  DISCARD_SPECIFICATION report:24
+N  DISCARD_OUTPUT report:25
+Y  INDEX_1 report:21 summary
+Y  INDEX_2 report:22 annual
+Y  INDEX_3 report:23 Qparms
+N  FIT_LEN_COMPS report:27
+Y  FIT_AGE_COMPS report:28
+N  FIT_SIZE_COMPS report:29
+N  MEAN_BODY_WT_OUTPUT report:26
+N  TAG_Recapture report:34
+
+# List_Tables_related_to_selectivity_and_discard
+Y  AGE_SELEX report:32
+Y  LEN_SELEX report:31
+Y  selparm(Size)_By_Year_after_adjustments report:8
+Y  selparm(Age)_By_Year_after_adjustments report:9
+Y  SELEX_database report:53
+
+#_List_Tables_related_to_biology
+Y  AGE_AGE_KEY report:51
+Y  AGE_LENGTH_KEY report:50
+N  AGE_SPECIFIC_K report:44
+Y  BIOLOGY report:42
+Y  Biology_at_age_in_endyr report:47
+Y  Growth_Parameters report:45
+Y  MEAN_BODY_WT(Begin) report:48
+N  MOVEMENT report:13
+Y  Natural_Mortality report:43
+Y  RECRUITMENT_DIST report:10
+N  Seas_Effects report:46
+N  SIZEFREQ_TRANSLATION report:12
+
+# List_Tables_related_to_equilibrium_reference_points;_also_see_forecast_report.sso
+Y  Dynamic_Bzero report:59
+Y  GLOBAL_MSY report:55
+Y  Kobe_Plot report:18
+Y  SPR/YPR_Profile report:54
+
+# List_Additional_Tables
+Y  SS_summary.sso report:56
+Y  rebuilder.sso report:57
+Y  SIStable.sso report:58
+Y  wtatage.ss_new report:60
+
+# vector_with_report_usage
+ Y Y Y N Y Y Y Y Y Y Y N N Y Y Y Y Y Y Y Y Y Y N N N N Y N Y Y Y N N Y Y Y Y Y Y Y Y Y N Y N Y Y Y Y Y Y Y Y Y Y Y Y Y Y
+
+
+ DEFINITIONS report:1
+N_seasons: 1
+N_sub_seasons: 2
+Sum_of_months_on_read_was:_ 12 rescaled_to_sum_to: 1
+Season_Durations:  1
+Spawn_month: 1
+Spawn_seas: 1
+Spawn_timing_in_season: 0
+N_areas: 1
+Start_year: 1978
+End_year: 2020
+Retro_year: 2020
+N_forecast_yrs: 0
+N_areas: 1
+N_sexes: 1
+Max_age: 6
+Empirical_wt_at_age(0,1): 1
+N_bio_patterns: 1
+N_platoons: 1
+NatMort: 3 # options:_(0)1Parm;_(1)N_breakpoints;_(2)Lorenzen;_(3)agespecific;_(4)agespec_withseasinterpolate
+GrowthModel: 1 # options:_(1)vonBert with L1&L2;_(2)Richards with L1&L2;_(3)age_specific_K_incr;_(4)age_specific_K_decr; (5)age_specific_K_each; (6)not implemented
+Maturity: 5 # options:_(1)length logistic;_(2)age logistic;_(3)read age-maturity;_(4)read age-fecundity;_(5)disabled;_(6)read length-maturity
+Fecundity: 1 # options:_(1)eggs=Wt*(a+b*Wt);_(2)eggs=a*L^b;_(3)eggs=a*Wt^b;_(4)eggs=a+b*L;_(5)eggs=a+b*W
+Start_from_par(0,1): 0
+Do_all_priors(0,1): 1
+Use_softbound(0,1): 1
+N_nudata: 3
+Max_phase: 2
+Current_phase: 2
+Jitter: 0
+ALK_tolerance: 0
+Fleet_name:  purse_seine Acoustic_survey DEPM_survey
+Fleet_type:  1 3 3
+Fleet_area:  1 1 1
+Lencomp_error_type:  0 0 0
+Lencomp_error_parms:  0 0 0
+Agecomp_error_type:  0 0 0
+Agecomp_error_parms:  0 0 0
+#
+Fleet fleet_type timing area catch_units catch_mult survey_units survey_error Fleet_name
+1  1 -1 1 1 0 1 0 purse_seine
+2  3 1 1 2 0 0 0 Acoustic_survey
+3  3 1 1 2 0 30 0 DEPM_survey
+
+ LIKELIHOOD report:2 920.933
+Component logL*Lambda Lambda
+TOTAL 920.933 NA
+Catch 1.26058e-07 NA
+Equil_catch 519.142 NA
+Survey 1.46492 NA
+Age_comp 398.507 NA
+Recruitment 1.81913 1
+InitEQ_Regime 0 1
+Forecast_Recruitment 0 1
+Parm_priors 0 1
+Parm_softbounds 0.000497684  NA
+Parm_devs 0 1
+Crash_Pen 0 1
+#_info_for_Laplace_calculations
+NoBias_corr_Recruitment(info_only) -14.5879 1
+Laplace_obj_fun(info_only) 904.526 NA
+#
+Fleet:  ALL 1 2 3 
+Catch_lambda: _  1 1 1
+Catch_like: 1.26058e-07  1.26058e-07 0 0
+Init_equ_lambda: _  1 1 1
+Init_equ_like: 519.142  519.142 0 0
+Surv_lambda: _  0 1 1
+Surv_like: 1.46492  0 3.45293 -1.98801
+Surv_N_use: _  0 23 9
+Surv_N_skip: _  0 0 0
+Age_lambda: _  1 1 0
+Age_like: 398.507  316.085 82.4213 0
+Age_N_use: _  42 23 0
+Age_N_skip: _  1 0 0
+
+
+ Input_Variance_Adjustment report:3
+Fleet  1 2 3
+Index_extra_CV  0 0 0
+Discard_extra_CV  0 0 0
+MeanBodyWt_extra_CV  0 0 0
+effN_mult_Lencomp  0 0 0
+effN_mult_Agecomp  1 1 1
+effN_mult_Len_at_age  1 1 1
+effN_mult_generalized_sizecomp  1 1 1
+MG_parms_Using_offset_approach_#:_1  (1=none, 2= M, G, CV_G as offset from female_GP1, 3=like SS2 V1.x)
+
+ PARAMETERS report:5
+Num Label Value Active_Cnt  Phase Min Max Init  Used  Status  Parm_StDev Gradient Pr_type Prior Pr_SD Pr_Like Value_again Value-1.96*SD Value+1.96*SD V_1%  V_10% V_20% V_30% V_40% V_50% V_60% V_70% V_80% V_90% V_99% P_val P_lowCI P_hiCI  P_1%  P_10% P_20% P_30% P_40% P_50% P_60% P_70% P_80% P_90% P_99%
+1 L_at_Amin_Fem_GP_1 14 _ -2 8 18 14 14 NA _ _  No_prior 
+2 L_at_Amax_Fem_GP_1 23 _ -4 20 25 23 23 NA _ _  No_prior 
+3 VonBert_K_Fem_GP_1 0.4 _ -4 0.2 0.8 0.4 0.4 NA _ _  No_prior 
+4 CV_young_Fem_GP_1 0.1 _ -3 0.05 0.25 0.1 0.1 NA _ _  No_prior 
+5 CV_old_Fem_GP_1 0.1 _ -3 0.05 0.25 0.1 0.1 NA _ _  No_prior 
+6 Wtlen_1_Fem_GP_1 2 _ -3 -3 3 2 2 NA _ _  No_prior 
+7 Wtlen_2_Fem_GP_1 3 _ -3 -3 4 3 3 NA _ _  No_prior 
+8 Mat50%_Fem_GP_1 55 _ -3 50 60 55 55 NA _ _  No_prior 
+9 Mat_slope_Fem_GP_1 -0.25 _ -3 -3 3 -0.25 -0.25 NA _ _  No_prior 
+10 Eggs/kg_inter_Fem_GP_1 1 _ -3 -3 3 1 1 NA _ _  No_prior 
+11 Eggs/kg_slope_wt_Fem_GP_1 0 _ -3 -3 3 0 0 NA _ _  No_prior 
+12 RecrDist_GP_1 0 _ -4 0 0 0 0 NA _ _  No_prior 
+13 RecrDist_Area_1 0 _ -4 0 0 0 0 NA _ _  No_prior 
+14 RecrDist_month_1 0 _ -4 0 0 0 0 NA _ _  No_prior 
+15 CohortGrowDev 1 _ -1 0.1 10 1 1 NA _ _  No_prior 
+16 FracFemale_GP_1 0.5 _ -99 1e-06 0.999999 0.5 0.5 NA _ _  No_prior 
+17 SR_LN(R0) 18.0523 1 1 1 20 16.5254 16.5254 OK  0 75165.6 No_prior 
+18 SR_BH_steep 0.3 _ -1 0 2 0.3 0.3 NA _ _  No_prior 
+19 SR_sigmaR 0.7 _ -4 0 4 0.7 0.7 NA _ _  No_prior 
+20 SR_regime 0 _ -2 -5 5 0 0 NA _ _  No_prior 
+21 SR_autocorr 0 _ -99 0 0 0 0 NA _ _  No_prior 
+22 Early_InitAge_4 -0.0140461 2 2 -5 5 0 0 act 0 226.222 dev 
+23 Early_InitAge_3 -0.102886 3 2 -5 5 0 0 act 0 1636.72 dev 
+24 Early_InitAge_2 -0.104778 4 2 -5 5 0 0 act 0 12440.8 dev 
+25 Early_InitAge_1 -0.219035 5 2 -5 5 0 0 act 0 28869.9 dev 
+26 Main_RecrDev_1978 0.137943 6 2 -5 5 0 0 act 0 11247.8 dev 
+27 Main_RecrDev_1979 0.144659 7 2 -5 5 0 0 act 0 10734.7 dev 
+28 Main_RecrDev_1980 0.179678 8 2 -5 5 0 0 act 0 9918.78 dev 
+29 Main_RecrDev_1981 0.127272 9 2 -5 5 0 0 act 0 8155.7 dev 
+30 Main_RecrDev_1982 0.122181 10 2 -5 5 0 0 act 0 6604.51 dev 
+31 Main_RecrDev_1983 0.345628 11 2 -5 5 0 0 act 0 6341.8 dev 
+32 Main_RecrDev_1984 0.12565 12 2 -5 5 0 0 act 0 4446.81 dev 
+33 Main_RecrDev_1985 0.0957536 13 2 -5 5 0 0 act 0 3395.94 dev 
+34 Main_RecrDev_1986 0.0874793 14 2 -5 5 0 0 act 0 2400.38 dev 
+35 Main_RecrDev_1987 0.222555 15 2 -5 5 0 0 act 0 1931.67 dev 
+36 Main_RecrDev_1988 0.0823409 16 2 -5 5 0 0 act 0 969.576 dev 
+37 Main_RecrDev_1989 0.0700517 17 2 -5 5 0 0 act 0 426.866 dev 
+38 Main_RecrDev_1990 0.09131 18 2 -5 5 0 0 act 0 -44.1318 dev 
+39 Main_RecrDev_1991 0.428747 19 2 -5 5 0 0 act 0 -84.4383 dev 
+40 Main_RecrDev_1992 0.161621 20 2 -5 5 0 0 act 0 -608.853 dev 
+41 Main_RecrDev_1993 -0.141911 21 2 -5 5 0 0 act 0 -972.409 dev 
+42 Main_RecrDev_1994 -0.172482 22 2 -5 5 0 0 act 0 -1151.02 dev 
+43 Main_RecrDev_1995 -0.20562 23 2 -5 5 0 0 act 0 -1364.38 dev 
+44 Main_RecrDev_1996 -0.057659 24 2 -5 5 0 0 act 0 -1534.95 dev 
+45 Main_RecrDev_1997 -0.121467 25 2 -5 5 0 0 act 0 -1721.69 dev 
+46 Main_RecrDev_1998 -0.00666313 26 2 -5 5 0 0 act 0 -1928.74 dev 
+47 Main_RecrDev_1999 -0.0596175 27 2 -5 5 0 0 act 0 -2101.22 dev 
+48 Main_RecrDev_2000 0.399574 28 2 -5 5 0 0 act 0 -2467.99 dev 
+49 Main_RecrDev_2001 0.0831363 29 2 -5 5 0 0 act 0 -2497.32 dev 
+50 Main_RecrDev_2002 -0.120871 30 2 -5 5 0 0 act 0 -2495.77 dev 
+51 Main_RecrDev_2003 -0.190462 31 2 -5 5 0 0 act 0 -2489.66 dev 
+52 Main_RecrDev_2004 0.398218 32 2 -5 5 0 0 act 0 -2912.36 dev 
+53 Main_RecrDev_2005 -0.114674 33 2 -5 5 0 0 act 0 -2601.35 dev 
+54 Main_RecrDev_2006 -0.466498 34 2 -5 5 0 0 act 0 -2330.59 dev 
+55 Main_RecrDev_2007 -0.368671 35 2 -5 5 0 0 act 0 -2367.23 dev 
+56 Main_RecrDev_2008 -0.23149 36 2 -5 5 0 0 act 0 -2452.41 dev 
+57 Main_RecrDev_2009 -0.126675 37 2 -5 5 0 0 act 0 -2629.3 dev 
+58 Main_RecrDev_2010 -0.262734 38 2 -5 5 0 0 act 0 -2595.2 dev 
+59 Main_RecrDev_2011 -0.220819 39 2 -5 5 0 0 act 0 -2724.2 dev 
+60 Main_RecrDev_2012 -0.137634 40 2 -5 5 0 0 act 0 -2883.62 dev 
+61 Main_RecrDev_2013 -0.0780636 41 2 -5 5 0 0 act 0 -2992.07 dev 
+62 Main_RecrDev_2014 -0.174978 42 2 -5 5 0 0 act 0 -2953.91 dev 
+63 Main_RecrDev_2015 0.0498906 43 2 -5 5 0 0 act 0 -3171.11 dev 
+64 Main_RecrDev_2016 0.101449 44 2 -5 5 0 0 act 0 -3229.95 dev 
+65 Main_RecrDev_2017 -0.242076 45 2 -5 5 0 0 act 0 -2949.2 dev 
+66 Main_RecrDev_2018 -0.0317845 46 2 -5 5 0 0 act 0 -3132.07 dev 
+67 Main_RecrDev_2019 0.0777103 47 2 -5 5 0 0 act 0 -3179 dev 
+68 InitF_seas_1_flt_1purse_seine 1.73757 48 1 -1 2 0.736526 0.736526 OK  0 -1967.19 No_prior 
+69 LnQ_base_Acoustic_survey(2) 0.33987 49 1 -3 3 0.246128 0.246128 OK  0 -14.4404 No_prior 
+70 LnQ_base_DEPM_survey(3) 0.393403 50 1 -3 3 0.191875 0.191875 OK  0 33.2834 No_prior 
+71 AgeSel_P1_purse_seine(1) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+72 AgeSel_P2_purse_seine(1) 1.61755 51 2 -3 3 1.65464 1.65464 OK  0 3756.73 No_prior 
+73 AgeSel_P3_purse_seine(1) 0.834604 52 2 -4 4 0.765893 0.765893 OK  0 14946.3 No_prior 
+74 AgeSel_P4_purse_seine(1) -3.64294e-06 53 2 -4 4 -0.173809 -0.173809 OK  0 931.207 No_prior 
+75 AgeSel_P5_purse_seine(1) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+76 AgeSel_P6_purse_seine(1) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+77 AgeSel_P7_purse_seine(1) -0.115661 54 2 -4 4 -0.202396 -0.202396 OK  0 204.379 No_prior 
+78 AgeSel_P1_Acoustic_survey(2) -1000 _ -2 -1000 -1000 -1000 -1000 NA _ _  No_prior 
+79 AgeSel_P2_Acoustic_survey(2) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+80 AgeSel_P3_Acoustic_survey(2) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+81 AgeSel_P4_Acoustic_survey(2) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+82 AgeSel_P5_Acoustic_survey(2) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+83 AgeSel_P6_Acoustic_survey(2) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+84 AgeSel_P7_Acoustic_survey(2) 0 _ -2 -4 4 0 0 NA _ _  No_prior 
+85 AgeSel_P2_purse_seine(1)_BLK1delta_1988 -0.305735 55 2 -4 4 -0.350723 -0.350723 OK  0 666.25 No_prior 
+86 AgeSel_P2_purse_seine(1)_BLK1delta_2006 0.0561206 56 2 -4 4 0.0346694 0.0346694 OK  0 352.634 No_prior 
+87 AgeSel_P3_purse_seine(1)_BLK1delta_1988 0.13532 57 2 -4 4 -0.0320772 -0.0320772 OK  0 1457.83 No_prior 
+88 AgeSel_P3_purse_seine(1)_BLK1delta_2006 -0.0881285 58 2 -4 4 -0.207164 -0.207164 OK  0 722.506 No_prior 
+89 AgeSel_P4_purse_seine(1)_BLK1delta_1988 0.913508 59 2 -4 4 0.812784 0.812784 OK  0 1266.23 No_prior 
+90 AgeSel_P4_purse_seine(1)_BLK1delta_2006 -0.498667 60 2 -4 4 -0.558844 -0.558844 OK  0 643.63 No_prior 
+91 AgeSel_P7_purse_seine(1)_BLK1delta_1988 -0.453393 61 2 -4 4 -0.526191 -0.526191 OK  0 64.9388 No_prior 
+92 AgeSel_P7_purse_seine(1)_BLK1delta_2006 0.557829 62 2 -4 4 0.52166 0.52166 OK  0 13.0235 No_prior 
+#
+Number_of_parameters: 92
+Active_count: 62
+Number_of_active_parameters_on_or_near_bounds: 0
+
+ DERIVED_QUANTITIES report:6
+SPR_report_basis:  1-SPR
+F_report_basis: _abs_F;_with_F=sum(full_Fs)
+B_ratio_denominator:  100%*StartYr_Biomass
+ Label Value  StdDev (Val-1.0)/Stddev  CumNorm
+ SSB_Virgin 8.62028e-315 0
+ SSB_Initial 0 0
+ SSB_1978 0 0
+ SSB_1979 0 0
+ SSB_1980 0 0
+ SSB_1981 0 0
+ SSB_1982 0 0
+ SSB_1983 0 0
+ SSB_1984 0 0
+ SSB_1985 0 0
+ SSB_1986 0 0
+ SSB_1987 0 0
+ SSB_1988 0 0
+ SSB_1989 0 0
+ SSB_1990 0 0
+ SSB_1991 0 0
+ SSB_1992 0 0
+ SSB_1993 0 0
+ SSB_1994 0 0
+ SSB_1995 0 0
+ SSB_1996 0 0
+ SSB_1997 0 0
+ SSB_1998 0 0
+ SSB_1999 0 0
+ SSB_2000 0 0
+ SSB_2001 0 0
+ SSB_2002 0 0
+ SSB_2003 0 0
+ SSB_2004 0 0
+ SSB_2005 0 0
+ SSB_2006 0 0
+ SSB_2007 0 0
+ SSB_2008 0 0
+ SSB_2009 0 0
+ SSB_2010 0 0
+ SSB_2011 0 0
+ SSB_2012 0 0
+ SSB_2013 0 0
+ SSB_2014 0 0
+ SSB_2015 0 0
+ SSB_2016 0 0
+ SSB_2017 0 0
+ SSB_2018 0 0
+ SSB_2019 0 0
+ SSB_2020 0 0
+ Recr_Virgin 8.62027e-315 0
+ Recr_Initial 0 0
+ Recr_1978 0 0
+ Recr_1979 0 0
+ Recr_1980 0 0
+ Recr_1981 0 0
+ Recr_1982 0 0
+ Recr_1983 0 0
+ Recr_1984 0 0
+ Recr_1985 0 0
+ Recr_1986 0 0
+ Recr_1987 0 0
+ Recr_1988 0 0
+ Recr_1989 0 0
+ Recr_1990 0 0
+ Recr_1991 0 0
+ Recr_1992 0 0
+ Recr_1993 0 0
+ Recr_1994 0 0
+ Recr_1995 0 0
+ Recr_1996 0 0
+ Recr_1997 0 0
+ Recr_1998 0 0
+ Recr_1999 0 0
+ Recr_2000 0 0
+ Recr_2001 0 0
+ Recr_2002 0 0
+ Recr_2003 0 0
+ Recr_2004 0 0
+ Recr_2005 0 0
+ Recr_2006 0 0
+ Recr_2007 0 0
+ Recr_2008 0 0
+ Recr_2009 0 0
+ Recr_2010 0 0
+ Recr_2011 0 0
+ Recr_2012 0 0
+ Recr_2013 0 0
+ Recr_2014 0 0
+ Recr_2015 0 0
+ Recr_2016 0 0
+ Recr_2017 0 0
+ Recr_2018 0 0
+ Recr_2019 0 0
+ Recr_2020 0 0
+ SPRratio_1978 8.62028e-315 0
+ SPRratio_1979 0 0
+ SPRratio_1980 0 0
+ SPRratio_1981 0 0
+ SPRratio_1982 0 0
+ SPRratio_1983 0 0
+ SPRratio_1984 0 0
+ SPRratio_1985 0 0
+ SPRratio_1986 0 0
+ SPRratio_1987 0 0
+ SPRratio_1988 0 0
+ SPRratio_1989 0 0
+ SPRratio_1990 0 0
+ SPRratio_1991 0 0
+ SPRratio_1992 0 0
+ SPRratio_1993 0 0
+ SPRratio_1994 0 0
+ SPRratio_1995 0 0
+ SPRratio_1996 0 0
+ SPRratio_1997 0 0
+ SPRratio_1998 0 0
+ SPRratio_1999 0 0
+ SPRratio_2000 0 0
+ SPRratio_2001 0 0
+ SPRratio_2002 0 0
+ SPRratio_2003 0 0
+ SPRratio_2004 0 0
+ SPRratio_2005 0 0
+ SPRratio_2006 0 0
+ SPRratio_2007 0 0
+ SPRratio_2008 0 0
+ SPRratio_2009 0 0
+ SPRratio_2010 0 0
+ SPRratio_2011 0 0
+ SPRratio_2012 0 0
+ SPRratio_2013 0 0
+ SPRratio_2014 0 0
+ SPRratio_2015 0 0
+ SPRratio_2016 0 0
+ SPRratio_2017 0 0
+ SPRratio_2018 0 0
+ SPRratio_2019 0 0
+ SPRratio_2020 0 0
+ F_1978 0 0
+ F_1979 0 0
+ F_1980 0 0
+ F_1981 0 0
+ F_1982 0 0
+ F_1983 0 0
+ F_1984 0 0
+ F_1985 0 0
+ F_1986 0 0
+ F_1987 0 0
+ F_1988 0 0
+ F_1989 0 0
+ F_1990 0 0
+ F_1991 0 0
+ F_1992 0 0
+ F_1993 0 0
+ F_1994 0 0
+ F_1995 0 0
+ F_1996 0 0
+ F_1997 0 0
+ F_1998 0 0
+ F_1999 0 0
+ F_2000 0 0
+ F_2001 0 0
+ F_2002 0 0
+ F_2003 0 0
+ F_2004 0 0
+ F_2005 0 0
+ F_2006 0 0
+ F_2007 0 0
+ F_2008 0 0
+ F_2009 0 0
+ F_2010 0 0
+ F_2011 0 0
+ F_2012 0 0
+ F_2013 0 0
+ F_2014 0 0
+ F_2015 0 0
+ F_2016 0 0
+ F_2017 0 0
+ F_2018 0 0
+ F_2019 0 0
+ F_2020 0 0
+ Bratio_1978 0 0
+ Bratio_1979 0 0
+ Bratio_1980 0 0
+ Bratio_1981 0 0
+ Bratio_1982 0 0
+ Bratio_1983 0 0
+ Bratio_1984 0 0
+ Bratio_1985 0 0
+ Bratio_1986 0 0
+ Bratio_1987 0 0
+ Bratio_1988 0 0
+ Bratio_1989 0 0
+ Bratio_1990 0 0
+ Bratio_1991 0 0
+ Bratio_1992 0 0
+ Bratio_1993 0 0
+ Bratio_1994 0 0
+ Bratio_1995 0 0
+ Bratio_1996 0 0
+ Bratio_1997 0 0
+ Bratio_1998 0 0
+ Bratio_1999 0 0
+ Bratio_2000 0 0
+ Bratio_2001 0 0
+ Bratio_2002 0 0
+ Bratio_2003 0 0
+ Bratio_2004 0 0
+ Bratio_2005 0 0
+ Bratio_2006 0 0
+ Bratio_2007 0 0
+ Bratio_2008 0 0
+ Bratio_2009 0 0
+ Bratio_2010 0 0
+ Bratio_2011 0 0
+ Bratio_2012 0 0
+ Bratio_2013 0 0
+ Bratio_2014 0 0
+ Bratio_2015 0 0
+ Bratio_2016 0 0
+ Bratio_2017 0 0
+ Bratio_2018 0 0
+ Bratio_2019 0 0
+ Bratio_2020 0 0
+SSB_unfished 0 0
+Totbio_unfished 0 0
+SmryBio_unfished 0 0
+Recr_unfished 0 0
+SSB_Btgt 0 0
+SPR_Btgt 0 0
+annF_Btgt 0 0
+Dead_Catch_Btgt 0 0
+SSB_SPR 0 0
+annF_SPR 0 0
+Dead_Catch_SPR 0 0
+SSB_MSY 0 0
+SPR_MSY 0 0
+annF_MSY 0 0
+Dead_Catch_MSY 0 0
+Ret_Catch_MSY 0 0
+B_MSY/SSB_unfished 0 0
+NatAge_std_All_Fem_A_1 0 0
+NatAge_std_All_Fem_A_2 0 0
+NatAge_std_All_Fem_A_3 0 0
+NatAge_std_All_Fem_A_4 0 0
+NatAge_std_All_Fem_A_5 0 0
+NatAge_std_All_Fem_A_6 0 0
+ln(SPB)_1978 0 0
+ln(SPB)_1999 0 0
+ln(SPB)_2020 0 0
+
+ MGparm_By_Year_after_adjustments report:7
+Yr   Change?  L_at_Amin_Fem_GP_1 L_at_Amax_Fem_GP_1 VonBert_K_Fem_GP_1 CV_young_Fem_GP_1 CV_old_Fem_GP_1 Wtlen_1_Fem_GP_1 Wtlen_2_Fem_GP_1 Mat50%_Fem_GP_1 Mat_slope_Fem_GP_1 Eggs/kg_inter_Fem_GP_1 Eggs/kg_slope_wt_Fem_GP_1 RecrDist_GP_1 RecrDist_Area_1 RecrDist_month_1 CohortGrowDev FracFemale_GP_1
+1978 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1979 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1980 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1981 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1982 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1983 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1984 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1985 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1986 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1987 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1988 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1989 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1990 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1991 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1992 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1993 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1994 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1995 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1996 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1997 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1998 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+1999 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2000 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2001 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2002 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2003 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2004 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2005 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2006 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2007 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2008 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2009 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2010 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2011 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2012 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2013 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2014 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2015 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2016 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2017 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2018 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2019 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+2020 0  14 23 0.4 0.1 0.1 2 3 55 -0.25 1 0 0 0 0 1 0.5
+
+forecast_selectivity_averaged_over_years:_2020_to_2020
+
+ selparm(Size)_By_Year_after_adjustments report:8
+Fleet Yr  Change?  Parameters
+
+ selparm(Age)_By_Year_after_adjustments report:9
+Fleet Yr  Change?  Parameters
+1 1978 1  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1979 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1980 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1981 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1982 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1983 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1984 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1985 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1986 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1987 0  0 1.61755 0.834604 -3.64294e-06 0 0 -0.115661
+1 1988 1  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1989 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1990 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1991 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1992 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1993 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1994 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1995 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1996 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1997 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1998 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 1999 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 2000 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 2001 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 2002 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 2003 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 2004 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 2005 0  0 1.31181 0.969925 0.913504 0 0 -0.569054
+1 2006 1  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2007 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2008 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2009 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2010 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2011 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2012 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2013 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2014 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2015 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2016 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2017 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2018 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2019 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+1 2020 0  0 1.36793 0.881796 0.414837 0 0 -0.0112254
+2 1978 1  -1000 0 0 0 0 0 0
+2 1979 0  -1000 0 0 0 0 0 0
+2 1980 0  -1000 0 0 0 0 0 0
+2 1981 0  -1000 0 0 0 0 0 0
+2 1982 0  -1000 0 0 0 0 0 0
+2 1983 0  -1000 0 0 0 0 0 0
+2 1984 0  -1000 0 0 0 0 0 0
+2 1985 0  -1000 0 0 0 0 0 0
+2 1986 0  -1000 0 0 0 0 0 0
+2 1987 0  -1000 0 0 0 0 0 0
+2 1988 0  -1000 0 0 0 0 0 0
+2 1989 0  -1000 0 0 0 0 0 0
+2 1990 0  -1000 0 0 0 0 0 0
+2 1991 0  -1000 0 0 0 0 0 0
+2 1992 0  -1000 0 0 0 0 0 0
+2 1993 0  -1000 0 0 0 0 0 0
+2 1994 0  -1000 0 0 0 0 0 0
+2 1995 0  -1000 0 0 0 0 0 0
+2 1996 0  -1000 0 0 0 0 0 0
+2 1997 0  -1000 0 0 0 0 0 0
+2 1998 0  -1000 0 0 0 0 0 0
+2 1999 0  -1000 0 0 0 0 0 0
+2 2000 0  -1000 0 0 0 0 0 0
+2 2001 0  -1000 0 0 0 0 0 0
+2 2002 0  -1000 0 0 0 0 0 0
+2 2003 0  -1000 0 0 0 0 0 0
+2 2004 0  -1000 0 0 0 0 0 0
+2 2005 0  -1000 0 0 0 0 0 0
+2 2006 0  -1000 0 0 0 0 0 0
+2 2007 0  -1000 0 0 0 0 0 0
+2 2008 0  -1000 0 0 0 0 0 0
+2 2009 0  -1000 0 0 0 0 0 0
+2 2010 0  -1000 0 0 0 0 0 0
+2 2011 0  -1000 0 0 0 0 0 0
+2 2012 0  -1000 0 0 0 0 0 0
+2 2013 0  -1000 0 0 0 0 0 0
+2 2014 0  -1000 0 0 0 0 0 0
+2 2015 0  -1000 0 0 0 0 0 0
+2 2016 0  -1000 0 0 0 0 0 0
+2 2017 0  -1000 0 0 0 0 0 0
+2 2018 0  -1000 0 0 0 0 0 0
+2 2019 0  -1000 0 0 0 0 0 0
+2 2020 0  -1000 0 0 0 0 0 0
+
+ RECRUITMENT_DIST report:10
+Settle# settle_timing# G_pattern Area Settle_Month Seas Age Time_w/in_seas Frac/sex
+1 1 1 1 1 1 0 0 1
+#
+RECRUITMENT_DIST_Bmark
+Settle# settle_timing# G_pattern Area Settle_Month Seas Age Time_w/in_seas Frac/sex
+1 1 1 1 1 1 0 0 1
+#
+RECRUITMENT_DIST_endyr
+Settle# settle_timing# G_pattern Area Settle_Month Seas Age Time_w/in_seas Frac/sex
+1 1 1 1 1 1 0 0 1
+
+ MORPH_INDEXING report:11
+Index GP Sex BirthSeas Platoon Platoon_Dist Sex*GP Sex*GP*Settle BirthAge_Rel_Jan1
+1 1 1 1 1 1 1 1 0
+
+ EXPLOITATION report:14
+Info: Displays.various.annual.F.statistics.and.displays.apical.F.for.each.fleet.by.season
+Info: F_Method:=3;.Continuous_F;.fleet.F.will.be.multiplied.by.season.duration.when.it.is.used.and.in.the.F_std.calculation
+Info: Displayed.fleet-specific.F.values.are.the.F.for.ages.with.compound.age-length-sex.selectivity=1.0
+Info: F_std_basis:._abs_F;_with_F=sum(full_Fs)
+F_std averaged over N years: 0
+Info: Annual_F.shown.here.is.done.by.the.Z-M.method.for.nages/2=3
+#
+Yr Seas Seas_dur F_std annual_F annual_M  purse_seine
+Catchunits: _ _ _ _ _  Bio 
+FleetType: _ _ _ _ _  Catch 
+FleetArea: _ _ _ _ _  1
+FleetID: _ _ _ _ _  1
+INIT 1 1 _  _  _  1.73757
+1978 1 1 0  0 0 0.313672
+1979 1 1 0  0 0 0.265238
+1980 1 1 0  0 0 0.341382
+1981 1 1 0  0 0 0.394131
+1982 1 1 0  0 0 0.39262
+1983 1 1 0  0 0 0.356608
+1984 1 1 0  0 0 0.398768
+1985 1 1 0  0 0 0.410385
+1986 1 1 0  0 0 0.393815
+1987 1 1 0  0 0 0.392367
+1988 1 1 0  0 0 0.642561
+1989 1 1 0  0 0 0.568615
+1990 1 1 0  0 0 0.598225
+1991 1 1 0  0 0 0.557828
+1992 1 1 0  0 0 0.495553
+1993 1 1 0  0 0 0.539099
+1994 1 1 0  0 0 0.481785
+1995 1 1 0  0 0 0.442018
+1996 1 1 0  0 0 0.540838
+1997 1 1 0  0 0 0.616873
+1998 1 1 0  0 0 0.618447
+1999 1 1 0  0 0 0.530604
+2000 1 1 0  0 0 0.487065
+2001 1 1 0  0 0 0.539962
+2002 1 1 0  0 0 0.512045
+2003 1 1 0  0 0 0.485404
+2004 1 1 0  0 0 0.568138
+2005 1 1 0  0 0 0.648825
+2006 1 1 0  0 0 0.428939
+2007 1 1 0  0 0 0.451085
+2008 1 1 0  0 0 0.644777
+2009 1 1 0  0 0 0.692338
+2010 1 1 0  0 0 0.805054
+2011 1 1 0  0 0 0.874518
+2012 1 1 0  0 0 0.622944
+2013 1 1 0  0 0 0.552541
+2014 1 1 0  0 0 0.345345
+2015 1 1 0  0 0 0.206019
+2016 1 1 0  0 0 0.215046
+2017 1 1 0  0 0 0.189107
+2018 1 1 0  0 0 0.0996446
+2019 1 1 0  0 0 0.0808726
+2020 1 1 0  0 0 0
+
+ CATCH report:15
+Fleet Fleet_Name Area Yr Seas Time Obs Exp Mult Exp*Mult se F  Like sel_bio kill_bio ret_bio sel_num kill_num ret_num
+1 purse_seine 1 INIT 1 1977.5 135000 730250 1 730250 0.05 1.73757 519.142 730250 730250 730250 1.99195e+07 1.99195e+07 1.99195e+07
+1 purse_seine 1 1978 1 1978.5 145609 145609 1 145609 0.05 0.313672 1.45693e-13 145609 145609 145609 3.44194e+06 3.44194e+06 3.44194e+06
+1 purse_seine 1 1979 1 1979.5 157241 157241 1 157241 0.05 0.265238 3.57154e-14 157241 157241 157241 3.32624e+06 3.32624e+06 3.32624e+06
+1 purse_seine 1 1980 1 1980.5 194802 194802 1 194802 0.05 0.341382 7.99317e-13 194802 194802 194802 4.06793e+06 4.06793e+06 4.06793e+06
+1 purse_seine 1 1981 1 1981.5 216517 216517 1 216517 0.05 0.394131 4.90375e-12 216517 216517 216517 4.49449e+06 4.49449e+06 4.49449e+06
+1 purse_seine 1 1982 1 1982.5 206946 206946 1 206946 0.05 0.39262 4.67692e-12 206946 206946 206946 4.26412e+06 4.26412e+06 4.26412e+06
+1 purse_seine 1 1983 1 1983.5 183837 183837 1 183837 0.05 0.356608 1.42891e-12 183837 183837 183837 3.84288e+06 3.84288e+06 3.84288e+06
+1 purse_seine 1 1984 1 1984.5 206005 206005 1 206005 0.05 0.398768 5.82958e-12 206005 206005 206005 4.31083e+06 4.31083e+06 4.31083e+06
+1 purse_seine 1 1985 1 1985.5 208439 208439 1 208439 0.05 0.410385 8.22888e-12 208439 208439 208439 4.29935e+06 4.29935e+06 4.29935e+06
+1 purse_seine 1 1986 1 1986.5 187363 187363 1 187363 0.05 0.393815 4.85785e-12 187363 187363 187363 3.85215e+06 3.85215e+06 3.85215e+06
+1 purse_seine 1 1987 1 1987.5 177696 177696 1 177696 0.05 0.392367 4.70854e-12 177696 177696 177696 3.6881e+06 3.6881e+06 3.6881e+06
+1 purse_seine 1 1988 1 1988.5 161531 161531 1 161531 0.05 0.642561 1.13372e-09 161531 161531 161531 3.1109e+06 3.1109e+06 3.1109e+06
+1 purse_seine 1 1989 1 1989.5 140961 140961 1 140961 0.05 0.568615 2.08246e-10 140961 140961 140961 2.71908e+06 2.71908e+06 2.71908e+06
+1 purse_seine 1 1990 1 1990.5 149429 149429 1 149429 0.05 0.598225 5.35748e-10 149429 149429 149429 2.87203e+06 2.87203e+06 2.87203e+06
+1 purse_seine 1 1991 1 1991.5 132587 132587 1 132587 0.05 0.557828 2.28392e-10 132587 132587 132587 2.72309e+06 2.72309e+06 2.72309e+06
+1 purse_seine 1 1992 1 1992.5 130250 130250 1 130250 0.05 0.495553 3.38278e-11 130250 130250 130250 2.53073e+06 2.53073e+06 2.53073e+06
+1 purse_seine 1 1993 1 1993.5 142495 142495 1 142495 0.05 0.539099 1.08179e-10 142495 142495 142495 2.81564e+06 2.81564e+06 2.81564e+06
+1 purse_seine 1 1994 1 1994.5 136582 136582 1 136582 0.05 0.481785 4.2088e-11 136582 136582 136582 2.52013e+06 2.52013e+06 2.52013e+06
+1 purse_seine 1 1995 1 1995.5 125280 125280 1 125280 0.05 0.442018 1.50088e-11 125280 125280 125280 2.14706e+06 2.14706e+06 2.14706e+06
+1 purse_seine 1 1996 1 1996.5 116736 116736 1 116736 0.05 0.540838 2.05743e-10 116736 116736 116736 2.3237e+06 2.3237e+06 2.3237e+06
+1 purse_seine 1 1997 1 1997.5 115814 115814 1 115814 0.05 0.616873 1.04901e-09 115814 115814 115814 2.28451e+06 2.28451e+06 2.28451e+06
+1 purse_seine 1 1998 1 1998.5 108924 108924 1 108924 0.05 0.618447 7.57211e-10 108924 108924 108924 2.04678e+06 2.04678e+06 2.04678e+06
+1 purse_seine 1 1999 1 1999.5 94091 94091.1 1 94091.1 0.05 0.530604 1.16115e-10 94091.1 94091.1 94091.1 1.68276e+06 1.68276e+06 1.68276e+06
+1 purse_seine 1 2000 1 2000.5 85786 85786 1 85786 0.05 0.487065 3.70358e-11 85786 85786 85786 1.59437e+06 1.59437e+06 1.59437e+06
+1 purse_seine 1 2001 1 2001.5 101957 101957 1 101957 0.05 0.539962 1.20475e-10 101957 101957 101957 1.80958e+06 1.80958e+06 1.80958e+06
+1 purse_seine 1 2002 1 2002.5 99673 99673.1 1 99673.1 0.05 0.512045 5.65371e-11 99673.1 99673.1 99673.1 1.70734e+06 1.70734e+06 1.70734e+06
+1 purse_seine 1 2003 1 2003.5 97831 97831.1 1 97831.1 0.05 0.485404 5.10798e-11 97831.1 97831.1 97831.1 1.60138e+06 1.60138e+06 1.60138e+06
+1 purse_seine 1 2004 1 2004.5 98020 98020.2 1 98020.2 0.05 0.568138 3.96943e-10 98020.2 98020.2 98020.2 1.74155e+06 1.74155e+06 1.74155e+06
+1 purse_seine 1 2005 1 2005.5 97345 97345.3 1 97345.3 0.05 0.648825 1.63358e-09 97345.3 97345.3 97345.3 1.76415e+06 1.76415e+06 1.76415e+06
+1 purse_seine 1 2006 1 2006.5 87023 87023 1 87023 0.05 0.428939 1.03716e-11 87023 87023 87023 1.55466e+06 1.55466e+06 1.55466e+06
+1 purse_seine 1 2007 1 2007.5 96469 96469 1 96469 0.05 0.451085 2.45517e-11 96469 96469 96469 1.44592e+06 1.44592e+06 1.44592e+06
+1 purse_seine 1 2008 1 2008.5 101464 101464 1 101464 0.05 0.644777 2.31767e-09 101464 101464 101464 1.70277e+06 1.70277e+06 1.70277e+06
+1 purse_seine 1 2009 1 2009.5 87740 87740.5 1 87740.5 0.05 0.692338 4.97322e-09 87740.5 87740.5 87740.5 1.56293e+06 1.56293e+06 1.56293e+06
+1 purse_seine 1 2010 1 2010.5 89571 89572.1 1 89572.1 0.05 0.805054 2.67986e-08 89572.1 89572.1 89572.1 1.57835e+06 1.57835e+06 1.57835e+06
+1 purse_seine 1 2011 1 2011.5 80403 80404.8 1 80404.8 0.05 0.874518 8.40206e-08 80404.8 80404.8 80404.8 1.4213e+06 1.4213e+06 1.4213e+06
+1 purse_seine 1 2012 1 2012.5 54857 54857.1 1 54857.1 0.05 0.622944 9.23271e-10 54857.1 54857.1 54857.1 879696 879696 879696
+1 purse_seine 1 2013 1 2013.5 45818 45818.1 1 45818.1 0.05 0.552541 2.24697e-10 45818.1 45818.1 45818.1 745137 745137 745137
+1 purse_seine 1 2014 1 2014.5 27937 27937 1 27937 0.05 0.345345 4.89254e-13 27937 27937 27937 477836 477836 477836
+1 purse_seine 1 2015 1 2015.5 20595 20595 1 20595 0.05 0.206019 1.39394e-16 20595 20595 20595 323631 323631 323631
+1 purse_seine 1 2016 1 2016.5 22704 22704 1 22704 0.05 0.215046 5.62366e-16 22704 22704 22704 394772 394772 394772
+1 purse_seine 1 2017 1 2017.5 21911 21911 1 21911 0.05 0.189107 1.18345e-17 21911 21911 21911 388034 388034 388034
+1 purse_seine 1 2018 1 2018.5 15062 15062 1 15062 0.05 0.0996446 1.15044e-16 15062 15062 15062 233469 233469 233469
+1 purse_seine 1 2019 1 2019.5 13759 13759 1 13759 0.05 0.0808726 9.63251e-17 13759 13759 13759 219691 219691 219691
+1 purse_seine 1 2020 1 2020.5 0 0 1 0 0.05 0  NA 0 0 0 0 0 0
+
+ TIME_SERIES report:16  BioSmry_age:_1  Continuous_F
+Area Yr Era Seas Bio_all Bio_smry SpawnBio Recruit_0  SpawnBio_GP:1 SmryBio_SX:1_GP:1 SmryNum_SX:1_GP:1 sel(B):_1 dead(B):_1 retain(B):_1 sel(N):_1 dead(N):_1 retain(N):_1 obs_cat:_1 F:_1 SSB_vir_LH ABC_buffer
+1 1976 VIRG 1 2.98527e+06 2.98527e+06 2.86729e+06 6.91881e+07  2.86729e+06  2.98527e+06  6.95419e+07 0 0 0 0 0 0 0 0  2.86729e+06 NA
+1 1977 INIT 1 874403 874403 779254 6.91881e+07  779254  874403  2.87861e+07  730250 730250 730250 1.99195e+07 1.99195e+07 1.99195e+07 135000 1.73757 779254 NA
+1 1978 TIME 1 729215 729215 652227 2.66419e+07  652227  729215  2.37571e+07  145609 145609 145609 3.44194e+06 3.44194e+06 3.44194e+06 145609 0.313672 652227 NA
+1 1979 TIME 1 748444 748444 700997 2.85288e+07  700997  748444  2.092e+07  157241 157241 157241 3.32624e+06 3.32624e+06 3.32624e+06 157241 0.265238 700997 NA
+1 1980 TIME 1 761625 761625 715050 3.00483e+07  715050  761625  2.06417e+07  194802 194802 194802 4.06793e+06 4.06793e+06 4.06793e+06 194802 0.341382 715050 NA
+1 1981 TIME 1 757595 757595 708889 2.83053e+07  708889  757595  2.05792e+07  216517 216517 216517 4.49449e+06 4.49449e+06 4.49449e+06 216517 0.394131 708889 NA
+1 1982 TIME 1 717646 717646 671556 2.68911e+07  671556  717646  1.95403e+07  206946 206946 206946 4.26412e+06 4.26412e+06 4.26412e+06 206946 0.39262 671556 NA
+1 1983 TIME 1 682162 682162 638429 3.2193e+07  638429  682162  1.85639e+07  183837 183837 183837 3.84288e+06 3.84288e+06 3.84288e+06 183837 0.356608 638429 NA
+1 1984 TIME 1 725457 725457 674048 2.70702e+07  674048  725457  2.03061e+07  206005 206005 206005 4.31083e+06 4.31083e+06 4.31083e+06 206005 0.398768 674048 NA
+1 1985 TIME 1 693287 693287 648665 2.54212e+07  648665  693287  1.89581e+07  208439 208439 208439 4.29935e+06 4.29935e+06 4.29935e+06 208439 0.410385 648665 NA
+1 1986 TIME 1 647640 647640 606338 2.37824e+07  606338  647640  1.76337e+07  187363 187363 187363 3.85215e+06 3.85215e+06 3.85215e+06 187363 0.393815 606338 NA
+1 1987 TIME 1 610912 610912 572182 2.58798e+07  572182  610912  1.65713e+07  177696 177696 177696 3.6881e+06 3.6881e+06 3.6881e+06 177696 0.392367 572182 NA
+1 1988 TIME 1 609514 609514 567999 2.23499e+07  567999  609514  1.68655e+07  161531 161531 161531 3.1109e+06 3.1109e+06 3.1109e+06 161531 0.642561 567999 NA
+1 1989 TIME 1 585860 585860 548552 2.1412e+07  548552  585860  1.60328e+07  140961 140961 140961 2.71908e+06 2.71908e+06 2.71908e+06 140961 0.568615 548552 NA
+1 1990 TIME 1 572313 572313 536836 2.146e+07  536836  572313  1.55254e+07  149429 149429 149429 2.87203e+06 2.87203e+06 2.87203e+06 149429 0.598225 536836 NA
+1 1991 TIME 1 555461 555461 520129 2.92444e+07  520129  555461  1.51482e+07  132587 132587 132587 2.72309e+06 2.72309e+06 2.72309e+06 132587 0.557828 520129 NA
+1 1992 TIME 1 629391 629391 582557 2.47355e+07  582557  629391  1.7957e+07  130250 130250 130250 2.53073e+06 2.53073e+06 2.53073e+06 130250 0.495553 582557 NA
+1 1993 TIME 1 652141 652141 610348 1.9016e+07  610348  652141  1.79182e+07  142495 142495 142495 2.81564e+06 2.81564e+06 2.81564e+06 142495 0.539099 610348 NA
+1 1994 TIME 1 595084 595084 562606 1.71782e+07  562606  595084  1.56521e+07  136582 136582 136582 2.52013e+06 2.52013e+06 2.52013e+06 136582 0.481785 562606 NA
+1 1995 TIME 1 538150 538150 509340 1.5222e+07  509340  538150  1.3957e+07  125280 125280 125280 2.14706e+06 2.14706e+06 2.14706e+06 125280 0.442018 509340 NA
+1 1996 TIME 1 485682 485682 460029 1.61164e+07  460029  485682  1.25057e+07  116736 116736 116736 2.3237e+06 2.3237e+06 2.3237e+06 116736 0.540838 460029 NA
+1 1997 TIME 1 446691 446691 420219 1.39357e+07  420219  446691  1.18502e+07  115814 115814 115814 2.28451e+06 2.28451e+06 2.28451e+06 115814 0.616873 420219 NA
+1 1998 TIME 1 399038 399038 375712 1.41172e+07  375712  399038  1.06029e+07  108924 108924 108924 2.04678e+06 2.04678e+06 2.04678e+06 108924 0.618447 375712 NA
+1 1999 TIME 1 391986 391986 379133 1.35004e+07  379133  391986  1.01123e+07  94091.1 94091.1 94091.1 1.68276e+06 1.68276e+06 1.68276e+06 94091 0.530604 351235 NA
+1 2000 TIME 1 364429 364429 342008 1.94403e+07  342008  364429  9.83021e+06  85786 85786 85786 1.59437e+06 1.59437e+06 1.59437e+06 85786 0.487065 342008 NA
+1 2001 TIME 1 399597 399597 354183 1.46304e+07  354183  399597  1.19726e+07  101957 101957 101957 1.80958e+06 1.80958e+06 1.80958e+06 101957 0.539962 390528 NA
+1 2002 TIME 1 379556 379556 333010 1.12718e+07  333010  379556  1.11607e+07  99673.1 99673.1 99673.1 1.70734e+06 1.70734e+06 1.70734e+06 99673 0.512045 386868 NA
+1 2003 TIME 1 359595 359595 323754 1.02437e+07  323754  359595  9.59581e+06  97831.1 97831.1 97831.1 1.60138e+06 1.60138e+06 1.60138e+06 97831 0.485404 350378 NA
+1 2004 TIME 1 328892 328892 296650 1.70164e+07  296650  328892  8.42647e+06  98020.2 98020.2 98020.2 1.74155e+06 1.74155e+06 1.74155e+06 98020 0.568138 310313 NA
+1 2005 TIME 1 344069 344069 292274 1.00487e+07  292274  344069  1.01797e+07  97345.3 97345.3 97345.3 1.76415e+06 1.76415e+06 1.76415e+06 97345 0.648825 332013 NA
+1 2006 TIME 1 357947 357947 322424 7.74319e+06  322424  357947  8.41447e+06  87023 87023 87023 1.55466e+06 1.55466e+06 1.55466e+06 87023 0.428939 298763 NA
+1 2007 TIME 1 321643 321643 302945 8.0593e+06  302945  321643  6.78934e+06  96469 96469 96469 1.44592e+06 1.44592e+06 1.44592e+06 96469 0.451085 253211 NA
+1 2008 TIME 1 295257 295257 285109 8.73615e+06  285109  295257  6.06372e+06  101464 101464 101464 1.70277e+06 1.70277e+06 1.70277e+06 101464 0.644777 219907 NA
+1 2009 TIME 1 246380 246380 238775 8.21343e+06  238775  246380  5.66571e+06  87740.5 87740.5 87740.5 1.56293e+06 1.56293e+06 1.56293e+06 87740 0.692338 191810 NA
+1 2010 TIME 1 212797 212797 209860 6.34363e+06  209860  212797  5.28812e+06  89572.1 89572.1 89572.1 1.57835e+06 1.57835e+06 1.57835e+06 89571 0.805054 175319 NA
+1 2011 TIME 1 166838 166838 164587 5.24431e+06  164587  166838  4.33878e+06  80404.8 80404.8 80404.8 1.4213e+06 1.4213e+06 1.4213e+06 80403 0.874518 146309 NA
+1 2012 TIME 1 139928 139928 138076 4.81174e+06  138076  139928  3.49437e+06  54857.1 54857.1 54857.1 879696 879696 879696 54857 0.622944 117361 NA
+1 2013 TIME 1 135895 135895 134166 4.96712e+06  134166  135895  3.2253e+06  45818.1 45818.1 45818.1 745137 745137 745137 45818 0.552541 108511 NA
+1 2014 TIME 1 138969 138969 138969 4.66433e+06  138969  138969  3.22441e+06  27937 27937 27937 477836 477836 477836 27937 0.345345 107207 NA
+1 2015 TIME 1 140155 140155 139268 5.85262e+06  139268  140155  3.29934e+06  20595 20595 20595 323631 323631 323631 20595 0.206019 112949 NA
+1 2016 TIME 1 159664 159664 159664 7.03025e+06  159664  159664  3.91892e+06  22704 22704 22704 394772 394772 394772 22704 0.215046 132630 NA
+1 2017 TIME 1 180576 180576 179466 5.57827e+06  179466  180576  4.66913e+06  21911 21911 21911 388034 388034 388034 21911 0.189107 157065 NA
+1 2018 TIME 1 188961 188961 187620 7.18258e+06  187620  188961  4.56635e+06  15062 15062 15062 233469 233469 233469 15062 0.0996446 164721 NA
+1 2019 TIME 1 216129 216129 215036 9.12518e+06  215036  216129  5.27561e+06  13759 13759 13759 219691 219691 219691 13759 0.0808726 187965 NA
+1 2020 TIME 1 269248 269248 271858 1.05324e+07  271858  269248  6.43092e+06  0 0 0 0 0 0 0 0 225130 NA
+
+ SPR_SERIES report:17  uses_R0= 6.91881e+07
+#NOTE: YPR_unit_is_Dead_Biomass
+Depletion_basis: 3 #  100%*StartYr_Biomass
+F_report_basis: 3 # _abs_F;_with_F=sum(full_Fs)
+SPR_report_basis: 4 #  1-SPR
+Yr Era Bio_all Bio_Smry SSBzero SSBfished SSBfished/R SPR SPR_report YPR GenTime Deplete F_report Actual: Bio_all Bio_Smry Num_Smry MnAge_Smry Enc_Catch Dead_Catch Retain_Catch MnAge_Catch SSB Recruits Tot_Exploit More_F(by_Morph):  aveF_1 maxF_1 Enc_Catch_B Dead_Catch_B Retain_Catch_B  Enc_Catch_N Dead_Catch_N Retain_Catch_N sum_Apical_F F=Z-M  M
+1978 TIME  0 0 0 0 0 nan 8.62028e-315 0 0 0 0 &  729215 729215 2.37571e+07 1.27539  0 0 0 1.28459 652227 2.66419e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1979 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  748444 748444 2.092e+07 1.68005  0 0 0 1.69071 700997 2.85288e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1980 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  761625 761625 2.06417e+07 1.83398  0 0 0 1.87925 715050 3.00483e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1981 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  757595 757595 2.05792e+07 1.86292  0 0 0 1.93934 708889 2.83053e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1982 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  717646 717646 1.95403e+07 1.88496  0 0 0 1.95806 671556 2.68911e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1983 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  682162 682162 1.85639e+07 1.89137  0 0 0 1.89989 638429 3.2193e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1984 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  725457 725457 2.03061e+07 1.79588  0 0 0 1.88117 674048 2.70702e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1985 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  693287 693287 1.89581e+07 1.85745  0 0 0 1.91801 648665 2.54212e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1986 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  647640 647640 1.76337e+07 1.87801  0 0 0 1.94753 606338 2.37824e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1987 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  610912 610912 1.65713e+07 1.8927  0 0 0 1.92546 572182 2.58798e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1988 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  609514 609514 1.68655e+07 1.83255  0 0 0 2.32751 567999 2.23499e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1989 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  585860 585860 1.60328e+07 1.8424  0 0 0 2.27101 548552 2.1412e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1990 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  572313 572313 1.55254e+07 1.86827  0 0 0 2.3011 536836 2.146e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1991 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  555461 555461 1.51482e+07 1.85054  0 0 0 2.20848 520129 2.92444e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1992 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  629391 629391 1.7957e+07 1.70945  0 0 0 2.19057 582557 2.47355e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1993 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  652141 652141 1.79182e+07 1.81129  0 0 0 2.28665 610348 1.9016e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1994 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  595084 595084 1.56521e+07 1.96344  0 0 0 2.4512 562606 1.71782e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1995 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  538150 538150 1.3957e+07 2.03516  0 0 0 2.59012 509340 1.5222e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1996 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  485682 485682 1.25057e+07 2.08493  0 0 0 2.61095 460029 1.61164e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1997 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  446691 446691 1.18502e+07 1.99078  0 0 0 2.53573 420219 1.39357e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1998 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  399038 399038 1.06029e+07 1.96748  0 0 0 2.42863 375712 1.41172e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+1999 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  391986 374421 1.01123e+07 1.90503  0 0 0 2.38876 379133 1.35004e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+2000 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  364429 381221 9.83021e+06 1.90059  0 0 0 2.26836 342008 1.94403e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+2001 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  399597 421638 1.19726e+07 1.73604  0 0 0 2.25837 354183 1.46304e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+2002 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  379556 392949 1.11607e+07 1.86015  0 0 0 2.3431 333010 1.12718e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+2003 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  359595 347898 9.59581e+06 2.01842  0 0 0 2.5161 323754 1.02437e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+2004 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  328892 320155 8.42647e+06 2.0726  0 0 0 2.44118 296650 1.70164e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+2005 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  344069 338675 1.01797e+07 1.75781  0 0 0 2.36641 292274 1.00487e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+2006 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  357947 328612 8.41447e+06 1.9254  0 0 0 2.19571 322424 7.74319e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2007 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  321643 300870 6.78934e+06 2.09746  0 0 0 2.34993 302945 8.0593e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2008 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  295257 277527 6.06372e+06 2.04936  0 0 0 2.27196 285109 8.73615e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2009 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  246380 261529 5.66571e+06 1.85583  0 0 0 2.0566 238775 8.21343e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2010 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  212797 226948 5.28812e+06 1.76738  0 0 0 1.95455 209860 6.34363e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2011 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  166838 178418 4.33878e+06 1.78095  0 0 0 1.9234 164587 5.24431e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2012 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  139928 133831 3.49437e+06 1.76604  0 0 0 1.91788 138076 4.81174e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2013 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  135895 129219 3.2253e+06 1.7788  0 0 0 1.92442 134166 4.96712e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2014 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  138969 134396 3.22441e+06 1.75803  0 0 0 1.97263 138969 4.66433e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2015 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  140155 145771 3.29934e+06 1.84049  0 0 0 2.02682 139268 5.85262e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2016 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  159664 164954 3.91892e+06 1.83399  0 0 0 2.05245 159664 7.03025e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2017 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  180576 188727 4.66913e+06 1.82189  0 0 0 2.16816 179466 5.57827e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2018 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  188961 188961 4.56635e+06 2.01201  0 0 0 2.27439 187620 7.18258e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2019 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  216129 216129 5.27561e+06 2.01579  0 0 0 2.32264 215036 9.12518e+06 0 &  0  0  0 0 0 0 0 0  0 0 0
+2020 TIME  0 0 0 0 0 nan 0 0 0 0 0 &  269248 257840 6.43092e+06 1.97724  0 0 0 0 271858 1.05324e+07 0 &  0  0  0 0 0 0 0 0  0 0 0
+#
+#NOTE: GENTIME_is_fecundity_weighted_mean_age
+#NOTE: MnAgeSmry_is_numbers_weighted_meanage_at_and_above_smryage(not_accounting_for_settlement_offsets)
+
+ Kobe_Plot report:18
+F_report_basis_is_not_=2;_so_info_below_is_not_F/Fmsy
+MSY_basis:_calculate_FMSY
+Yr  B/Bmsy  F/Fmsy
+1978 inf  0
+1979 inf  0
+1980 inf  0
+1981 inf  0
+1982 inf  0
+1983 inf  0
+1984 inf  0
+1985 inf  0
+1986 inf  0
+1987 inf  0
+1988 inf  0
+1989 inf  0
+1990 inf  0
+1991 inf  0
+1992 inf  0
+1993 inf  0
+1994 inf  0
+1995 inf  0
+1996 inf  0
+1997 inf  0
+1998 inf  0
+1999 inf  0
+2000 inf  0
+2001 inf  0
+2002 inf  0
+2003 inf  0
+2004 inf  0
+2005 inf  0
+2006 inf  0
+2007 inf  0
+2008 inf  0
+2009 inf  0
+2010 inf  0
+2011 inf  0
+2012 inf  0
+2013 inf  0
+2014 inf  0
+2015 inf  0
+2016 inf  0
+2017 inf  0
+2018 inf  0
+2019 inf  0
+2020 inf  0
+
+ SPAWN_RECRUIT report:19  Function: 3  RecDev_method: 1   sum_recdev: -0.440745
+18.0523 Ln(R0) 6.91881e+07
+0.3 steepness
+0 Bmsy/Bzero 
+0.7 sigmaR
+0  # 0/1 to use steepness in initial equ recruitment calculation
+0 init_eq:  see below
+1978 2019 main_recdev:start_end
+1900  1900 1900 1900 1 breakpoints_for_bias_adjustment_ramp 
+ERA    N    RMSE  RMSE^2/sigmaR^2  mean_BiasAdj est_rho Durbin-Watson
+main  42 0.201955 0.0832368 0 0.460466 1.08636
+early 4 0.132039 0.0355803 0
+Yr SpawnBio exp_recr with_regime bias_adjusted pred_recr dev biasadjuster era mature_bio mature_num raw_dev
+S/Rcurve 2.86729e+06 6.91881e+07
+Virg 2.86729e+06  6.91881e+07 6.91881e+07 6.91881e+07 6.91881e+07 - 0 Virg 0 0 0.0 
+Init 779254  6.91881e+07 6.91881e+07 6.91881e+07 6.91881e+07 - 0 Init 0 0 0
+1974 779254 6.91881e+07 6.91881e+07 6.91881e+07 6.82231e+07 -0.0140461 0 Init_age 0 0 -0.0140461
+1975 779254 6.91881e+07 6.91881e+07 6.91881e+07 6.24236e+07 -0.102886 0 Init_age 0 0 -0.102886
+1976 779254 6.91881e+07 6.91881e+07 6.91881e+07 6.23056e+07 -0.104778 0 Init_age 0 0 -0.104778
+1977 779254 6.91881e+07 6.91881e+07 6.91881e+07 5.55784e+07 -0.219035 0 Init_age 0 0 -0.219035
+1978 652227  2.3209e+07 2.3209e+07 2.3209e+07 2.66419e+07 0.137943 0 Main 0 0 0.137943
+1979 700997  2.46865e+07 2.46865e+07 2.46865e+07 2.85288e+07 0.144659 0 Main 0 0 0.144659
+1980 715050  2.51065e+07 2.51065e+07 2.51065e+07 3.00483e+07 0.179678 0 Main 0 0 0.179678
+1981 708889  2.49227e+07 2.49227e+07 2.49227e+07 2.83053e+07 0.127272 0 Main 0 0 0.127272
+1982 671556  2.37983e+07 2.37983e+07 2.37983e+07 2.68911e+07 0.122181 0 Main 0 0 0.122181
+1983 638429  2.27854e+07 2.27854e+07 2.27854e+07 3.2193e+07 0.345628 0 Main 0 0 0.345628
+1984 674048  2.38739e+07 2.38739e+07 2.38739e+07 2.70702e+07 0.12565 0 Main 0 0 0.12565
+1985 648665  2.30999e+07 2.30999e+07 2.30999e+07 2.54212e+07 0.0957536 0 Main 0 0 0.0957536
+1986 606338  2.17904e+07 2.17904e+07 2.17904e+07 2.37824e+07 0.0874793 0 Main 0 0 0.0874793
+1987 572182  2.0716e+07 2.0716e+07 2.0716e+07 2.58798e+07 0.222555 0 Main 0 0 0.222555
+1988 567999  2.05834e+07 2.05834e+07 2.05834e+07 2.23499e+07 0.0823409 0 Main 0 0 0.0823409
+1989 548552  1.99634e+07 1.99634e+07 1.99634e+07 2.1412e+07 0.0700517 0 Main 0 0 0.0700517
+1990 536836  1.95873e+07 1.95873e+07 1.95873e+07 2.146e+07 0.09131 0 Main 0 0 0.09131
+1991 520129  1.90476e+07 1.90476e+07 1.90476e+07 2.92444e+07 0.428747 0 Main 0 0 0.428747
+1992 582557  2.1044e+07 2.1044e+07 2.1044e+07 2.47355e+07 0.161621 0 Main 0 0 0.161621
+1993 610348  2.19155e+07 2.19155e+07 2.19155e+07 1.9016e+07 -0.141911 0 Main 0 0 -0.141911
+1994 562606  2.04119e+07 2.04119e+07 2.04119e+07 1.71782e+07 -0.172482 0 Main 0 0 -0.172482
+1995 509340  1.8697e+07 1.8697e+07 1.8697e+07 1.5222e+07 -0.20562 0 Main 0 0 -0.20562
+1996 460029  1.7073e+07 1.7073e+07 1.7073e+07 1.61164e+07 -0.057659 0 Main 0 0 -0.057659
+1997 420219  1.57355e+07 1.57355e+07 1.57355e+07 1.39357e+07 -0.121467 0 Main 0 0 -0.121467
+1998 375712  1.42116e+07 1.42116e+07 1.42116e+07 1.41172e+07 -0.00666313 0 Main 0 0 -0.00666313
+1999 379133  1.43298e+07 1.43298e+07 1.43298e+07 1.35004e+07 -0.0596175 0 Main 0 0 -0.0596175
+2000 342008  1.30368e+07 1.30368e+07 1.30368e+07 1.94403e+07 0.399574 0 Main 0 0 0.399574
+2001 354183  1.34632e+07 1.34632e+07 1.34632e+07 1.46304e+07 0.0831363 0 Main 0 0 0.0831363
+2002 333010  1.272e+07 1.272e+07 1.272e+07 1.12718e+07 -0.120871 0 Main 0 0 -0.120871
+2003 323754  1.23929e+07 1.23929e+07 1.23929e+07 1.02437e+07 -0.190462 0 Main 0 0 -0.190462
+2004 296650  1.14268e+07 1.14268e+07 1.14268e+07 1.70164e+07 0.398218 0 Main 0 0 0.398218
+2005 292274  1.12697e+07 1.12697e+07 1.12697e+07 1.00487e+07 -0.114674 0 Main 0 0 -0.114674
+2006 322424  1.23458e+07 1.23458e+07 1.23458e+07 7.74319e+06 -0.466498 0 Main 0 0 -0.466498
+2007 302945  1.16522e+07 1.16522e+07 1.16522e+07 8.0593e+06 -0.368671 0 Main 0 0 -0.368671
+2008 285109  1.10117e+07 1.10117e+07 1.10117e+07 8.73615e+06 -0.23149 0 Main 0 0 -0.23149
+2009 238775  9.32263e+06 9.32263e+06 9.32263e+06 8.21343e+06 -0.126675 0 Main 0 0 -0.126675
+2010 209860  8.24977e+06 8.24977e+06 8.24977e+06 6.34363e+06 -0.262734 0 Main 0 0 -0.262734
+2011 164587  6.54017e+06 6.54017e+06 6.54017e+06 5.24431e+06 -0.220819 0 Main 0 0 -0.220819
+2012 138076  5.52173e+06 5.52173e+06 5.52173e+06 4.81174e+06 -0.137634 0 Main 0 0 -0.137634
+2013 134166  5.37041e+06 5.37041e+06 5.37041e+06 4.96712e+06 -0.0780636 0 Main 0 0 -0.0780636
+2014 138969  5.55624e+06 5.55624e+06 5.55624e+06 4.66433e+06 -0.174978 0 Main 0 0 -0.174978
+2015 139268  5.56779e+06 5.56779e+06 5.56779e+06 5.85262e+06 0.0498906 0 Main 0 0 0.0498906
+2016 159664  6.35202e+06 6.35202e+06 6.35202e+06 7.03025e+06 0.101449 0 Main 0 0 0.101449
+2017 179466  7.1061e+06 7.1061e+06 7.1061e+06 5.57827e+06 -0.242076 0 Main 0 0 -0.242076
+2018 187620  7.41455e+06 7.41455e+06 7.41455e+06 7.18258e+06 -0.0317845 0 Main 0 0 -0.0317845
+2019 215036  8.44291e+06 8.44291e+06 8.44291e+06 9.12518e+06 0.0777103 0 Main 0 0 0.0777103
+2020 271858  1.05324e+07 1.05324e+07 1.05324e+07 1.05324e+07  _ _ Fixed
+
+ SPAWN_RECR_CURVE report:20
+SSB/SSB_virgin    SSB    Recruitment
+0.01 28672.9 1.17767e+06
+0.02 57345.8 2.33876e+06
+0.03 86018.6 3.4836e+06
+0.04 114692 4.61254e+06
+0.05 143364 5.72592e+06
+0.06 172037 6.82404e+06
+0.07 200710 7.90722e+06
+0.08 229383 8.97576e+06
+0.09 258056 1.003e+07
+0.1 286729 1.10701e+07
+0.11 315402 1.20965e+07
+0.12 344075 1.31093e+07
+0.13 372747 1.4109e+07
+0.14 401420 1.50956e+07
+0.15 430093 1.60695e+07
+0.16 458766 1.70309e+07
+0.17 487439 1.79801e+07
+0.18 516112 1.89173e+07
+0.19 544785 1.98426e+07
+0.2 573458 2.07564e+07
+0.21 602130 2.16589e+07
+0.22 630803 2.25502e+07
+0.23 659476 2.34306e+07
+0.24 688149 2.43002e+07
+0.25 716822 2.51593e+07
+0.26 745495 2.60081e+07
+0.27 774168 2.68466e+07
+0.28 802841 2.76752e+07
+0.29 831513 2.8494e+07
+0.3 860186 2.93032e+07
+0.31 888859 3.01029e+07
+0.32 917532 3.08933e+07
+0.33 946205 3.16746e+07
+0.34 974878 3.24468e+07
+0.35 1.00355e+06 3.32103e+07
+0.36 1.03222e+06 3.39651e+07
+0.37 1.0609e+06 3.47113e+07
+0.38 1.08957e+06 3.54492e+07
+0.39 1.11824e+06 3.61788e+07
+0.4 1.14692e+06 3.69003e+07
+0.41 1.17559e+06 3.76139e+07
+0.42 1.20426e+06 3.83196e+07
+0.43 1.23293e+06 3.90176e+07
+0.44 1.26161e+06 3.9708e+07
+0.45 1.29028e+06 4.03909e+07
+0.46 1.31895e+06 4.10665e+07
+0.47 1.34763e+06 4.17349e+07
+0.48 1.3763e+06 4.23961e+07
+0.49 1.40497e+06 4.30504e+07
+0.5 1.43364e+06 4.36978e+07
+0.51 1.46232e+06 4.43383e+07
+0.52 1.49099e+06 4.49723e+07
+0.53 1.51966e+06 4.55996e+07
+0.54 1.54834e+06 4.62205e+07
+0.55 1.57701e+06 4.6835e+07
+0.56 1.60568e+06 4.74433e+07
+0.57 1.63435e+06 4.80453e+07
+0.58 1.66303e+06 4.86413e+07
+0.59 1.6917e+06 4.92313e+07
+0.6 1.72037e+06 4.98154e+07
+0.61 1.74905e+06 5.03937e+07
+0.62 1.77772e+06 5.09663e+07
+0.63 1.80639e+06 5.15332e+07
+0.64 1.83506e+06 5.20946e+07
+0.65 1.86374e+06 5.26505e+07
+0.66 1.89241e+06 5.3201e+07
+0.67 1.92108e+06 5.37461e+07
+0.68 1.94976e+06 5.42861e+07
+0.69 1.97843e+06 5.48208e+07
+0.7 2.0071e+06 5.53505e+07
+0.71 2.03577e+06 5.58751e+07
+0.72 2.06445e+06 5.63948e+07
+0.73 2.09312e+06 5.69097e+07
+0.74 2.12179e+06 5.74197e+07
+0.75 2.15047e+06 5.79249e+07
+0.76 2.17914e+06 5.84255e+07
+0.77 2.20781e+06 5.89215e+07
+0.78 2.23648e+06 5.94129e+07
+0.79 2.26516e+06 5.98998e+07
+0.8 2.29383e+06 6.03823e+07
+0.81 2.3225e+06 6.08605e+07
+0.82 2.35118e+06 6.13343e+07
+0.83 2.37985e+06 6.18039e+07
+0.84 2.40852e+06 6.22693e+07
+0.85 2.43719e+06 6.27306e+07
+0.86 2.46587e+06 6.31877e+07
+0.87 2.49454e+06 6.36409e+07
+0.88 2.52321e+06 6.409e+07
+0.89 2.55189e+06 6.45353e+07
+0.9 2.58056e+06 6.49767e+07
+0.91 2.60923e+06 6.54142e+07
+0.92 2.6379e+06 6.5848e+07
+0.93 2.66658e+06 6.62781e+07
+0.94 2.69525e+06 6.67044e+07
+0.95 2.72392e+06 6.71272e+07
+0.96 2.7526e+06 6.75464e+07
+0.97 2.78127e+06 6.7962e+07
+0.98 2.80994e+06 6.83741e+07
+0.99 2.83861e+06 6.87828e+07
+1 2.86729e+06 6.91881e+07
+1.01 2.89596e+06 6.959e+07
+1.02 2.92463e+06 6.99886e+07
+1.03 2.95331e+06 7.0384e+07
+1.04 2.98198e+06 7.0776e+07
+1.05 3.01065e+06 7.11649e+07
+1.06 3.03932e+06 7.15506e+07
+1.07 3.068e+06 7.19332e+07
+1.08 3.09667e+06 7.23127e+07
+1.09 3.12534e+06 7.26892e+07
+1.1 3.15402e+06 7.30626e+07
+1.11 3.18269e+06 7.34331e+07
+1.12 3.21136e+06 7.38006e+07
+1.13 3.24003e+06 7.41653e+07
+1.14 3.26871e+06 7.4527e+07
+1.15 3.29738e+06 7.4886e+07
+1.16 3.32605e+06 7.52421e+07
+1.17 3.35473e+06 7.55954e+07
+1.18 3.3834e+06 7.5946e+07
+1.19 3.41207e+06 7.62939e+07
+1.2 3.44075e+06 7.66391e+07
+
+ INDEX_2 report:22 annual
+Fleet Fleet_name Area Yr Seas Subseas Month Time Vuln_bio Obs Exp Calc_Q Eff_Q SE SE_input Dev Like Like+log(s) SuprPer Use
+2 Acoustic_survey 1  1996 1 1 4 1996.25 1.03691e+07 1.0171e+07 1.45662e+07 1.40476 1.40476 0.25 0.25 -0.359164 1.03199 -0.354305 _ 1
+2 Acoustic_survey 1  1997 1 1 4 1997.25 9.76922e+06 1.46019e+07 1.37235e+07 1.40476 1.40476 0.25 0.25 0.0620453 0.0307969 -1.3555 _ 1
+2 Acoustic_survey 1  1998 1 1 4 1998.25 8.75166e+06 1.22141e+07 1.2294e+07 1.40476 1.40476 0.25 0.25 -0.00652235 0.000340329 -1.38595 _ 1
+2 Acoustic_survey 1  1999 1 1 4 1999.25 8.4182e+06 1.21594e+07 1.18256e+07 1.40476 1.40476 0.25 0.25 0.0278366 0.00619899 -1.3801 _ 1
+2 Acoustic_survey 1  2000 1 1 4 2000.25 8.22127e+06 1.14899e+07 1.15489e+07 1.40476 1.40476 0.25 0.25 -0.00512587 0.000210196 -1.38608 _ 1
+2 Acoustic_survey 1  2001 1 1 4 2001.25 9.97694e+06 1.66791e+07 1.40153e+07 1.40476 1.40476 0.25 0.25 0.17401 0.242236 -1.14406 _ 1
+2 Acoustic_survey 1  2002 1 1 4 2002.25 9.32527e+06 2.33413e+07 1.30998e+07 1.40476 1.40476 0.25 0.25 0.577627 2.66922 1.28293 _ 1
+2 Acoustic_survey 1  2003 1 1 4 2003.25 8.00362e+06 1.5953e+07 1.12432e+07 1.40476 1.40476 0.25 0.25 0.349884 0.979348 -0.406946 _ 1
+2 Acoustic_survey 1  2005 1 1 4 2005.25 8.39898e+06 2.65705e+07 1.17986e+07 1.40476 1.40476 0.25 0.25 0.811822 5.27244 3.88614 _ 1
+2 Acoustic_survey 1  2006 1 1 4 2006.25 6.97259e+06 1.79688e+07 9.79485e+06 1.40476 1.40476 0.25 0.25 0.60678 2.94546 1.55917 _ 1
+2 Acoustic_survey 1  2007 1 1 4 2007.25 5.59449e+06 1.0355e+07 7.85895e+06 1.40476 1.40476 0.25 0.25 0.275817 0.6086 -0.777694 _ 1
+2 Acoustic_survey 1  2008 1 1 4 2008.25 4.86934e+06 6.29799e+06 6.84027e+06 1.40476 1.40476 0.25 0.25 -0.0825969 0.054578 -1.33172 _ 1
+2 Acoustic_survey 1  2009 1 1 4 2009.25 4.54243e+06 8.59685e+06 6.38104e+06 1.40476 1.40476 0.25 0.25 0.298065 0.710742 -0.675553 _ 1
+2 Acoustic_survey 1  2010 1 1 4 2010.25 4.18496e+06 6.72408e+06 5.87889e+06 1.40476 1.40476 0.25 0.25 0.134328 0.144351 -1.24194 _ 1
+2 Acoustic_survey 1  2011 1 1 4 2011.25 3.39584e+06 2.84834e+06 4.77036e+06 1.40476 1.40476 0.25 0.25 -0.515686 2.12745 0.74116 _ 1
+2 Acoustic_survey 1  2013 1 1 4 2013.25 2.63099e+06 2.57361e+06 3.69593e+06 1.40476 1.40476 0.25 0.25 -0.361922 1.0479 -0.338396 _ 1
+2 Acoustic_survey 1  2014 1 1 4 2014.25 2.70211e+06 2.8611e+06 3.79583e+06 1.40476 1.40476 0.25 0.25 -0.282697 0.639339 -0.746956 _ 1
+2 Acoustic_survey 1  2015 1 1 4 2015.25 2.81675e+06 2.24166e+06 3.95687e+06 1.40476 1.40476 0.25 0.25 -0.568236 2.58314 1.19684 _ 1
+2 Acoustic_survey 1  2016 1 1 4 2016.25 3.34044e+06 4.34935e+06 4.69253e+06 1.40476 1.40476 0.25 0.25 -0.0759458 0.0461421 -1.34015 _ 1
+2 Acoustic_survey 1  2017 1 1 4 2017.25 3.99337e+06 2.39294e+06 5.60974e+06 1.40476 1.40476 0.25 0.25 -0.851982 5.80699 4.42069 _ 1
+2 Acoustic_survey 1  2018 1 1 4 2018.25 3.96423e+06 3.34799e+06 5.56881e+06 1.40476 1.40476 0.25 0.25 -0.508822 2.0712 0.684902 _ 1
+2 Acoustic_survey 1  2019 1 1 4 2019.25 4.58819e+06 4.62719e+06 6.44532e+06 1.40476 1.40476 0.25 0.25 -0.331404 0.878631 -0.507664 _ 1
+2 Acoustic_survey 1  2020 1 1 4 2020.25 5.65036e+06 1.8106e+07 7.93743e+06 1.40476 1.40476 0.25 0.25 0.824652 5.4404 4.05411 _ 1
+3 DEPM_survey 1  1997 1 1 1 1997 420219 251387 622771 1.48202 1.48202 0.25 0.25 -0.907185 6.58388 5.19759 _ 1
+3 DEPM_survey 1  1999 1 1 1 1999 379133 436919 561880 1.48202 1.48202 0.25 0.25 -0.251541 0.506182 -0.880112 _ 1
+3 DEPM_survey 1  2002 1 1 1 2002 333010 496379 493525 1.48202 1.48202 0.25 0.25 0.0057656 0.000265937 -1.38603 _ 1
+3 DEPM_survey 1  2005 1 1 1 2005 292274 481447 433155 1.48202 1.48202 0.25 0.25 0.1057 0.0893798 -1.29691 _ 1
+3 DEPM_survey 1  2008 1 1 1 2008 285109 625026 422536 1.48202 1.48202 0.25 0.25 0.39152 1.2263 -0.159994 _ 1
+3 DEPM_survey 1  2011 1 1 1 2011 164587 226372 243921 1.48202 1.48202 0.25 0.25 -0.0746645 0.0445983 -1.3417 _ 1
+3 DEPM_survey 1  2014 1 1 1 2014 138969 164613 205954 1.48202 1.48202 0.25 0.25 -0.224056 0.40161 -0.984685 _ 1
+3 DEPM_survey 1  2017 1 1 1 2017 179466 282714 265972 1.48202 1.48202 0.25 0.25 0.0610459 0.0298129 -1.35648 _ 1
+3 DEPM_survey 1  2020 1 1 1 2020 271858 630692 402897 1.48202 1.48202 0.25 0.25 0.448136 1.60661 0.220312 _ 1
+
+ INDEX_1 report:21 summary
+Fleet Link Link+ ExtraStd BiasAdj Float   Q Num=0/Bio=1 Err_type N Npos RMSE mean_input_SE Input+VarAdj Input+VarAdj+extra VarAdj New_VarAdj penalty_mean_Qdev rmse_Qdev fleetname
+2  1 0 0 0 0 1.40476 0 0 23 23 0.438238 0.25 0.25 0.25 0 0.188238 0 0 Acoustic_survey
+3  1 0 0 0 0 1.48202 30 0 9 9 0.381675 0.25 0.25 0.25 0 0.131675 0 0 DEPM_survey
+RMSE_Qdev_not_in_logL
+penalty_mean_Qdev_not_in_logL_in_randwalk_approach
+
+ INDEX_3 report:23 Qparms
+#
+Fleet  Q_parm_assignments
+1 0 _ 0 _  0 0 purse_seine
+2 1 _ 0 _  0 0 Acoustic_survey
+3 2 _ 0 _  0 0 DEPM_survey
+
+ FIT_AGE_COMPS report:28
+Fleet Fleet_Name Area Yr Seas Subseas Month Time Sexes Part Ageerr Lbin_lo Lbin_hi SuprPer Use Nsamp_in Nsamp_adj Nsamp_DM effN Like  All_obs_mean All_exp_mean All_delta All_exp_5% All_exp_95% All_DurWat
+1 purse_seine 1 1978 1 2 7 1978.5 0 0 1 1 6  _  _ 50 50 50  50.0253 3.71901  1.78835 1.78458 0.003771 0 3.12692 0.380759
+1 purse_seine 1 1979 1 2 7 1979.5 0 0 1 1 6  _  _ 50 50 50  11.2791 7.91942  2.07836 2.19068 -0.112322 0 3.82879 0.468871
+1 purse_seine 1 1980 1 2 7 1980.5 0 0 1 1 6  _  _ 50 50 50  16.4838 6.47047  1.94838 2.37912 -0.430736 0 4.52961 -0.400715
+1 purse_seine 1 1981 1 2 7 1981.5 0 0 1 1 6  _  _ 50 50 50  66.6584 3.10087  2.1004 2.43882 -0.338422 0 4.96525 -0.866029
+1 purse_seine 1 1982 1 2 7 1982.5 0 0 1 1 6  _  _ 50 50 50  13.6332 8.44328  2.84709 2.45598 0.391108 0 5.49719 0.271018
+1 purse_seine 1 1983 1 2 7 1983.5 0 0 1 1 6  _  _ 50 50 50  20.2798 4.64468  2.42662 2.39599 0.0306318 0 5.53784 1.17076
+1 purse_seine 1 1984 1 2 7 1984.5 0 0 1 1 6  _  _ 50 50 50  5.27296 13.4746  2.21312 2.37776 -0.164641 0 5.41031 1.36008
+1 purse_seine 1 1985 1 2 7 1985.5 0 0 1 1 6  _  _ 50 50 50  8.62908 7.92812  2.72764 2.41482 0.312819 0 5.3717 0.8364
+1 purse_seine 1 1986 1 2 7 1986.5 0 0 1 1 6  _  _ 50 50 50  38.8247 3.06971  2.89935 2.44427 0.455083 0 5.38568 -0.751494
+1 purse_seine 1 1987 1 2 7 1987.5 0 0 1 1 6  _  _ 50 50 50  9.67707 9.88088  2.34495 2.42224 -0.0772944 0 5.37104 1.62017
+1 purse_seine 1 1988 1 2 7 1988.5 0 0 1 1 6  _  _ 50 50 50  38.4015 3.08195  2.69786 2.82378 -0.125925 0 5.76089 -0.507481
+1 purse_seine 1 1989 1 2 7 1989.5 0 0 1 1 6  _  _ 50 50 50  39.523 3.91782  2.9856 2.76745 0.218147 0 5.61421 0.290001
+1 purse_seine 1 1990 1 2 7 1990.5 0 0 1 1 6  _  _ 50 50 50  85.4796 3.0315  3.08459 2.79811 0.286487 0 5.38874 -0.537075
+1 purse_seine 1 1991 1 2 7 1991.5 0 0 1 1 6  _  _ 75 75 75  6.23347 21.9085  1.88588 2.70607 -0.82019 0 5.33258 2.77242
+1 purse_seine 1 1992 1 2 7 1992.5 0 0 1 1 6  _  _ 75 75 75  20.5755 7.00997  2.26382 2.68834 -0.424519 0 5.38981 -0.546714
+1 purse_seine 1 1993 1 2 7 1993.5 0 0 1 1 6  _  _ 75 75 75  40.7873 4.68038  2.9063 2.78422 0.122074 0 5.38342 0.914471
+1 purse_seine 1 1994 1 2 7 1994.5 0 0 1 1 6  _  _ 75 75 75  18.8964 9.27808  3.36331 2.94873 0.41458 0 5.40185 -0.252609
+1 purse_seine 1 1995 1 2 7 1995.5 0 0 1 1 6  _  _ 75 75 75  24.9544 7.80286  3.52901 3.08731 0.441694 0 5.55645 -0.386413
+1 purse_seine 1 1996 1 2 7 1996.5 0 0 1 1 6  _  _ 75 75 75  22.0007 8.88756  3.40905 3.10762 0.301437 0 5.77771 0.00721005
+1 purse_seine 1 1997 1 2 7 1997.5 0 0 1 1 6  _  _ 75 75 75  61.974 2.56801  2.97286 3.03126 -0.0583948 0 5.88272 0.262085
+1 purse_seine 1 1998 1 2 7 1998.5 0 0 1 1 6  _  _ 75 75 75  44.7844 4.26499  2.73549 2.92401 -0.188526 0 5.85371 0.696337
+1 purse_seine 1 1999 1 2 7 1999.5 0 0 1 1 6  _  _ 75 75 75  51.1532 2.753  2.6876 2.88479 -0.197187 0 5.71881 -0.381497
+1 purse_seine 1 2000 1 2 7 2000.5 0 0 1 1 6  _  _ 75 75 75  28.2107 5.51339  2.42087 2.76501 -0.344143 0 5.58016 -0.0379303
+1 purse_seine 1 2001 1 2 7 2001.5 0 0 1 1 6  _  _ 75 75 75  5.97717 18.9311  2.14687 2.75542 -0.608553 0 5.5526 0.135361
+1 purse_seine 1 2002 1 2 7 2002.5 0 0 1 1 6  _  _ 75 75 75  14.6025 10.0602  2.46322 2.84017 -0.376946 0 5.50298 -0.0563577
+1 purse_seine 1 2003 1 2 7 2003.5 0 0 1 1 6  _  _ 75 75 75  101.541 2.15728  2.7455 3.01325 -0.26775 0 5.50704 -0.984717
+1 purse_seine 1 2004 1 2 7 2004.5 0 0 1 1 6  _  _ 75 75 75  20.7922 7.80953  2.62344 2.93817 -0.314732 0 5.57627 2.534
+1 purse_seine 1 2005 1 2 7 2005.5 0 0 1 1 6  _  _ 75 75 75  10.0357 11.4351  2.38954 2.86328 -0.473738 0 5.71756 0.143025
+1 purse_seine 1 2006 1 2 7 2006.5 0 0 1 1 6  _  _ 75 75 75  17.6589 10.4549  3.00237 2.69147 0.310897 0 5.69768 1.08576
+1 purse_seine 1 2007 1 2 7 2007.5 0 0 1 1 6  _  _ 75 75 75  28.4026 8.04662  3.16951 2.84566 0.323848 0 5.69832 0.368692
+1 purse_seine 1 2008 1 2 7 2008.5 0 0 1 1 6  _  _ 75 75 75  25.914 7.26445  3.10916 2.76785 0.341312 0 5.73174 -0.287044
+1 purse_seine 1 2009 1 2 7 2009.5 0 0 1 1 6  _  _ 75 75 75  21.9428 9.82764  2.78114 2.5529 0.228243 0 5.75414 -0.481904
+1 purse_seine 1 2010 1 2 7 2010.5 0 0 1 1 6  _  _ 75 75 75  26.7184 9.91811  2.7188 2.45049 0.268311 0 5.58562 -0.844897
+1 purse_seine 1 2011 1 2 7 2011.5 0 0 1 1 6  _  _ 75 75 75  34.507 6.94427  2.32361 2.42064 -0.0970354 0 4.97195 -0.54704
+1 purse_seine 1 2012 1 2 7 2012.5 0 0 1 1 6  _  _ 75 75 75  28.5134 8.26352  2.53745 2.41598 0.121469 0 4.8689 -0.258886
+1 purse_seine 1 2013 1 2 7 2013.5 0 0 1 1 6  _  _ 75 75 75  18.5838 8.58498  2.013 2.42272 -0.409714 0 4.93928 0.320623
+1 purse_seine 1 2014 1 2 7 2014.5 0 0 1 1 6  _  _ 75 75 75  35.2557 4.48203  2.40516 2.47065 -0.0654852 0 5.12879 0.271249
+1 purse_seine 1 2015 1 2 7 2015.5 0 0 1 1 6  _  _ 75 75 75  92.5759 1.90941  2.32367 2.52418 -0.200509 0 5.35519 -0.741239
+1 purse_seine 1 2016 1 2 7 2016.5 0 0 1 1 6  _  _ 75 75 75  9.48232 17.2761  1.68307 2.54919 -0.86612 0 5.54364 -0.593219
+1 purse_seine 1 2017 1 2 7 2017.5 0 0 1 1 6  _  _ 75 75 75  15.3323 10.0367  2.20333 2.66418 -0.460853 0 5.72209 -0.118015
+1 purse_seine 1 2018 1 2 7 2018.5 0 0 1 1 6  _  _ 75 75 75  65.0022 2.31091  2.54967 2.76958 -0.219907 0 5.87847 0.533685
+1 purse_seine 1 2019 1 2 7 2019.5 0 0 1 1 6  _  _ 75 75 75  33.5134 7.02357  2.18409 2.81683 -0.632741 0 6 -0.847516
+1 purse_seine 1 2020 1 2 7 2020.5 0 0 1 1 6  _  skip 75 75 75  33.799 7.83777  2.18409 2.81214 -0.628057 0 6 -0.272432
+2 Acoustic_survey 1 1996 1 1 4 1996.25 0 0 1 1 6  _  _ 25 25 25  4.55375 8.99633  3.42004 2.5646 0.855432 1.10759 5.41742 0.251945
+2 Acoustic_survey 1 1997 1 1 4 1997.25 0 0 1 1 6  _  _ 25 25 25  9.06824 3.49317  2.88761 2.4661 0.421513 1.09686 5.47304 4.27505
+2 Acoustic_survey 1 1998 1 1 4 1998.25 0 0 1 1 6  _  _ 25 25 25  5.27187 6.85706  3.37258 2.44523 0.927354 1.1002 5.33976 5.54016
+2 Acoustic_survey 1 1999 1 1 4 1999.25 0 0 1 1 6  _  _ 25 25 25  125.507 0.785452  2.66903 2.39 0.279022 1.0952 5.03744 -1.21317
+2 Acoustic_survey 1 2000 1 1 4 2000.25 0 0 1 1 6  _  _ 25 25 25  43.9976 1.80286  2.85437 2.38909 0.465276 1.09655 4.95058 -1.18216
+2 Acoustic_survey 1 2001 1 1 4 2001.25 0 0 1 1 6  _  _ 25 25 25  7.98621 3.24896  1.89823 2.22239 -0.324161 1.08206 4.76005 3.79753
+2 Acoustic_survey 1 2002 1 1 4 2002.25 0 0 1 1 6  _  _ 25 25 25  82.3126 0.659148  2.2369 2.34863 -0.111723 1.10052 4.77995 0.962705
+2 Acoustic_survey 1 2003 1 1 4 2003.25 0 0 1 1 6  _  _ 25 25 25  85.5196 0.3722  2.6723 2.50472 0.167576 1.11181 4.92641 2.56803
+2 Acoustic_survey 1 2005 1 1 4 2005.25 0 0 1 1 6  _  _ 25 25 25  7.55207 3.62359  1.85502 2.23404 -0.379022 1.0797 4.96624 4.12663
+2 Acoustic_survey 1 2006 1 1 4 2006.25 0 0 1 1 6  _  _ 25 25 25  27.1464 1.80278  2.39711 2.41969 -0.0225863 1.11017 4.96635 1.24903
+2 Acoustic_survey 1 2007 1 1 4 2007.25 0 0 1 1 6  _  _ 25 25 25  6.29261 5.19204  3.2064 2.58749 0.618907 1.11638 5.12574 2.22854
+2 Acoustic_survey 1 2008 1 1 4 2008.25 0 0 1 1 6  _  _ 25 25 25  5.71788 6.91425  3.45872 2.52197 0.936759 1.09958 5.23013 0.657032
+2 Acoustic_survey 1 2009 1 1 4 2009.25 0 0 1 1 6  _  _ 25 25 25  18.8408 3.31247  2.56465 2.32874 0.235911 1.0873 5.26919 0.259456
+2 Acoustic_survey 1 2010 1 1 4 2010.25 0 0 1 1 6  _  _ 25 25 25  16.9298 2.26869  2.27897 2.23596 0.0430152 1.0863 4.76277 1.7343
+2 Acoustic_survey 1 2011 1 1 4 2011.25 0 0 1 1 6  _  _ 25 25 25  5.87578 6.70246  2.9311 2.24661 0.684487 1.09147 4.44687 3.7092
+2 Acoustic_survey 1 2013 1 1 4 2013.25 0 0 1 1 6  _  _ 25 25 25  10.6309 4.71081  2.30534 2.26565 0.0396864 1.0905 4.56667 1.60531
+2 Acoustic_survey 1 2014 1 1 4 2014.25 0 0 1 1 6  _  _ 25 25 25  19.8642 1.98603  2.14736 2.25958 -0.112225 1.08846 4.65102 2.26962
+2 Acoustic_survey 1 2015 1 1 4 2015.25 0 0 1 1 6  _  _ 25 25 25  8.25203 3.75125  2.17884 2.35199 -0.173142 1.09554 4.83404 2.80399
+2 Acoustic_survey 1 2016 1 1 4 2016.25 0 0 1 1 6  _  _ 25 25 25  65.4561 1.94547  2.67392 2.34545 0.32847 1.08997 4.94165 -1.12689
+2 Acoustic_survey 1 2017 1 1 4 2017.25 0 0 1 1 6  _  _ 25 25 25  13.8726 1.98497  2.56512 2.33541 0.229714 1.08934 5.01419 3.01099
+2 Acoustic_survey 1 2018 1 1 4 2018.25 0 0 1 1 6  _  _ 25 25 25  6.36491 4.1353  2.90429 2.53221 0.372081 1.10969 5.41418 3.57153
+2 Acoustic_survey 1 2019 1 1 4 2019.25 0 0 1 1 6  _  _ 25 25 25  28.8534 1.67211  2.68759 2.54013 0.147463 1.099 5.56152 0.830238
+2 Acoustic_survey 1 2020 1 1 4 2020.25 0 0 1 1 6  _  _ 25 25 25  5.46501 6.20388  1.74958 2.50967 -0.760084 1.09525 5.66403 5.27726
+#
+Age_Comp_Fit_Summary
+Factor Fleet Recommend_var_adj # N Npos min_Nsamp max_Nsamp mean_Nsamp_in mean_Nsamp_adj mean_Nsamp_DM DM_theta mean_effN HarMean_effN Curr_Var_Adj Fleet_name
+5 1 1 # 0 42 50 75 67.2619 67.2619 NA NA 31.6688 18.6681 1 purse_seine
+5 2 1 # 0 23 25 25 25 25 NA NA 26.5796 10.3959 1 Acoustic_survey
+
+ OVERALL_COMPS report:30
+Fleet N_obs len_bins  8 12 16 20 24 28
+Fleet N_obs age_bins  0 1 2 3 4 5 6
+1 43 freq  0.162604 0.263691 0.231676 0.163837 0.0932572 0.0460038 0.0389316
+1 43 cum   0.162604 0.426295 0.65797 0.821807 0.915065 0.961068 1
+2 23 freq  0 0.488269 0.222033 0.122369 0.0764666 0.0454777 0.0453843
+2 23 cum   0 0.488269 0.710302 0.832671 0.909138 0.954616 1
+
+ LEN_SELEX report:31
+Lsel_is_length_selectivity
+RET_is_retention
+MORT_is_discard_mortality
+KEEP_is_sel*retain
+DEAD_is_sel*(retain+(1-retain)*discmort); Year_styr-3_(1975)_stores_average_used_for_benchmark
+Factor Fleet Yr Sex Label  10 14 18 22 26 30
+Lsel 1 1975 1 1975_1_Lsel 0 0 0 0 0 0
+Lsel 1 1978 1 1978_1_Lsel 1 1 1 1 1 1
+Lsel 1 1979 1 1979_1_Lsel 1 1 1 1 1 1
+Lsel 1 1980 1 1980_1_Lsel 1 1 1 1 1 1
+Lsel 1 1981 1 1981_1_Lsel 1 1 1 1 1 1
+Lsel 1 1982 1 1982_1_Lsel 1 1 1 1 1 1
+Lsel 1 1983 1 1983_1_Lsel 1 1 1 1 1 1
+Lsel 1 1984 1 1984_1_Lsel 1 1 1 1 1 1
+Lsel 1 1985 1 1985_1_Lsel 1 1 1 1 1 1
+Lsel 1 1986 1 1986_1_Lsel 1 1 1 1 1 1
+Lsel 1 1987 1 1987_1_Lsel 1 1 1 1 1 1
+Lsel 1 1988 1 1988_1_Lsel 1 1 1 1 1 1
+Lsel 1 1989 1 1989_1_Lsel 1 1 1 1 1 1
+Lsel 1 1990 1 1990_1_Lsel 1 1 1 1 1 1
+Lsel 1 1991 1 1991_1_Lsel 1 1 1 1 1 1
+Lsel 1 1992 1 1992_1_Lsel 1 1 1 1 1 1
+Lsel 1 1993 1 1993_1_Lsel 1 1 1 1 1 1
+Lsel 1 1994 1 1994_1_Lsel 1 1 1 1 1 1
+Lsel 1 1995 1 1995_1_Lsel 1 1 1 1 1 1
+Lsel 1 1996 1 1996_1_Lsel 1 1 1 1 1 1
+Lsel 1 1997 1 1997_1_Lsel 1 1 1 1 1 1
+Lsel 1 1998 1 1998_1_Lsel 1 1 1 1 1 1
+Lsel 1 1999 1 1999_1_Lsel 1 1 1 1 1 1
+Lsel 1 2000 1 2000_1_Lsel 1 1 1 1 1 1
+Lsel 1 2001 1 2001_1_Lsel 1 1 1 1 1 1
+Lsel 1 2002 1 2002_1_Lsel 1 1 1 1 1 1
+Lsel 1 2003 1 2003_1_Lsel 1 1 1 1 1 1
+Lsel 1 2004 1 2004_1_Lsel 1 1 1 1 1 1
+Lsel 1 2005 1 2005_1_Lsel 1 1 1 1 1 1
+Lsel 1 2006 1 2006_1_Lsel 1 1 1 1 1 1
+Lsel 1 2007 1 2007_1_Lsel 1 1 1 1 1 1
+Lsel 1 2008 1 2008_1_Lsel 1 1 1 1 1 1
+Lsel 1 2009 1 2009_1_Lsel 1 1 1 1 1 1
+Lsel 1 2010 1 2010_1_Lsel 1 1 1 1 1 1
+Lsel 1 2011 1 2011_1_Lsel 1 1 1 1 1 1
+Lsel 1 2012 1 2012_1_Lsel 1 1 1 1 1 1
+Lsel 1 2013 1 2013_1_Lsel 1 1 1 1 1 1
+Lsel 1 2014 1 2014_1_Lsel 1 1 1 1 1 1
+Lsel 1 2015 1 2015_1_Lsel 1 1 1 1 1 1
+Lsel 1 2016 1 2016_1_Lsel 1 1 1 1 1 1
+Lsel 1 2017 1 2017_1_Lsel 1 1 1 1 1 1
+Lsel 1 2018 1 2018_1_Lsel 1 1 1 1 1 1
+Lsel 1 2019 1 2019_1_Lsel 1 1 1 1 1 1
+Lsel 1 2020 1 2020_1_Lsel 1 1 1 1 1 1
+Lsel 2 1975 1 1975_2_Lsel 0 0 0 0 0 0
+Lsel 2 1978 1 1978_2_Lsel 1 1 1 1 1 1
+Lsel 2 1979 1 1979_2_Lsel 1 1 1 1 1 1
+Lsel 2 1980 1 1980_2_Lsel 1 1 1 1 1 1
+Lsel 2 1981 1 1981_2_Lsel 1 1 1 1 1 1
+Lsel 2 1982 1 1982_2_Lsel 1 1 1 1 1 1
+Lsel 2 1983 1 1983_2_Lsel 1 1 1 1 1 1
+Lsel 2 1984 1 1984_2_Lsel 1 1 1 1 1 1
+Lsel 2 1985 1 1985_2_Lsel 1 1 1 1 1 1
+Lsel 2 1986 1 1986_2_Lsel 1 1 1 1 1 1
+Lsel 2 1987 1 1987_2_Lsel 1 1 1 1 1 1
+Lsel 2 1988 1 1988_2_Lsel 1 1 1 1 1 1
+Lsel 2 1989 1 1989_2_Lsel 1 1 1 1 1 1
+Lsel 2 1990 1 1990_2_Lsel 1 1 1 1 1 1
+Lsel 2 1991 1 1991_2_Lsel 1 1 1 1 1 1
+Lsel 2 1992 1 1992_2_Lsel 1 1 1 1 1 1
+Lsel 2 1993 1 1993_2_Lsel 1 1 1 1 1 1
+Lsel 2 1994 1 1994_2_Lsel 1 1 1 1 1 1
+Lsel 2 1995 1 1995_2_Lsel 1 1 1 1 1 1
+Lsel 2 1996 1 1996_2_Lsel 1 1 1 1 1 1
+Lsel 2 1997 1 1997_2_Lsel 1 1 1 1 1 1
+Lsel 2 1998 1 1998_2_Lsel 1 1 1 1 1 1
+Lsel 2 1999 1 1999_2_Lsel 1 1 1 1 1 1
+Lsel 2 2000 1 2000_2_Lsel 1 1 1 1 1 1
+Lsel 2 2001 1 2001_2_Lsel 1 1 1 1 1 1
+Lsel 2 2002 1 2002_2_Lsel 1 1 1 1 1 1
+Lsel 2 2003 1 2003_2_Lsel 1 1 1 1 1 1
+Lsel 2 2004 1 2004_2_Lsel 1 1 1 1 1 1
+Lsel 2 2005 1 2005_2_Lsel 1 1 1 1 1 1
+Lsel 2 2006 1 2006_2_Lsel 1 1 1 1 1 1
+Lsel 2 2007 1 2007_2_Lsel 1 1 1 1 1 1
+Lsel 2 2008 1 2008_2_Lsel 1 1 1 1 1 1
+Lsel 2 2009 1 2009_2_Lsel 1 1 1 1 1 1
+Lsel 2 2010 1 2010_2_Lsel 1 1 1 1 1 1
+Lsel 2 2011 1 2011_2_Lsel 1 1 1 1 1 1
+Lsel 2 2012 1 2012_2_Lsel 1 1 1 1 1 1
+Lsel 2 2013 1 2013_2_Lsel 1 1 1 1 1 1
+Lsel 2 2014 1 2014_2_Lsel 1 1 1 1 1 1
+Lsel 2 2015 1 2015_2_Lsel 1 1 1 1 1 1
+Lsel 2 2016 1 2016_2_Lsel 1 1 1 1 1 1
+Lsel 2 2017 1 2017_2_Lsel 1 1 1 1 1 1
+Lsel 2 2018 1 2018_2_Lsel 1 1 1 1 1 1
+Lsel 2 2019 1 2019_2_Lsel 1 1 1 1 1 1
+Lsel 2 2020 1 2020_2_Lsel 1 1 1 1 1 1
+Lsel 3 1975 1 1975_3_Lsel 0 0 0 0 0 0
+Lsel 3 1978 1 1978_3_Lsel 1 1 1 1 1 1
+Lsel 3 1979 1 1979_3_Lsel 1 1 1 1 1 1
+Lsel 3 1980 1 1980_3_Lsel 1 1 1 1 1 1
+Lsel 3 1981 1 1981_3_Lsel 1 1 1 1 1 1
+Lsel 3 1982 1 1982_3_Lsel 1 1 1 1 1 1
+Lsel 3 1983 1 1983_3_Lsel 1 1 1 1 1 1
+Lsel 3 1984 1 1984_3_Lsel 1 1 1 1 1 1
+Lsel 3 1985 1 1985_3_Lsel 1 1 1 1 1 1
+Lsel 3 1986 1 1986_3_Lsel 1 1 1 1 1 1
+Lsel 3 1987 1 1987_3_Lsel 1 1 1 1 1 1
+Lsel 3 1988 1 1988_3_Lsel 1 1 1 1 1 1
+Lsel 3 1989 1 1989_3_Lsel 1 1 1 1 1 1
+Lsel 3 1990 1 1990_3_Lsel 1 1 1 1 1 1
+Lsel 3 1991 1 1991_3_Lsel 1 1 1 1 1 1
+Lsel 3 1992 1 1992_3_Lsel 1 1 1 1 1 1
+Lsel 3 1993 1 1993_3_Lsel 1 1 1 1 1 1
+Lsel 3 1994 1 1994_3_Lsel 1 1 1 1 1 1
+Lsel 3 1995 1 1995_3_Lsel 1 1 1 1 1 1
+Lsel 3 1996 1 1996_3_Lsel 1 1 1 1 1 1
+Lsel 3 1997 1 1997_3_Lsel 1 1 1 1 1 1
+Lsel 3 1998 1 1998_3_Lsel 1 1 1 1 1 1
+Lsel 3 1999 1 1999_3_Lsel 1 1 1 1 1 1
+Lsel 3 2000 1 2000_3_Lsel 1 1 1 1 1 1
+Lsel 3 2001 1 2001_3_Lsel 1 1 1 1 1 1
+Lsel 3 2002 1 2002_3_Lsel 1 1 1 1 1 1
+Lsel 3 2003 1 2003_3_Lsel 1 1 1 1 1 1
+Lsel 3 2004 1 2004_3_Lsel 1 1 1 1 1 1
+Lsel 3 2005 1 2005_3_Lsel 1 1 1 1 1 1
+Lsel 3 2006 1 2006_3_Lsel 1 1 1 1 1 1
+Lsel 3 2007 1 2007_3_Lsel 1 1 1 1 1 1
+Lsel 3 2008 1 2008_3_Lsel 1 1 1 1 1 1
+Lsel 3 2009 1 2009_3_Lsel 1 1 1 1 1 1
+Lsel 3 2010 1 2010_3_Lsel 1 1 1 1 1 1
+Lsel 3 2011 1 2011_3_Lsel 1 1 1 1 1 1
+Lsel 3 2012 1 2012_3_Lsel 1 1 1 1 1 1
+Lsel 3 2013 1 2013_3_Lsel 1 1 1 1 1 1
+Lsel 3 2014 1 2014_3_Lsel 1 1 1 1 1 1
+Lsel 3 2015 1 2015_3_Lsel 1 1 1 1 1 1
+Lsel 3 2016 1 2016_3_Lsel 1 1 1 1 1 1
+Lsel 3 2017 1 2017_3_Lsel 1 1 1 1 1 1
+Lsel 3 2018 1 2018_3_Lsel 1 1 1 1 1 1
+Lsel 3 2019 1 2019_3_Lsel 1 1 1 1 1 1
+Lsel 3 2020 1 2020_3_Lsel 1 1 1 1 1 1
+Ret 1 1975 1 1975_1_Ret 0 0 0 0 0 0
+Mort 1 1975 1 1975_1_Mort 0 0 0 0 0 0
+Keep 1 1975 1 1975_1_Keep 0 0 0 0 0 0
+Dead 1 1975 1 1975_1_Dead 0 0 0 0 0 0
+Ret 1 1978 1 1978_1_Ret 1 1 1 1 1 1
+Mort 1 1978 1 1978_1_Mort 1 1 1 1 1 1
+Keep 1 1978 1 1978_1_Keep 1 1 1 1 1 1
+Dead 1 1978 1 1978_1_Dead 1 1 1 1 1 1
+Ret 1 1979 1 1979_1_Ret 1 1 1 1 1 1
+Mort 1 1979 1 1979_1_Mort 1 1 1 1 1 1
+Keep 1 1979 1 1979_1_Keep 1 1 1 1 1 1
+Dead 1 1979 1 1979_1_Dead 1 1 1 1 1 1
+Ret 1 1980 1 1980_1_Ret 1 1 1 1 1 1
+Mort 1 1980 1 1980_1_Mort 1 1 1 1 1 1
+Keep 1 1980 1 1980_1_Keep 1 1 1 1 1 1
+Dead 1 1980 1 1980_1_Dead 1 1 1 1 1 1
+Ret 1 1981 1 1981_1_Ret 1 1 1 1 1 1
+Mort 1 1981 1 1981_1_Mort 1 1 1 1 1 1
+Keep 1 1981 1 1981_1_Keep 1 1 1 1 1 1
+Dead 1 1981 1 1981_1_Dead 1 1 1 1 1 1
+Ret 1 1982 1 1982_1_Ret 1 1 1 1 1 1
+Mort 1 1982 1 1982_1_Mort 1 1 1 1 1 1
+Keep 1 1982 1 1982_1_Keep 1 1 1 1 1 1
+Dead 1 1982 1 1982_1_Dead 1 1 1 1 1 1
+Ret 1 1983 1 1983_1_Ret 1 1 1 1 1 1
+Mort 1 1983 1 1983_1_Mort 1 1 1 1 1 1
+Keep 1 1983 1 1983_1_Keep 1 1 1 1 1 1
+Dead 1 1983 1 1983_1_Dead 1 1 1 1 1 1
+Ret 1 1984 1 1984_1_Ret 1 1 1 1 1 1
+Mort 1 1984 1 1984_1_Mort 1 1 1 1 1 1
+Keep 1 1984 1 1984_1_Keep 1 1 1 1 1 1
+Dead 1 1984 1 1984_1_Dead 1 1 1 1 1 1
+Ret 1 1985 1 1985_1_Ret 1 1 1 1 1 1
+Mort 1 1985 1 1985_1_Mort 1 1 1 1 1 1
+Keep 1 1985 1 1985_1_Keep 1 1 1 1 1 1
+Dead 1 1985 1 1985_1_Dead 1 1 1 1 1 1
+Ret 1 1986 1 1986_1_Ret 1 1 1 1 1 1
+Mort 1 1986 1 1986_1_Mort 1 1 1 1 1 1
+Keep 1 1986 1 1986_1_Keep 1 1 1 1 1 1
+Dead 1 1986 1 1986_1_Dead 1 1 1 1 1 1
+Ret 1 1987 1 1987_1_Ret 1 1 1 1 1 1
+Mort 1 1987 1 1987_1_Mort 1 1 1 1 1 1
+Keep 1 1987 1 1987_1_Keep 1 1 1 1 1 1
+Dead 1 1987 1 1987_1_Dead 1 1 1 1 1 1
+Ret 1 1988 1 1988_1_Ret 1 1 1 1 1 1
+Mort 1 1988 1 1988_1_Mort 1 1 1 1 1 1
+Keep 1 1988 1 1988_1_Keep 1 1 1 1 1 1
+Dead 1 1988 1 1988_1_Dead 1 1 1 1 1 1
+Ret 1 1989 1 1989_1_Ret 1 1 1 1 1 1
+Mort 1 1989 1 1989_1_Mort 1 1 1 1 1 1
+Keep 1 1989 1 1989_1_Keep 1 1 1 1 1 1
+Dead 1 1989 1 1989_1_Dead 1 1 1 1 1 1
+Ret 1 1990 1 1990_1_Ret 1 1 1 1 1 1
+Mort 1 1990 1 1990_1_Mort 1 1 1 1 1 1
+Keep 1 1990 1 1990_1_Keep 1 1 1 1 1 1
+Dead 1 1990 1 1990_1_Dead 1 1 1 1 1 1
+Ret 1 1991 1 1991_1_Ret 1 1 1 1 1 1
+Mort 1 1991 1 1991_1_Mort 1 1 1 1 1 1
+Keep 1 1991 1 1991_1_Keep 1 1 1 1 1 1
+Dead 1 1991 1 1991_1_Dead 1 1 1 1 1 1
+Ret 1 1992 1 1992_1_Ret 1 1 1 1 1 1
+Mort 1 1992 1 1992_1_Mort 1 1 1 1 1 1
+Keep 1 1992 1 1992_1_Keep 1 1 1 1 1 1
+Dead 1 1992 1 1992_1_Dead 1 1 1 1 1 1
+Ret 1 1993 1 1993_1_Ret 1 1 1 1 1 1
+Mort 1 1993 1 1993_1_Mort 1 1 1 1 1 1
+Keep 1 1993 1 1993_1_Keep 1 1 1 1 1 1
+Dead 1 1993 1 1993_1_Dead 1 1 1 1 1 1
+Ret 1 1994 1 1994_1_Ret 1 1 1 1 1 1
+Mort 1 1994 1 1994_1_Mort 1 1 1 1 1 1
+Keep 1 1994 1 1994_1_Keep 1 1 1 1 1 1
+Dead 1 1994 1 1994_1_Dead 1 1 1 1 1 1
+Ret 1 1995 1 1995_1_Ret 1 1 1 1 1 1
+Mort 1 1995 1 1995_1_Mort 1 1 1 1 1 1
+Keep 1 1995 1 1995_1_Keep 1 1 1 1 1 1
+Dead 1 1995 1 1995_1_Dead 1 1 1 1 1 1
+Ret 1 1996 1 1996_1_Ret 1 1 1 1 1 1
+Mort 1 1996 1 1996_1_Mort 1 1 1 1 1 1
+Keep 1 1996 1 1996_1_Keep 1 1 1 1 1 1
+Dead 1 1996 1 1996_1_Dead 1 1 1 1 1 1
+Ret 1 1997 1 1997_1_Ret 1 1 1 1 1 1
+Mort 1 1997 1 1997_1_Mort 1 1 1 1 1 1
+Keep 1 1997 1 1997_1_Keep 1 1 1 1 1 1
+Dead 1 1997 1 1997_1_Dead 1 1 1 1 1 1
+Ret 1 1998 1 1998_1_Ret 1 1 1 1 1 1
+Mort 1 1998 1 1998_1_Mort 1 1 1 1 1 1
+Keep 1 1998 1 1998_1_Keep 1 1 1 1 1 1
+Dead 1 1998 1 1998_1_Dead 1 1 1 1 1 1
+Ret 1 1999 1 1999_1_Ret 1 1 1 1 1 1
+Mort 1 1999 1 1999_1_Mort 1 1 1 1 1 1
+Keep 1 1999 1 1999_1_Keep 1 1 1 1 1 1
+Dead 1 1999 1 1999_1_Dead 1 1 1 1 1 1
+Ret 1 2000 1 2000_1_Ret 1 1 1 1 1 1
+Mort 1 2000 1 2000_1_Mort 1 1 1 1 1 1
+Keep 1 2000 1 2000_1_Keep 1 1 1 1 1 1
+Dead 1 2000 1 2000_1_Dead 1 1 1 1 1 1
+Ret 1 2001 1 2001_1_Ret 1 1 1 1 1 1
+Mort 1 2001 1 2001_1_Mort 1 1 1 1 1 1
+Keep 1 2001 1 2001_1_Keep 1 1 1 1 1 1
+Dead 1 2001 1 2001_1_Dead 1 1 1 1 1 1
+Ret 1 2002 1 2002_1_Ret 1 1 1 1 1 1
+Mort 1 2002 1 2002_1_Mort 1 1 1 1 1 1
+Keep 1 2002 1 2002_1_Keep 1 1 1 1 1 1
+Dead 1 2002 1 2002_1_Dead 1 1 1 1 1 1
+Ret 1 2003 1 2003_1_Ret 1 1 1 1 1 1
+Mort 1 2003 1 2003_1_Mort 1 1 1 1 1 1
+Keep 1 2003 1 2003_1_Keep 1 1 1 1 1 1
+Dead 1 2003 1 2003_1_Dead 1 1 1 1 1 1
+Ret 1 2004 1 2004_1_Ret 1 1 1 1 1 1
+Mort 1 2004 1 2004_1_Mort 1 1 1 1 1 1
+Keep 1 2004 1 2004_1_Keep 1 1 1 1 1 1
+Dead 1 2004 1 2004_1_Dead 1 1 1 1 1 1
+Ret 1 2005 1 2005_1_Ret 1 1 1 1 1 1
+Mort 1 2005 1 2005_1_Mort 1 1 1 1 1 1
+Keep 1 2005 1 2005_1_Keep 1 1 1 1 1 1
+Dead 1 2005 1 2005_1_Dead 1 1 1 1 1 1
+Ret 1 2006 1 2006_1_Ret 1 1 1 1 1 1
+Mort 1 2006 1 2006_1_Mort 1 1 1 1 1 1
+Keep 1 2006 1 2006_1_Keep 1 1 1 1 1 1
+Dead 1 2006 1 2006_1_Dead 1 1 1 1 1 1
+Ret 1 2007 1 2007_1_Ret 1 1 1 1 1 1
+Mort 1 2007 1 2007_1_Mort 1 1 1 1 1 1
+Keep 1 2007 1 2007_1_Keep 1 1 1 1 1 1
+Dead 1 2007 1 2007_1_Dead 1 1 1 1 1 1
+Ret 1 2008 1 2008_1_Ret 1 1 1 1 1 1
+Mort 1 2008 1 2008_1_Mort 1 1 1 1 1 1
+Keep 1 2008 1 2008_1_Keep 1 1 1 1 1 1
+Dead 1 2008 1 2008_1_Dead 1 1 1 1 1 1
+Ret 1 2009 1 2009_1_Ret 1 1 1 1 1 1
+Mort 1 2009 1 2009_1_Mort 1 1 1 1 1 1
+Keep 1 2009 1 2009_1_Keep 1 1 1 1 1 1
+Dead 1 2009 1 2009_1_Dead 1 1 1 1 1 1
+Ret 1 2010 1 2010_1_Ret 1 1 1 1 1 1
+Mort 1 2010 1 2010_1_Mort 1 1 1 1 1 1
+Keep 1 2010 1 2010_1_Keep 1 1 1 1 1 1
+Dead 1 2010 1 2010_1_Dead 1 1 1 1 1 1
+Ret 1 2011 1 2011_1_Ret 1 1 1 1 1 1
+Mort 1 2011 1 2011_1_Mort 1 1 1 1 1 1
+Keep 1 2011 1 2011_1_Keep 1 1 1 1 1 1
+Dead 1 2011 1 2011_1_Dead 1 1 1 1 1 1
+Ret 1 2012 1 2012_1_Ret 1 1 1 1 1 1
+Mort 1 2012 1 2012_1_Mort 1 1 1 1 1 1
+Keep 1 2012 1 2012_1_Keep 1 1 1 1 1 1
+Dead 1 2012 1 2012_1_Dead 1 1 1 1 1 1
+Ret 1 2013 1 2013_1_Ret 1 1 1 1 1 1
+Mort 1 2013 1 2013_1_Mort 1 1 1 1 1 1
+Keep 1 2013 1 2013_1_Keep 1 1 1 1 1 1
+Dead 1 2013 1 2013_1_Dead 1 1 1 1 1 1
+Ret 1 2014 1 2014_1_Ret 1 1 1 1 1 1
+Mort 1 2014 1 2014_1_Mort 1 1 1 1 1 1
+Keep 1 2014 1 2014_1_Keep 1 1 1 1 1 1
+Dead 1 2014 1 2014_1_Dead 1 1 1 1 1 1
+Ret 1 2015 1 2015_1_Ret 1 1 1 1 1 1
+Mort 1 2015 1 2015_1_Mort 1 1 1 1 1 1
+Keep 1 2015 1 2015_1_Keep 1 1 1 1 1 1
+Dead 1 2015 1 2015_1_Dead 1 1 1 1 1 1
+Ret 1 2016 1 2016_1_Ret 1 1 1 1 1 1
+Mort 1 2016 1 2016_1_Mort 1 1 1 1 1 1
+Keep 1 2016 1 2016_1_Keep 1 1 1 1 1 1
+Dead 1 2016 1 2016_1_Dead 1 1 1 1 1 1
+Ret 1 2017 1 2017_1_Ret 1 1 1 1 1 1
+Mort 1 2017 1 2017_1_Mort 1 1 1 1 1 1
+Keep 1 2017 1 2017_1_Keep 1 1 1 1 1 1
+Dead 1 2017 1 2017_1_Dead 1 1 1 1 1 1
+Ret 1 2018 1 2018_1_Ret 1 1 1 1 1 1
+Mort 1 2018 1 2018_1_Mort 1 1 1 1 1 1
+Keep 1 2018 1 2018_1_Keep 1 1 1 1 1 1
+Dead 1 2018 1 2018_1_Dead 1 1 1 1 1 1
+Ret 1 2019 1 2019_1_Ret 1 1 1 1 1 1
+Mort 1 2019 1 2019_1_Mort 1 1 1 1 1 1
+Keep 1 2019 1 2019_1_Keep 1 1 1 1 1 1
+Dead 1 2019 1 2019_1_Dead 1 1 1 1 1 1
+Ret 1 2020 1 2020_1_Ret 1 1 1 1 1 1
+Mort 1 2020 1 2020_1_Mort 1 1 1 1 1 1
+Keep 1 2020 1 2020_1_Keep 1 1 1 1 1 1
+Dead 1 2020 1 2020_1_Dead 1 1 1 1 1 1
+
+ AGE_SELEX report:32
+Asel_is_age_selectivity_alone
+Asel2_is_sizesel*size_at_age(ALK)
+COMBINED_ALK*selL*selA*wtlen*ret*discmort_in_makefishsel_yr: 2020 With_MeanSel_From: 2020 - 2020; Year_styr-3_(1975)_stores_average_used_for_benchmark
+Factor Fleet Yr Seas Sex Morph Label  0 1 2 3 4 5 6
+Asel 1 1975 1 1 1 1975_1Asel 0 0 0 0 0 0 0
+Asel 1 1978 1 1 1 1978_1Asel 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+Asel 1 1987 1 1 1 1987_1Asel 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+Asel 1 1988 1 1 1 1988_1Asel 0.0409567 0.152068 0.401116 1 1 1 0.566061
+Asel 1 2005 1 1 1 2005_1Asel 0.0409567 0.152068 0.401116 1 1 1 0.566061
+Asel 1 2006 1 1 1 2006_1Asel 0.0696296 0.273451 0.660448 1 1 1 0.988837
+Asel 1 2020 1 1 1 2020_1Asel 0.0696296 0.273451 0.660448 1 1 1 0.988837
+Asel 2 1975 1 1 1 1975_2Asel 0 0 0 0 0 0 0
+Asel 2 1978 1 1 1 1978_2Asel 0 1 1 1 1 1 1
+Asel 2 2020 1 1 1 2020_2Asel 0 1 1 1 1 1 1
+Asel 3 1975 1 1 1 1975_3Asel 0 0 0 0 0 0 0
+Asel 3 1978 1 1 1 1978_3Asel 0 1 1 1 1 1 1
+Asel 3 2020 1 1 1 2020_3Asel 0 1 1 1 1 1 1
+Fecund  NA  1975 1 1 1 1975_Fecund 0 0 0 0 0 0 0
+Asel2 1 1975 1 1 1 1975_1_Asel2 0 0 0 0 0 0 0
+F 1 1975 1 1 1 1975_1_F 0 0 0 0 0 0 0
+bodywt 1 1975 1 1 1 1975_1_bodywt 0 0 0 0 0 0 0
+Asel2 2 1975 1 1 1 1975_2_Asel2 0 0 0 0 0 0 0
+bodywt 2 1975 1 1 1 1975_2_bodywt 0 0 0 0 0 0 0
+Asel2 3 1975 1 1 1 1975_3_Asel2 0 0 0 0 0 0 0
+bodywt 3 1975 1 1 1 1975_3_bodywt 0 0 0 0 0 0 0
+Fecund  NA  1978 1 1 1 1978_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1978 1 1 1 1978_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1978 1 1 1 1978_1_F 0.0270097 0.136148 0.313672 0.313671 0.313671 0.313671 0.279411
+bodywt 1 1978 1 1 1 1978_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1978 1 1 1 1978_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1978 1 1 1 1978_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1978 1 1 1 1978_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1978 1 1 1 1978_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1979 1 1 1 1979_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1979 1 1 1 1979_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1979 1 1 1 1979_1_F 0.0228391 0.115125 0.265238 0.265237 0.265237 0.265237 0.236267
+bodywt 1 1979 1 1 1 1979_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1979 1 1 1 1979_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1979 1 1 1 1979_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1979 1 1 1 1979_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1979 1 1 1 1979_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1980 1 1 1 1980_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1980 1 1 1 1980_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1980 1 1 1 1980_1_F 0.0293958 0.148176 0.341382 0.341381 0.341381 0.341381 0.304095
+bodywt 1 1980 1 1 1 1980_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1980 1 1 1 1980_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1980 1 1 1 1980_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1980 1 1 1 1980_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1980 1 1 1 1980_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1981 1 1 1 1981_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1981 1 1 1 1981_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1981 1 1 1 1981_1_F 0.0339379 0.171071 0.394131 0.394129 0.394129 0.394129 0.351081
+bodywt 1 1981 1 1 1 1981_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1981 1 1 1 1981_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1981 1 1 1 1981_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1981 1 1 1 1981_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1981 1 1 1 1981_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1982 1 1 1 1982_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1982 1 1 1 1982_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1982 1 1 1 1982_1_F 0.0338078 0.170415 0.39262 0.392619 0.392619 0.392619 0.349736
+bodywt 1 1982 1 1 1 1982_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1982 1 1 1 1982_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1982 1 1 1 1982_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1982 1 1 1 1982_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1982 1 1 1 1982_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1983 1 1 1 1983_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1983 1 1 1 1983_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1983 1 1 1 1983_1_F 0.0307069 0.154784 0.356608 0.356607 0.356607 0.356607 0.317657
+bodywt 1 1983 1 1 1 1983_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1983 1 1 1 1983_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1983 1 1 1 1983_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1983 1 1 1 1983_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1983 1 1 1 1983_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1984 1 1 1 1984_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1984 1 1 1 1984_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1984 1 1 1 1984_1_F 0.0343372 0.173084 0.398768 0.398766 0.398766 0.398766 0.355212
+bodywt 1 1984 1 1 1 1984_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1984 1 1 1 1984_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1984 1 1 1 1984_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1984 1 1 1 1984_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1984 1 1 1 1984_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1985 1 1 1 1985_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1985 1 1 1 1985_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1985 1 1 1 1985_1_F 0.0353375 0.178126 0.410385 0.410384 0.410384 0.410384 0.36556
+bodywt 1 1985 1 1 1 1985_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1985 1 1 1 1985_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1985 1 1 1 1985_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1985 1 1 1 1985_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1985 1 1 1 1985_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1986 1 1 1 1986_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1986 1 1 1 1986_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1986 1 1 1 1986_1_F 0.0339107 0.170934 0.393815 0.393813 0.393813 0.393813 0.3508
+bodywt 1 1986 1 1 1 1986_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1986 1 1 1 1986_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1986 1 1 1 1986_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1986 1 1 1 1986_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1986 1 1 1 1986_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1987 1 1 1 1987_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1987 1 1 1 1987_1_Asel2 0.0861082 0.434046 1 0.999996 0.999996 0.999996 0.890774
+F 1 1987 1 1 1 1987_1_F 0.033786 0.170305 0.392367 0.392366 0.392366 0.392366 0.349511
+bodywt 1 1987 1 1 1 1987_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1987 1 1 1 1987_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1987 1 1 1 1987_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1987 1 1 1 1987_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1987 1 1 1 1987_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1988 1 1 1 1988_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1988 1 1 1 1988_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1988 1 1 1 1988_1_F 0.0263172 0.0977128 0.257742 0.642561 0.642561 0.642561 0.363729
+bodywt 1 1988 1 1 1 1988_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1988 1 1 1 1988_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1988 1 1 1 1988_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1988 1 1 1 1988_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1988 1 1 1 1988_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1989 1 1 1 1989_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1989 1 1 1 1989_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1989 1 1 1 1989_1_F 0.0232886 0.0864679 0.22808 0.568615 0.568615 0.568615 0.32187
+bodywt 1 1989 1 1 1 1989_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1989 1 1 1 1989_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1989 1 1 1 1989_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1989 1 1 1 1989_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1989 1 1 1 1989_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1990 1 1 1 1990_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1990 1 1 1 1990_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1990 1 1 1 1990_1_F 0.0245013 0.0909708 0.239958 0.598225 0.598225 0.598225 0.338632
+bodywt 1 1990 1 1 1 1990_1_bodywt 0.02 0.039 0.054 0.06 0.066 0.073 0.09
+Asel2 2 1990 1 1 1 1990_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1990 1 1 1 1990_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1990 1 1 1 1990_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1990 1 1 1 1990_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1991 1 1 1 1991_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1991 1 1 1 1991_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1991 1 1 1 1991_1_F 0.0228468 0.0848276 0.223754 0.557828 0.557828 0.557828 0.315764
+bodywt 1 1991 1 1 1 1991_1_bodywt 0.02 0.03 0.053 0.058 0.07 0.071 0.094
+Asel2 2 1991 1 1 1 1991_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1991 1 1 1 1991_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1991 1 1 1 1991_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1991 1 1 1 1991_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1992 1 1 1 1992_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1992 1 1 1 1992_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1992 1 1 1 1992_1_F 0.0202962 0.0753576 0.198774 0.495553 0.495553 0.495553 0.280513
+bodywt 1 1992 1 1 1 1992_1_bodywt 0.018 0.044 0.052 0.061 0.066 0.077 0.089
+Asel2 2 1992 1 1 1 1992_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1992 1 1 1 1992_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1992 1 1 1 1992_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1992 1 1 1 1992_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1993 1 1 1 1993_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1993 1 1 1 1993_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1993 1 1 1 1993_1_F 0.0220797 0.0819796 0.216241 0.539099 0.539099 0.539099 0.305163
+bodywt 1 1993 1 1 1 1993_1_bodywt 0.017 0.038 0.053 0.058 0.065 0.07 0.084
+Asel2 2 1993 1 1 1 1993_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1993 1 1 1 1993_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1993 1 1 1 1993_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1993 1 1 1 1993_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1994 1 1 1 1994_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1994 1 1 1 1994_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1994 1 1 1 1994_1_F 0.0197323 0.073264 0.193252 0.481785 0.481785 0.481785 0.27272
+bodywt 1 1994 1 1 1 1994_1_bodywt 0.02 0.036 0.057 0.06 0.067 0.072 0.089
+Asel2 2 1994 1 1 1 1994_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1994 1 1 1 1994_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1994 1 1 1 1994_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1994 1 1 1 1994_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1995 1 1 1 1995_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1995 1 1 1 1995_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1995 1 1 1 1995_1_F 0.0181036 0.0672167 0.177301 0.442018 0.442018 0.442018 0.250209
+bodywt 1 1995 1 1 1 1995_1_bodywt 0.025 0.046 0.057 0.064 0.065 0.078 0.093
+Asel2 2 1995 1 1 1 1995_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1995 1 1 1 1995_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1995 1 1 1 1995_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1995 1 1 1 1995_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1996 1 1 1 1996_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1996 1 1 1 1996_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1996 1 1 1 1996_1_F 0.0221509 0.082244 0.216939 0.540838 0.540838 0.540838 0.306147
+bodywt 1 1996 1 1 1 1996_1_bodywt 0.019 0.037 0.048 0.054 0.062 0.07 0.082
+Asel2 2 1996 1 1 1 1996_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1996 1 1 1 1996_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1996 1 1 1 1996_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1996 1 1 1 1996_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1997 1 1 1 1997_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1997 1 1 1 1997_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1997 1 1 1 1997_1_F 0.025265 0.0938064 0.247438 0.616873 0.616873 0.616873 0.349187
+bodywt 1 1997 1 1 1 1997_1_bodywt 0.023 0.031 0.049 0.059 0.064 0.07 0.079
+Asel2 2 1997 1 1 1 1997_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1997 1 1 1 1997_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1997 1 1 1 1997_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1997 1 1 1 1997_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1998 1 1 1 1998_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 1998 1 1 1 1998_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1998 1 1 1 1998_1_F 0.0253295 0.0940458 0.248069 0.618447 0.618447 0.618447 0.350078
+bodywt 1 1998 1 1 1 1998_1_bodywt 0.024 0.041 0.055 0.061 0.064 0.067 0.073
+Asel2 2 1998 1 1 1 1998_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1998 1 1 1 1998_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 1998 1 1 1 1998_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1998 1 1 1 1998_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  1999 1 1 1 1999_Fecund 0 0.028 0.042 0.05 0.054 0.059 0.062
+Asel2 1 1999 1 1 1 1999_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 1999 1 1 1 1999_1_F 0.0217318 0.0806877 0.212834 0.530604 0.530604 0.530604 0.300354
+bodywt 1 1999 1 1 1 1999_1_bodywt 0.025 0.043 0.056 0.065 0.07 0.073 0.077
+Asel2 2 1999 1 1 1 1999_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 1999 1 1 1 1999_2_bodywt 0 0.03 0.043 0.05 0.054 0.059 0.062
+Asel2 3 1999 1 1 1 1999_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 1999 1 1 1 1999_3_bodywt 0 0.03 0.043 0.05 0.054 0.059 0.062
+Fecund  NA  2000 1 1 1 2000_Fecund 0 0.023 0.04 0.05 0.059 0.06 0.063
+Asel2 1 2000 1 1 1 2000_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 2000 1 1 1 2000_1_F 0.0199486 0.0740669 0.19537 0.487065 0.487065 0.487065 0.275708
+bodywt 1 2000 1 1 1 2000_1_bodywt 0.025 0.037 0.056 0.066 0.071 0.074 0.077
+Asel2 2 2000 1 1 1 2000_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2000 1 1 1 2000_2_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Asel2 3 2000 1 1 1 2000_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2000 1 1 1 2000_3_bodywt 0 0.027 0.041 0.05 0.059 0.06 0.063
+Fecund  NA  2001 1 1 1 2001_Fecund 0 0.018 0.038 0.051 0.064 0.061 0.064
+Asel2 1 2001 1 1 1 2001_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 2001 1 1 1 2001_1_F 0.022115 0.0821107 0.216587 0.539962 0.539962 0.539962 0.305651
+bodywt 1 2001 1 1 1 2001_1_bodywt 0.023 0.042 0.059 0.067 0.075 0.079 0.085
+Asel2 2 2001 1 1 1 2001_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2001 1 1 1 2001_2_bodywt 0 0.024 0.039 0.051 0.064 0.061 0.064
+Asel2 3 2001 1 1 1 2001_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2001 1 1 1 2001_3_bodywt 0 0.024 0.039 0.051 0.064 0.061 0.064
+Fecund  NA  2002 1 1 1 2002_Fecund 0 0.014 0.036 0.052 0.069 0.062 0.066
+Asel2 1 2002 1 1 1 2002_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 2002 1 1 1 2002_1_F 0.0209716 0.0778655 0.205389 0.512045 0.512045 0.512045 0.289848
+bodywt 1 2002 1 1 1 2002_1_bodywt 0.027 0.045 0.057 0.068 0.074 0.079 0.082
+Asel2 2 2002 1 1 1 2002_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2002 1 1 1 2002_2_bodywt 0 0.022 0.037 0.052 0.069 0.062 0.066
+Asel2 3 2002 1 1 1 2002_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2002 1 1 1 2002_3_bodywt 0 0.022 0.037 0.052 0.069 0.062 0.066
+Fecund  NA  2003 1 1 1 2003_Fecund 0 0.013 0.04 0.054 0.068 0.065 0.072
+Asel2 1 2003 1 1 1 2003_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 2003 1 1 1 2003_1_F 0.0198805 0.0738143 0.194703 0.485404 0.485404 0.485404 0.274768
+bodywt 1 2003 1 1 1 2003_1_bodywt 0.024 0.044 0.059 0.067 0.079 0.084 0.091
+Asel2 2 2003 1 1 1 2003_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2003 1 1 1 2003_2_bodywt 0 0.021 0.041 0.054 0.068 0.065 0.072
+Asel2 3 2003 1 1 1 2003_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2003 1 1 1 2003_3_bodywt 0 0.021 0.041 0.054 0.068 0.065 0.072
+Fecund  NA  2004 1 1 1 2004_Fecund 0 0.012 0.044 0.056 0.067 0.068 0.079
+Asel2 1 2004 1 1 1 2004_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 2004 1 1 1 2004_1_F 0.023269 0.0863954 0.227889 0.568138 0.568138 0.568138 0.3216
+bodywt 1 2004 1 1 1 2004_1_bodywt 0.02 0.04 0.056 0.066 0.072 0.082 0.089
+Asel2 2 2004 1 1 1 2004_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2004 1 1 1 2004_2_bodywt 0 0.02 0.045 0.056 0.067 0.068 0.079
+Asel2 3 2004 1 1 1 2004_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2004 1 1 1 2004_3_bodywt 0 0.02 0.045 0.056 0.067 0.068 0.079
+Fecund  NA  2005 1 1 1 2005_Fecund 0 0.011 0.048 0.058 0.066 0.072 0.086
+Asel2 1 2005 1 1 1 2005_1_Asel2 0.0409567 0.152068 0.401116 1 1 1 0.566061
+F 1 2005 1 1 1 2005_1_F 0.0265737 0.0986653 0.260254 0.648825 0.648825 0.648825 0.367274
+bodywt 1 2005 1 1 1 2005_1_bodywt 0.023 0.037 0.055 0.068 0.074 0.075 0.087
+Asel2 2 2005 1 1 1 2005_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2005 1 1 1 2005_2_bodywt 0 0.019 0.049 0.058 0.066 0.072 0.086
+Asel2 3 2005 1 1 1 2005_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2005 1 1 1 2005_3_bodywt 0 0.019 0.049 0.058 0.066 0.072 0.086
+Fecund  NA  2006 1 1 1 2006_Fecund 0 0.016 0.05 0.06 0.067 0.072 0.084
+Asel2 1 2006 1 1 1 2006_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2006 1 1 1 2006_1_F 0.0298669 0.117294 0.283292 0.428939 0.428939 0.428939 0.424151
+bodywt 1 2006 1 1 1 2006_1_bodywt 0.031 0.042 0.056 0.068 0.073 0.078 0.082
+Asel2 2 2006 1 1 1 2006_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2006 1 1 1 2006_2_bodywt 0 0.024 0.052 0.06 0.067 0.072 0.084
+Asel2 3 2006 1 1 1 2006_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2006 1 1 1 2006_3_bodywt 0 0.024 0.052 0.06 0.067 0.072 0.084
+Fecund  NA  2007 1 1 1 2007_Fecund 0 0.023 0.053 0.062 0.069 0.072 0.081
+Asel2 1 2007 1 1 1 2007_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2007 1 1 1 2007_1_F 0.0314088 0.123349 0.297918 0.451085 0.451085 0.451085 0.446049
+bodywt 1 2007 1 1 1 2007_1_bodywt 0.028 0.054 0.071 0.074 0.085 0.086 0.089
+Asel2 2 2007 1 1 1 2007_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2007 1 1 1 2007_2_bodywt 0 0.029 0.054 0.062 0.069 0.072 0.081
+Asel2 3 2007 1 1 1 2007_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2007 1 1 1 2007_3_bodywt 0 0.029 0.054 0.062 0.069 0.072 0.081
+Fecund  NA  2008 1 1 1 2008_Fecund 0 0.03 0.056 0.064 0.07 0.072 0.079
+Asel2 1 2008 1 1 1 2008_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2008 1 1 1 2008_1_F 0.0448956 0.176315 0.425842 0.644777 0.644777 0.644777 0.63758
+bodywt 1 2008 1 1 1 2008_1_bodywt 0.025 0.043 0.066 0.074 0.075 0.083 0.085
+Asel2 2 2008 1 1 1 2008_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2008 1 1 1 2008_2_bodywt 0 0.033 0.057 0.064 0.07 0.072 0.079
+Asel2 3 2008 1 1 1 2008_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2008 1 1 1 2008_3_bodywt 0 0.033 0.057 0.064 0.07 0.072 0.079
+Fecund  NA  2009 1 1 1 2009_Fecund 0 0.028 0.053 0.063 0.07 0.069 0.075
+Asel2 1 2009 1 1 1 2009_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2009 1 1 1 2009_1_F 0.0482072 0.18932 0.457253 0.692338 0.692338 0.692338 0.68461
+bodywt 1 2009 1 1 1 2009_1_bodywt 0.02 0.041 0.065 0.075 0.079 0.082 0.09
+Asel2 2 2009 1 1 1 2009_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2009 1 1 1 2009_2_bodywt 0 0.03 0.054 0.063 0.07 0.069 0.075
+Asel2 3 2009 1 1 1 2009_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2009 1 1 1 2009_3_bodywt 0 0.03 0.054 0.063 0.07 0.069 0.075
+Fecund  NA  2010 1 1 1 2010_Fecund 0 0.026 0.051 0.062 0.07 0.067 0.072
+Asel2 1 2010 1 1 1 2010_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2010 1 1 1 2010_1_F 0.0560556 0.220143 0.531696 0.805054 0.805054 0.805054 0.796067
+bodywt 1 2010 1 1 1 2010_1_bodywt 0.026 0.046 0.061 0.075 0.082 0.084 0.081
+Asel2 2 2010 1 1 1 2010_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2010 1 1 1 2010_2_bodywt 0 0.027 0.051 0.062 0.07 0.067 0.072
+Asel2 3 2010 1 1 1 2010_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2010 1 1 1 2010_3_bodywt 0 0.027 0.051 0.062 0.07 0.067 0.072
+Fecund  NA  2011 1 1 1 2011_Fecund 0 0.023 0.048 0.061 0.07 0.064 0.068
+Asel2 1 2011 1 1 1 2011_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2011 1 1 1 2011_1_F 0.0608923 0.239138 0.577573 0.874518 0.874518 0.874518 0.864756
+bodywt 1 2011 1 1 1 2011_1_bodywt 0.024 0.045 0.064 0.073 0.077 0.077 0.079
+Asel2 2 2011 1 1 1 2011_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2011 1 1 1 2011_2_bodywt 0 0.024 0.048 0.061 0.07 0.064 0.068
+Asel2 3 2011 1 1 1 2011_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2011 1 1 1 2011_3_bodywt 0 0.024 0.048 0.061 0.07 0.064 0.068
+Fecund  NA  2012 1 1 1 2012_Fecund 0 0.026 0.048 0.062 0.068 0.068 0.073
+Asel2 1 2012 1 1 1 2012_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2012 1 1 1 2012_1_F 0.0433753 0.170344 0.411422 0.622944 0.622944 0.622944 0.61599
+bodywt 1 2012 1 1 1 2012_1_bodywt 0.031 0.056 0.065 0.078 0.083 0.086 0.09
+Asel2 2 2012 1 1 1 2012_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2012 1 1 1 2012_2_bodywt 0 0.027 0.048 0.062 0.068 0.068 0.073
+Asel2 3 2012 1 1 1 2012_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2012 1 1 1 2012_3_bodywt 0 0.027 0.048 0.062 0.068 0.068 0.073
+Fecund  NA  2013 1 1 1 2013_Fecund 0 0.029 0.049 0.063 0.067 0.073 0.077
+Asel2 1 2013 1 1 1 2013_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2013 1 1 1 2013_1_F 0.0384732 0.151093 0.364925 0.552541 0.552541 0.552541 0.546374
+bodywt 1 2013 1 1 1 2013_1_bodywt 0.025 0.052 0.069 0.077 0.085 0.09 0.094
+Asel2 2 2013 1 1 1 2013_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2013 1 1 1 2013_2_bodywt 0 0.03 0.049 0.063 0.067 0.073 0.077
+Asel2 3 2013 1 1 1 2013_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2013 1 1 1 2013_3_bodywt 0 0.03 0.049 0.063 0.067 0.073 0.077
+Fecund  NA  2014 1 1 1 2014_Fecund 0 0.032 0.049 0.065 0.066 0.077 0.081
+Asel2 1 2014 1 1 1 2014_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2014 1 1 1 2014_1_F 0.0240462 0.0944348 0.228082 0.345345 0.345345 0.345345 0.34149
+bodywt 1 2014 1 1 1 2014_1_bodywt 0.03 0.046 0.061 0.076 0.08 0.089 0.093
+Asel2 2 2014 1 1 1 2014_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2014 1 1 1 2014_2_bodywt 0 0.032 0.049 0.065 0.066 0.077 0.081
+Asel2 3 2014 1 1 1 2014_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2014 1 1 1 2014_3_bodywt 0 0.032 0.049 0.065 0.066 0.077 0.081
+Fecund  NA  2015 1 1 1 2015_Fecund 0 0.03 0.047 0.063 0.066 0.073 0.077
+Asel2 1 2015 1 1 1 2015_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2015 1 1 1 2015_1_F 0.014345 0.056336 0.136065 0.206019 0.206019 0.206019 0.203719
+bodywt 1 2015 1 1 1 2015_1_bodywt 0.025 0.049 0.073 0.079 0.089 0.09 0.097
+Asel2 2 2015 1 1 1 2015_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2015 1 1 1 2015_2_bodywt 0 0.03 0.048 0.063 0.066 0.073 0.077
+Asel2 3 2015 1 1 1 2015_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2015 1 1 1 2015_3_bodywt 0 0.03 0.048 0.063 0.066 0.073 0.077
+Fecund  NA  2016 1 1 1 2016_Fecund 0 0.029 0.046 0.062 0.065 0.07 0.072
+Asel2 1 2016 1 1 1 2016_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2016 1 1 1 2016_1_F 0.0149736 0.0588045 0.142027 0.215046 0.215046 0.215046 0.212645
+bodywt 1 2016 1 1 1 2016_1_bodywt 0.018 0.046 0.062 0.074 0.084 0.092 0.098
+Asel2 2 2016 1 1 1 2016_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2016 1 1 1 2016_2_bodywt 0 0.029 0.046 0.062 0.065 0.07 0.072
+Asel2 3 2016 1 1 1 2016_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2016 1 1 1 2016_3_bodywt 0 0.029 0.046 0.062 0.065 0.07 0.072
+Fecund  NA  2017 1 1 1 2017_Fecund 0 0.027 0.044 0.06 0.065 0.066 0.068
+Asel2 1 2017 1 1 1 2017_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2017 1 1 1 2017_1_F 0.0131674 0.0517114 0.124895 0.189107 0.189107 0.189107 0.186996
+bodywt 1 2017 1 1 1 2017_1_bodywt 0.022 0.039 0.058 0.072 0.083 0.086 0.095
+Asel2 2 2017 1 1 1 2017_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2017 1 1 1 2017_2_bodywt 0 0.027 0.045 0.06 0.065 0.066 0.068
+Asel2 3 2017 1 1 1 2017_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2017 1 1 1 2017_3_bodywt 0 0.027 0.045 0.06 0.065 0.066 0.068
+Fecund  NA  2018 1 1 1 2018_Fecund 0 0.027 0.044 0.06 0.065 0.066 0.068
+Asel2 1 2018 1 1 1 2018_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2018 1 1 1 2018_1_F 0.00693821 0.0272479 0.0658101 0.0996446 0.0996446 0.0996446 0.0985323
+bodywt 1 2018 1 1 1 2018_1_bodywt 0.031 0.047 0.062 0.08 0.088 0.094 0.099
+Asel2 2 2018 1 1 1 2018_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2018 1 1 1 2018_2_bodywt 0 0.027 0.045 0.06 0.065 0.066 0.068
+Asel2 3 2018 1 1 1 2018_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2018 1 1 1 2018_3_bodywt 0 0.027 0.045 0.06 0.065 0.066 0.068
+Fecund  NA  2019 1 1 1 2019_Fecund 0 0.027 0.044 0.06 0.065 0.066 0.068
+Asel2 1 2019 1 1 1 2019_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2019 1 1 1 2019_1_F 0.00563112 0.0221147 0.0534121 0.0808726 0.0808726 0.0808726 0.0799698
+bodywt 1 2019 1 1 1 2019_1_bodywt 0.028 0.05 0.059 0.074 0.084 0.094 0.097
+Asel2 2 2019 1 1 1 2019_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2019 1 1 1 2019_2_bodywt 0 0.027 0.045 0.06 0.065 0.066 0.068
+Asel2 3 2019 1 1 1 2019_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2019 1 1 1 2019_3_bodywt 0 0.027 0.045 0.06 0.065 0.066 0.068
+Fecund  NA  2020 1 1 1 2020_Fecund 0 0.029 0.047 0.062 0.066 0.071 0.074
+Asel2 1 2020 1 1 1 2020_1_Asel2 0.0696296 0.273451 0.660448 1 1 1 0.988837
+F 1 2020 1 1 1 2020_1_F 0 0 0 0 0 0 0
+bodywt 1 2020 1 1 1 2020_1_bodywt 0.027 0.045 0.06 0.075 0.085 0.091 0.097
+Asel2 2 2020 1 1 1 2020_2_Asel2 0 1 1 1 1 1 1
+bodywt 2 2020 1 1 1 2020_2_bodywt 0 0.029 0.046 0.062 0.065 0.07 0.072
+Asel2 3 2020 1 1 1 2020_3_Asel2 0 1 1 1 1 1 1
+bodywt 3 2020 1 1 1 2020_3_bodywt 0 0.029 0.046 0.062 0.065 0.07 0.072
+sel*wt 1 2020 1 1 1 2020_1_sel*wt 0.00188 0.0123053 0.0396269 0.075 0.085 0.091 0.0959172
+sel*ret*wt 1 2020 1 1 1 2020_1_sel*ret*wt 0.00188 0.0123053 0.0396269 0.075 0.085 0.091 0.0959172
+sel_nums 1 2020 1 1 1 2020_1_sel_nums 0.0696296 0.273451 0.660448 1 1 1 0.988837
+sel*ret_nums 1 2020 1 1 1 2020_1_sel*ret_nums 0.0696296 0.273451 0.660448 1 1 1 0.988837
+dead_nums 1 2020 1 1 1 2020_1_dead_nums 0.0696296 0.273451 0.660448 1 1 1 0.988837
+dead*wt 1 2020 1 1 1 2020_1_dead*wt 0.00188 0.0123053 0.0396269 0.075 0.085 0.091 0.0959172
+
+ NUMBERS_AT_AGE report:35
+Area Bio_Pattern Sex BirthSeas Settlement Platoon Morph Yr Seas Time Beg/Mid Era 0 1 2 3 4 5 6
+1 1 1 1 1 1 1 1976 1 1976 B VIRG  6.91881e+07 2.59671e+07 1.41092e+07 8.8183e+06 5.91108e+06 4.12402e+06 1.06122e+07
+1 1 1 1 1 1 1 1976 1 1976.5 M VIRG  0 0 0 0 0 0 0
+1 1 1 1 1 1 1 1977 1 1977 B INIT  6.91881e+07 2.23586e+07 5.71459e+06 628416 74116.2 9098.11 1334.14
+1 1 1 1 1 1 1 1977 1 1977.5 M INIT  0 0 0 0 0 0 0
+1 1 1 1 1 1 1 1978 1 1978 B TIME  2.66419e+07 1.79605e+07 5.14613e+06 566976 73082.5 9098.11 1334.14
+1 1 1 1 1 1 1 1978 1 1978.5 M TIME  1.61026e+07 1.23679e+07 3.47783e+06 396819 52182.8 6528.85 988.643
+1 1 1 1 1 1 1 1979 1 1979 B TIME  2.85288e+07 9.73254e+06 8.51668e+06 2.35037e+06 277729 37259.9 5417.76
+1 1 1 1 1 1 1 1979 1 1979.5 M TIME  1.7279e+07 6.77278e+06 5.89679e+06 1.68532e+06 203167 27393.3 4102.3
+1 1 1 1 1 1 1 1980 1 1980 B TIME  3.00483e+07 1.04654e+07 4.71312e+06 4.08282e+06 1.20845e+06 148622 23245.7
+1 1 1 1 1 1 1 1980 1 1980.5 M TIME  1.81398e+07 7.16341e+06 3.14137e+06 2.8182e+06 850990 105185 17014.6
+1 1 1 1 1 1 1 1981 1 1981 B TIME  2.83053e+07 1.09508e+07 4.90325e+06 2.09377e+06 1.94528e+06 599268 86896.3
+1 1 1 1 1 1 1 1981 1 1981.5 M TIME  1.70488e+07 7.41033e+06 3.18303e+06 1.40762e+06 1.33422e+06 413082 62126.7
+1 1 1 1 1 1 1 1982 1 1982 B TIME  2.68911e+07 1.02688e+07 5.01453e+06 2.06632e+06 946332 915100 329159
+1 1 1 1 1 1 1 1982 1 1982.5 M TIME  1.6198e+07 6.95113e+06 3.25772e+06 1.39021e+06 649552 631264 235491
+1 1 1 1 1 1 1 1983 1 1983 B TIME  3.2193e+07 9.75701e+06 4.70533e+06 2.1164e+06 935334 445846 603943
+1 1 1 1 1 1 1 1983 1 1983.5 M TIME  1.94218e+07 6.6565e+06 3.1124e+06 1.44979e+06 653669 313146 439067
+1 1 1 1 1 1 1 1984 1 1984 B TIME  2.70702e+07 1.1717e+07 4.54125e+06 2.05873e+06 993136 456824 539144
+1 1 1 1 1 1 1 1984 1 1984.5 M TIME  1.63016e+07 7.92085e+06 2.9412e+06 1.38086e+06 679586 314164 384667
+1 1 1 1 1 1 1 1985 1 1985 B TIME  2.54212e+07 9.81682e+06 5.35461e+06 1.90491e+06 926188 465030 490505
+1 1 1 1 1 1 1 1985 1 1985.5 M TIME  1.53009e+07 6.6196e+06 3.4479e+06 1.27029e+06 630105 317955 348158
+1 1 1 1 1 1 1 1986 1 1986 B TIME  2.37824e+07 9.20959e+06 4.46367e+06 2.22014e+06 847089 428673 464516
+1 1 1 1 1 1 1 1986 1 1986.5 M TIME  1.43248e+07 6.2325e+06 2.89813e+06 1.49282e+06 581086 295535 332153
+1 1 1 1 1 1 1 1987 1 1987 B TIME  2.58798e+07 8.62821e+06 4.21779e+06 1.88166e+06 1.00377e+06 398613 441254
+1 1 1 1 1 1 1 1987 1 1987.5 M TIME  1.55891e+07 5.84089e+06 2.74046e+06 1.26614e+06 689062 275010 315723
+1 1 1 1 1 1 1 1988 1 1988 B TIME  2.23499e+07 9.39029e+06 3.95401e+06 1.78059e+06 851966 473025 415639
+1 1 1 1 1 1 1 1988 1 1988.5 M TIME  1.35132e+07 6.59175e+06 2.74796e+06 1.05724e+06 516082 287973 295288
+1 1 1 1 1 1 1 1989 1 1989 B TIME  2.1412e+07 8.17031e+06 4.62725e+06 1.90978e+06 627748 312619 385101
+1 1 1 1 1 1 1 1989 1 1989.5 M TIME  1.29657e+07 5.7677e+06 3.2639e+06 1.17666e+06 394583 197488 279380
+1 1 1 1 1 1 1 1990 1 1990 B TIME  2.146e+07 7.85116e+06 4.07161e+06 2.30224e+06 724970 248023 327439
+1 1 1 1 1 1 1 1990 1 1990.5 M TIME  1.29869e+07 5.52993e+06 2.85497e+06 1.39762e+06 448998 154379 235565
+1 1 1 1 1 1 1 1991 1 1991 B TIME  2.92444e+07 7.85923e+06 3.89499e+06 2.00187e+06 848451 278079 265560
+1 1 1 1 1 1 1 1991 1 1991.5 M TIME  1.77124e+07 5.55265e+06 2.75334e+06 1.24007e+06 536195 176618 193245
+1 1 1 1 1 1 1 1992 1 1992 B TIME  2.47355e+07 1.07278e+07 3.92302e+06 1.94631e+06 768168 338859 252799
+1 1 1 1 1 1 1 1992 1 1992.5 M TIME  1.50006e+07 7.61533e+06 2.80801e+06 1.24379e+06 500813 222029 187230
+1 1 1 1 1 1 1 1993 1 1993 B TIME  1.9016e+07 9.09698e+06 5.40586e+06 2.0099e+06 794839 326508 284147
+1 1 1 1 1 1 1 1993 1 1993.5 M TIME  1.15218e+07 6.43629e+06 3.83575e+06 1.25676e+06 507040 209329 207869
+1 1 1 1 1 1 1 1994 1 1994 B TIME  1.71782e+07 6.98107e+06 4.5538e+06 2.72166e+06 785832 323449 286272
+1 1 1 1 1 1 1 1994 1 1994.5 M TIME  1.04205e+07 4.96081e+06 3.26852e+06 1.75129e+06 515868 213396 212849
+1 1 1 1 1 1 1 1995 1 1995 B TIME  1.5222e+07 6.32118e+06 3.5252e+06 2.346e+06 1.12689e+06 338647 299045
+1 1 1 1 1 1 1 1995 1 1995.5 M TIME  9.24138e+06 4.5055e+06 2.55049e+06 1.53988e+06 754612 227910 224863
+1 1 1 1 1 1 1 1996 1 1996 B TIME  1.61164e+07 5.6105e+06 3.21134e+06 1.84529e+06 1.01075e+06 505322 322466
+1 1 1 1 1 1 1 1996 1 1996.5 M TIME  9.76459e+06 3.96901e+06 2.27782e+06 1.15283e+06 644213 323687 235786
+1 1 1 1 1 1 1 1997 1 1997 B TIME  1.39357e+07 5.91616e+06 2.80778e+06 1.61567e+06 720218 410596 379745
+1 1 1 1 1 1 1 1997 1 1997.5 M TIME  8.43022e+06 4.16112e+06 1.96144e+06 971722 441915 253199 271756
+1 1 1 1 1 1 1 1998 1 1998 B TIME  1.41172e+07 5.09974e+06 2.92671e+06 1.3702e+06 584428 271153 350614
+1 1 1 1 1 1 1 1998 1 1998.5 M TIME  8.53971e+06 3.58647e+06 2.04387e+06 823439 358314 167078 250798
+1 1 1 1 1 1 1 1999 1 1999 B TIME  1.35004e+07 5.16581e+06 2.52223e+06 1.42734e+06 494856 219683 282347
+1 1 1 1 1 1 1 1999 1 1999.5 M TIME  8.18134e+06 3.65728e+06 1.79271e+06 896291 317020 141441 207050
+1 1 1 1 1 1 1 2000 1 2000 B TIME  1.94403e+07 4.95794e+06 2.58927e+06 1.27419e+06 562822 203093 242899
+1 1 1 1 1 1 1 2000 1 2000.5 M TIME  1.17914e+07 3.52175e+06 1.85649e+06 817731 368496 133637 180331
+1 1 1 1 1 1 1 2001 1 2001 B TIME  1.46304e+07 7.15204e+06 2.50158e+06 1.3311e+06 524791 241266 221814
+1 1 1 1 1 1 1 2001 1 2001.5 M TIME  8.86439e+06 5.05988e+06 1.7747e+06 831956 334628 154612 162230
+1 1 1 1 1 1 1 2002 1 2002 B TIME  1.12718e+07 5.37084e+06 3.57973e+06 1.25902e+06 519985 213372 217732
+1 1 1 1 1 1 1 2002 1 2002.5 M TIME  6.8334e+06 3.8078e+06 2.55383e+06 797969 336224 138659 160508
+1 1 1 1 1 1 1 2003 1 2003 B TIME  1.02437e+07 4.14265e+06 2.69964e+06 1.82193e+06 505752 217403 208430
+1 1 1 1 1 1 1 2003 1 2003.5 M TIME  6.21348e+06 2.943e+06 1.93628e+06 1.17023e+06 331406 143173 154813
+1 1 1 1 1 1 1 2004 1 2004 B TIME  1.70164e+07 3.76889e+06 2.09075e+06 1.38877e+06 751634 217162 209276
+1 1 1 1 1 1 1 2004 1 2004.5 M TIME  1.03041e+07 2.66068e+06 1.47488e+06 855856 472567 137218 151844
+1 1 1 1 1 1 1 2005 1 2005 B TIME  1.00487e+07 6.23955e+06 1.87833e+06 1.04043e+06 527439 297113 196878
+1 1 1 1 1 1 1 2005 1 2005.5 M TIME  6.07483e+06 4.37793e+06 1.30377e+06 615833 318499 180314 139623
+1 1 1 1 1 1 1 2006 1 2006 B TIME  7.74319e+06 3.67248e+06 3.07174e+06 904956 364513 192329 208449
+1 1 1 1 1 1 1 2006 1 2006.5 M TIME  4.67337e+06 2.55288e+06 2.1077e+06 597896 245696 130287 143684
+1 1 1 1 1 1 1 2007 1 2007 B TIME  8.0593e+06 2.82059e+06 1.7746e+06 1.44622e+06 395024 165608 187300
+1 1 1 1 1 1 1 2007 1 2007.5 M TIME  4.86041e+06 1.95477e+06 1.20878e+06 944980 263329 110950 127701
+1 1 1 1 1 1 1 2008 1 2008 B TIME  8.73615e+06 2.93122e+06 1.35472e+06 823375 617465 175539 161398
+1 1 1 1 1 1 1 2008 1 2008.5 M TIME  5.23319e+06 1.97834e+06 865608 488345 373618 106748 99991.1
+1 1 1 1 1 1 1 2009 1 2009 B TIME  8.21343e+06 3.13483e+06 1.33523e+06 553085 289639 226070 126863
+1 1 1 1 1 1 1 2009 1 2009.5 M TIME  4.91193e+06 2.10205e+06 839857 320327 171137 134246 76769.2
+1 1 1 1 1 1 1 2010 1 2010 B TIME  6.34363e+06 2.93751e+06 1.40953e+06 528269 185522 101119 126175
+1 1 1 1 1 1 1 2010 1 2010.5 M TIME  3.77886e+06 1.93962e+06 854196 289188 103611 56756.5 72213.9
+1 1 1 1 1 1 1 2011 1 2011 B TIME  5.24431e+06 2.25105e+06 1.28072e+06 517657 158309 57865.4 73187
+1 1 1 1 1 1 1 2011 1 2011.5 M TIME  3.11646e+06 1.4723e+06 758535 273706 85395.4 31370.3 40473.2
+1 1 1 1 1 1 1 2012 1 2012 B TIME  4.81174e+06 1.85197e+06 962961 449260 144719 46064.1 39388.7
+1 1 1 1 1 1 1 2012 1 2012.5 M TIME  2.88455e+06 1.25368e+06 619741 269382 88528.4 28319.8 24667.4
+1 1 1 1 1 1 1 2013 1 2013 B TIME  4.96712e+06 1.72924e+06 848663 398852 161525 54155 32858.9
+1 1 1 1 1 1 1 2013 1 2013.5 M TIME  2.98501e+06 1.18192e+06 559028 247725 102349 34486.9 21307
+1 1 1 1 1 1 1 2014 1 2014 B TIME  4.66433e+06 1.79386e+06 807825 368241 153861 64852.6 35778.2
+1 1 1 1 1 1 1 2014 1 2014.5 M TIME  2.82334e+06 1.26131e+06 569811 253678 108135 45807.4 25702.7
+1 1 1 1 1 1 1 2015 1 2015 B TIME  5.85262e+06 1.70898e+06 886861 401924 174756 75997.9 50819.6
+1 1 1 1 1 1 1 2015 1 2015.5 M TIME  3.55984e+06 1.22474e+06 655013 296858 131681 57552.4 39111.7
+1 1 1 1 1 1 1 2016 1 2016 B TIME  7.03025e+06 2.16527e+06 877710 483777 219257 99223.4 73685
+1 1 1 1 1 1 1 2016 1 2016.5 M TIME  4.27479e+06 1.54983e+06 646326 355705 164469 74802.5 56456.8
+1 1 1 1 1 1 1 2017 1 2017 B TIME  5.57827e+06 2.59932e+06 1.10931e+06 475939 261537 123371 99648.8
+1 1 1 1 1 1 1 2017 1 2017.5 M TIME  3.39497e+06 1.86711e+06 823899 354510 198745 94221.1 77335.6
+1 1 1 1 1 1 1 2018 1 2018 B TIME  7.18258e+06 2.0662e+06 1.34116e+06 611919 264062 151029 131977
+1 1 1 1 1 1 1 2018 1 2018.5 M TIME  4.385e+06 1.50243e+06 1.02596e+06 476648 209843 120620 107057
+1 1 1 1 1 1 1 2019 1 2019 B TIME  9.12518e+06 2.67706e+06 1.09249e+06 784842 371280 166757 183177
+1 1 1 1 1 1 1 2019 1 2019.5 M TIME  5.57461e+06 1.95163e+06 840933 617110 297829 134438 149975
+1 1 1 1 1 1 1 2020 1 2020 B TIME  1.05324e+07 3.40555e+06 1.42277e+06 647297 485224 238909 231173
+1 1 1 1 1 1 1 2020 1 2020.5 M TIME  6.45241e+06 2.51031e+06 1.1248e+06 529962 405293 200554 196993
+
+ BIOMASS_AT_AGE report:36
+Area Bio_Pattern Sex BirthSeas Settlement Platoon Morph Yr Seas Time Beg/Mid Era 0 1 2 3 4 5 6
+1 1 1 1 1 1 1 1976 1 1976 B VIRG  0 701111 578478 440915 348754 247441 668566
+1 1 1 1 1 1 1 1976 1 1976.5 M VIRG  0 0 0 0 0 0 0
+1 1 1 1 1 1 1 1977 1 1977 B INIT  0 603681 234298 31420.8 4372.86 545.886 84.0506
+1 1 1 1 1 1 1 1977 1 1977.5 M INIT  0 0 0 0 0 0 0
+1 1 1 1 1 1 1 1978 1 1978 B TIME  0 484933 210991 28348.8 4311.86 545.886 84.0506
+1 1 1 1 1 1 1 1978 1 1978.5 M TIME  322052 482346 187803 23809.2 3444.06 476.606 88.9779
+1 1 1 1 1 1 1 1979 1 1979 B TIME  0 262779 349184 117518 16386 2235.59 341.319
+1 1 1 1 1 1 1 1979 1 1979.5 M TIME  345581 264139 318427 101119 13409 1999.71 369.207
+1 1 1 1 1 1 1 1980 1 1980 B TIME  0 282566 193238 204141 71298.3 8917.34 1464.48
+1 1 1 1 1 1 1 1980 1 1980.5 M TIME  362796 279373 169634 169092 56165.3 7678.49 1531.32
+1 1 1 1 1 1 1 1981 1 1981 B TIME  0 295671 201033 104689 114772 35956.1 5474.47
+1 1 1 1 1 1 1 1981 1 1981.5 M TIME  340976 289003 171884 84457.4 88058.2 30155 5591.4
+1 1 1 1 1 1 1 1982 1 1982 B TIME  0 277258 205596 103316 55833.6 54906 20737
+1 1 1 1 1 1 1 1982 1 1982.5 M TIME  323961 271094 175917 83412.9 42870.5 46082.3 21194.2
+1 1 1 1 1 1 1 1983 1 1983 B TIME  0 263439 192919 105820 55184.7 26750.8 38048.4
+1 1 1 1 1 1 1 1983 1 1983.5 M TIME  388435 259603 168069 86987.1 43142.1 22859.7 39516
+1 1 1 1 1 1 1 1984 1 1984 B TIME  0 316359 186191 102936 58595 27409.4 33966.1
+1 1 1 1 1 1 1 1984 1 1984.5 M TIME  326033 308913 158825 82851.5 44852.7 22934 34620
+1 1 1 1 1 1 1 1985 1 1985 B TIME  0 265054 219539 95245.4 54645.1 27901.8 30901.8
+1 1 1 1 1 1 1 1985 1 1985.5 M TIME  306019 258164 186186 76217.1 41586.9 23210.7 31334.2
+1 1 1 1 1 1 1 1986 1 1986 B TIME  0 248659 183010 111007 49978.2 25720.4 29264.5
+1 1 1 1 1 1 1 1986 1 1986.5 M TIME  286496 243068 156499 89569.1 38351.7 21574.1 29893.8
+1 1 1 1 1 1 1 1987 1 1987 B TIME  0 232962 172929 94083.2 59222.2 23916.8 27799
+1 1 1 1 1 1 1 1987 1 1987.5 M TIME  311781 227795 147985 75968.5 45478.1 20075.8 28415.1
+1 1 1 1 1 1 1 1988 1 1988 B TIME  0 253538 162115 89029.4 50266 28381.5 26185.2
+1 1 1 1 1 1 1 1988 1 1988.5 M TIME  270264 257078 148390 63434.5 34061.4 21022.1 26575.9
+1 1 1 1 1 1 1 1989 1 1989 B TIME  0 220598 189717 95489.1 37037.1 18757.1 24261.4
+1 1 1 1 1 1 1 1989 1 1989.5 M TIME  259314 224940 176251 70599.8 26042.5 14416.6 25144.2
+1 1 1 1 1 1 1 1990 1 1990 B TIME  0 211981 166936 115112 42773.2 14881.4 20628.7
+1 1 1 1 1 1 1 1990 1 1990.5 M TIME  259738 215667 154168 83857.1 29633.8 11269.7 21200.8
+1 1 1 1 1 1 1 1991 1 1991 B TIME  0 212199 159694 100093 50058.6 16684.7 16730.3
+1 1 1 1 1 1 1 1991 1 1991.5 M TIME  354248 166580 145927 71924 37533.7 12539.9 18165
+1 1 1 1 1 1 1 1992 1 1992 B TIME  0 289652 160844 97315.7 45321.9 20331.6 15926.3
+1 1 1 1 1 1 1 1992 1 1992.5 M TIME  270011 335074 146016 75871 33053.6 17096.2 16663.5
+1 1 1 1 1 1 1 1993 1 1993 B TIME  0 245618 221640 100495 46895.5 19590.5 17901.3
+1 1 1 1 1 1 1 1993 1 1993.5 M TIME  195871 244579 203295 72892.1 32957.6 14653 17461
+1 1 1 1 1 1 1 1994 1 1994 B TIME  0 188489 186706 136083 46364.1 19406.9 18035.1
+1 1 1 1 1 1 1 1994 1 1994.5 M TIME  208409 178589 186306 105077 34563.2 15364.5 18943.5
+1 1 1 1 1 1 1 1995 1 1995 B TIME  0 170672 144533 117300 66486.3 20318.8 18839.8
+1 1 1 1 1 1 1 1995 1 1995.5 M TIME  231034 207253 145378 98552.1 49049.8 17777 20912.2
+1 1 1 1 1 1 1 1996 1 1996 B TIME  0 151483 131665 92264.6 59634.3 30319.3 20315.3
+1 1 1 1 1 1 1 1996 1 1996.5 M TIME  185527 146853 109335 62252.7 39941.2 22658.1 19334.4
+1 1 1 1 1 1 1 1997 1 1997 B TIME  0 159736 115119 80783.6 42492.9 24635.8 23923.9
+1 1 1 1 1 1 1 1997 1 1997.5 M TIME  193895 128995 96110.3 57331.6 28282.6 17723.9 21468.8
+1 1 1 1 1 1 1 1998 1 1998 B TIME  0 137693 119995 68510.1 34481.2 16269.2 22088.7
+1 1 1 1 1 1 1 1998 1 1998.5 M TIME  204953 147045 112413 50229.8 22932.1 11194.2 18308.2
+1 1 1 1 1 1 1 1999 1 1999 B TIME  0 154974 108456 71366.9 26722.2 12961.3 17505.5
+1 1 1 1 1 1 1 1999 1 1999.5 M TIME  204534 157263 100392 58258.9 22191.4 10325.2 15942.9
+1 1 1 1 1 1 1 2000 1 2000 B TIME  0 133864 106160 63709.5 33206.5 12185.6 15302.7
+1 1 1 1 1 1 1 2000 1 2000.5 M TIME  294786 130305 103964 53970.2 26163.2 9889.17 13885.5
+1 1 1 1 1 1 1 2001 1 2001 B TIME  0 171649 97561.7 67886.1 33586.6 14717.2 14196.1
+1 1 1 1 1 1 1 2001 1 2001.5 M TIME  203881 212515 104707 55741.1 25097.1 12214.3 13789.5
+1 1 1 1 1 1 1 2002 1 2002 B TIME  0 118158 132450 65469.2 35878.9 13229.1 14370.3
+1 1 1 1 1 1 1 2002 1 2002.5 M TIME  184502 171351 145568 54261.9 24880.6 10954 13161.6
+1 1 1 1 1 1 1 2003 1 2003 B TIME  0 86995.7 110685 98384.4 34391.1 14131.2 15006.9
+1 1 1 1 1 1 1 2003 1 2003.5 M TIME  149123 129492 114240 78405.1 26181.1 12026.5 14088
+1 1 1 1 1 1 1 2004 1 2004 B TIME  0 75377.8 94083.7 77770.9 50359.5 14767 16532.8
+1 1 1 1 1 1 1 2004 1 2004.5 M TIME  206082 106427 82593.3 56486.5 34024.9 11251.9 13514.1
+1 1 1 1 1 1 1 2005 1 2005 B TIME  0 118551 92038.3 60344.9 34811 21392.1 16931.5
+1 1 1 1 1 1 1 2005 1 2005.5 M TIME  139721 161983 71707.2 41876.6 23569 13523.5 12147.2
+1 1 1 1 1 1 1 2006 1 2006 B TIME  0 88139.6 159730 54297.4 24422.4 13847.7 17509.7
+1 1 1 1 1 1 1 2006 1 2006.5 M TIME  144875 107221 118031 40656.9 17935.8 10162.4 11782.1
+1 1 1 1 1 1 1 2007 1 2007 B TIME  0 81797.2 95828.3 89665.4 27256.7 11923.8 15171.3
+1 1 1 1 1 1 1 2007 1 2007.5 M TIME  136091 105558 85823.7 69928.5 22383 9541.72 11365.4
+1 1 1 1 1 1 1 2008 1 2008 B TIME  0 96730.2 77219.3 52696 43222.5 12638.8 12750.4
+1 1 1 1 1 1 1 2008 1 2008.5 M TIME  130830 85068.8 57130.1 36137.6 28021.3 8860.11 8499.24
+1 1 1 1 1 1 1 2009 1 2009 B TIME  0 94044.8 72102.4 34844.4 20274.7 15598.8 9514.74
+1 1 1 1 1 1 1 2009 1 2009.5 M TIME  98238.6 86184.1 54590.7 24024.5 13519.8 11008.2 6909.23
+1 1 1 1 1 1 1 2010 1 2010 B TIME  0 79312.8 71885.8 32752.7 12986.5 6774.96 9084.57
+1 1 1 1 1 1 1 2010 1 2010.5 M TIME  98250.5 89222.5 52106 21689.1 8496.13 4767.54 5849.33
+1 1 1 1 1 1 1 2011 1 2011 B TIME  0 54025.1 61474.4 31577.1 11081.7 3703.39 4976.71
+1 1 1 1 1 1 1 2011 1 2011.5 M TIME  74795 66253.6 48546.2 19980.5 6575.45 2415.51 3197.38
+1 1 1 1 1 1 1 2012 1 2012 B TIME  0 50003.3 46222.1 27854.1 9840.9 3132.36 2875.38
+1 1 1 1 1 1 1 2012 1 2012.5 M TIME  89421.2 70205.8 40283.2 21011.8 7347.85 2435.5 2220.07
+1 1 1 1 1 1 1 2013 1 2013 B TIME  0 51877.2 41584.5 25127.7 10822.2 3953.32 2530.14
+1 1 1 1 1 1 1 2013 1 2013.5 M TIME  74625.3 61459.6 38572.9 19074.9 8699.66 3103.82 2002.86
+1 1 1 1 1 1 1 2014 1 2014 B TIME  0 57403.4 39583.4 23935.7 10154.8 4993.65 2898.04
+1 1 1 1 1 1 1 2014 1 2014.5 M TIME  84700.2 58020.2 34758.4 19279.5 8650.78 4076.85 2390.35
+1 1 1 1 1 1 1 2015 1 2015 B TIME  0 51269.4 42569.3 25321.2 11533.9 5547.84 3913.11
+1 1 1 1 1 1 1 2015 1 2015.5 M TIME  88996.1 60012.3 47816 23451.8 11719.6 5179.72 3793.84
+1 1 1 1 1 1 1 2016 1 2016 B TIME  0 62792.8 40374.7 29994.2 14251.7 6945.64 5305.32
+1 1 1 1 1 1 1 2016 1 2016.5 M TIME  76946.3 71292 40072.2 26322.1 13815.4 6881.83 5532.77
+1 1 1 1 1 1 1 2017 1 2017 B TIME  0 70181.6 49919 28556.4 16999.9 8142.5 6776.12
+1 1 1 1 1 1 1 2017 1 2017.5 M TIME  74689.3 72817.4 47786.1 25524.7 16495.9 8103.02 7346.88
+1 1 1 1 1 1 1 2018 1 2018 B TIME  0 55787.4 60352.4 36715.1 17164 9967.9 8974.46
+1 1 1 1 1 1 1 2018 1 2018.5 M TIME  135935 70614.4 63609.8 38131.8 18466.2 11338.3 10598.7
+1 1 1 1 1 1 1 2019 1 2019 B TIME  0 72280.7 49162.2 47090.5 24133.2 11006 12456
+1 1 1 1 1 1 1 2019 1 2019.5 M TIME  156089 97581.4 49615 45666.1 25017.6 12637.2 14547.6
+1 1 1 1 1 1 1 2020 1 2020 B TIME  0 98760.9 65447.5 40132.4 31539.6 16723.6 16644.5
+1 1 1 1 1 1 1 2020 1 2020.5 M TIME  174215 112964 67488.1 39747.2 34449.9 18250.4 19108.3
+
+ NUMBERS_AT_LENGTH report:37
+Area Bio_Pattern Sex BirthSeas Settlement Platoon Morph Yr Seas Time Beg/Mid Era  8 12 16 20 24 28
+1 1 1 1 1 1 1 1978 1 1978 B  TIME  2.06077e+06 2.69126e+07 1.79633e+07 3.35667e+06 105125 526.913
+1 1 1 1 1 1 1 1978 1 1978.5 M  TIME  134129 9.94015e+06 1.74937e+07 4.64707e+06 188695 1045.18
+1 1 1 1 1 1 1 1979 1 1979 B  TIME  2.19602e+06 2.67551e+07 1.4802e+07 5.38907e+06 304531 2039.83
+1 1 1 1 1 1 1 1979 1 1979.5 M  TIME  142481 1.01231e+07 1.54489e+07 5.70149e+06 448879 3749.18
+1 1 1 1 1 1 1 1980 1 1980 B  TIME  2.31298e+06 2.80866e+07 1.40076e+07 5.69816e+06 578176 6406.62
+1 1 1 1 1 1 1 1980 1 1980.5 M  TIME  149528 1.05854e+07 1.53008e+07 5.53301e+06 657918 9300.66
+1 1 1 1 1 1 1 1981 1 1981 B  TIME  2.18009e+06 2.67147e+07 1.38909e+07 5.38531e+06 700859 12691.6
+1 1 1 1 1 1 1 1981 1 1981.5 M  TIME  140692 1.00093e+07 1.47757e+07 5.2155e+06 703306 14729.7
+1 1 1 1 1 1 1 1982 1 1982 B  TIME  2.07103e+06 2.53607e+07 1.32217e+07 5.05742e+06 702499 18027.4
+1 1 1 1 1 1 1 1982 1 1982.5 M  TIME  133655 9.50509e+06 1.4033e+07 4.93722e+06 686180 18234.3
+1 1 1 1 1 1 1 1983 1 1983 B  TIME  2.47635e+06 2.97205e+07 1.30617e+07 4.79529e+06 682452 20543.3
+1 1 1 1 1 1 1 1983 1 1983.5 M  TIME  159847 1.12285e+07 1.51896e+07 4.77399e+06 674413 19955
+1 1 1 1 1 1 1 1984 1 1984 B  TIME  2.08638e+06 2.58285e+07 1.39586e+07 4.81788e+06 665675 19289.7
+1 1 1 1 1 1 1 1984 1 1984.5 M  TIME  134716 9.64338e+06 1.46056e+07 4.87291e+06 647741 18605.8
+1 1 1 1 1 1 1 1985 1 1985 B  TIME  1.95799e+06 2.40221e+07 1.28821e+07 4.8631e+06 635915 18019.8
+1 1 1 1 1 1 1 1985 1 1985.5 M  TIME  126274 8.9896e+06 1.34244e+07 4.75113e+06 626121 17369.8
+1 1 1 1 1 1 1 1986 1 1986 B  TIME  1.83177e+06 2.24628e+07 1.18937e+07 4.59335e+06 617474 17035.9
+1 1 1 1 1 1 1 1986 1 1986.5 M  TIME  118220 8.41507e+06 1.25231e+07 4.47301e+06 610925 16679.7
+1 1 1 1 1 1 1 1987 1 1987 B  TIME  1.99166e+06 2.40926e+07 1.14151e+07 4.33377e+06 601335 16565.9
+1 1 1 1 1 1 1 1987 1 1987.5 M  TIME  128425 9.06312e+06 1.26982e+07 4.2207e+06 589623 16291.8
+1 1 1 1 1 1 1 1988 1 1988 B  TIME  1.72226e+06 2.1268e+07 1.14821e+07 4.15092e+06 576067 16130.5
+1 1 1 1 1 1 1 1988 1 1988.5 M  TIME  111685 8.00111e+06 1.22321e+07 4.12401e+06 525713 14813.1
+1 1 1 1 1 1 1 1989 1 1989 B  TIME  1.64909e+06 2.02174e+07 1.09048e+07 4.15737e+06 502508 13615
+1 1 1 1 1 1 1 1989 1 1989.5 M  TIME  107046 7.63813e+06 1.16294e+07 4.16059e+06 497249 12947.7
+1 1 1 1 1 1 1 1990 1 1990 B  TIME  1.65237e+06 2.01671e+07 1.04948e+07 4.15562e+06 503289 12187.1
+1 1 1 1 1 1 1 1990 1 1990.5 M  TIME  107156 7.62209e+06 1.13486e+07 4.02655e+06 492085 11830.5
+1 1 1 1 1 1 1 1991 1 1991 B  TIME  2.24837e+06 2.67523e+07 1.09213e+07 3.97322e+06 486148 11240.6
+1 1 1 1 1 1 1 1991 1 1991.5 M  TIME  145656 1.01909e+07 1.33947e+07 3.94269e+06 479327 11239.5
+1 1 1 1 1 1 1 1992 1 1992 B  TIME  1.90644e+06 2.35969e+07 1.26065e+07 4.09128e+06 480091 11198.3
+1 1 1 1 1 1 1 1992 1 1992.5 M  TIME  124042 8.90448e+06 1.36699e+07 4.38032e+06 487626 11430.1
+1 1 1 1 1 1 1 1993 1 1993 B  TIME  1.46676e+06 1.84335e+07 1.18848e+07 4.62581e+06 511517 11915.3
+1 1 1 1 1 1 1 1993 1 1993.5 M  TIME  95451.5 6.92456e+06 1.17398e+07 4.67698e+06 526154 11931.1
+1 1 1 1 1 1 1 1994 1 1994 B  TIME  1.32357e+06 1.63625e+07 9.97715e+06 4.60344e+06 551423 12162.6
+1 1 1 1 1 1 1 1994 1 1994.5 M  TIME  86127.3 6.18468e+06 1.00861e+07 4.40508e+06 568573 12678.7
+1 1 1 1 1 1 1 1995 1 1995 B  TIME  1.17297e+06 1.45121e+07 8.71517e+06 4.18501e+06 580356 13345.9
+1 1 1 1 1 1 1 1995 1 1995.5 M  TIME  76399 5.48903e+06 8.91809e+06 3.96749e+06 579569 14049.5
+1 1 1 1 1 1 1 1996 1 1996 B  TIME  1.24061e+06 1.50887e+07 7.93821e+06 3.76607e+06 573803 14710.5
+1 1 1 1 1 1 1 1996 1 1996.5 M  TIME  80529 5.71777e+06 8.55425e+06 3.46787e+06 533111 14401.7
+1 1 1 1 1 1 1 1997 1 1997 B  TIME  1.07397e+06 1.32939e+07 7.62098e+06 3.28013e+06 502507 14402.7
+1 1 1 1 1 1 1 1997 1 1997.5 M  TIME  69693.9 5.00251e+06 7.88051e+06 3.07301e+06 452347 13295.4
+1 1 1 1 1 1 1 1998 1 1998 B  TIME  1.08693e+06 1.32604e+07 6.99784e+06 2.94471e+06 417943 12185.8
+1 1 1 1 1 1 1 1998 1 1998.5 M  TIME  70453.8 5.01026e+06 7.49943e+06 2.79198e+06 386364 11202.4
+1 1 1 1 1 1 1 1999 1 1999 B  TIME  1.03976e+06 1.27381e+07 6.7555e+06 2.70415e+06 365208 10003.9
+1 1 1 1 1 1 1 1999 1 1999.5 M  TIME  67545.1 4.81759e+06 7.28732e+06 2.6569e+06 354127 9648.79
+1 1 1 1 1 1 1 2000 1 2000 B  TIME  1.4943e+06 1.77216e+07 7.05935e+06 2.63825e+06 347838 9102.97
+1 1 1 1 1 1 1 2000 1 2000.5 M  TIME  96925.7 6.76888e+06 8.80909e+06 2.64054e+06 345380 9043.4
+1 1 1 1 1 1 1 2001 1 2001 B  TIME  1.12855e+06 1.41523e+07 8.21603e+06 2.75051e+06 346740 8844.15
+1 1 1 1 1 1 1 2001 1 2001.5 M  TIME  73433.5 5.31546e+06 8.55866e+06 2.88769e+06 338488 8657.44
+1 1 1 1 1 1 1 2002 1 2002 B  TIME  869429 1.09367e+07 7.28189e+06 2.99331e+06 342679 8497.79
+1 1 1 1 1 1 1 2002 1 2002.5 M  TIME  56615.3 4.11137e+06 7.0988e+06 3.00013e+06 353016 8453.1
+1 1 1 1 1 1 1 2003 1 2003 B  TIME  789247 9.75406e+06 6.00293e+06 2.91606e+06 368716 8474.63
+1 1 1 1 1 1 1 2003 1 2003.5 M  TIME  51352.6 3.68698e+06 6.03594e+06 2.73583e+06 373542 8719.75
+1 1 1 1 1 1 1 2004 1 2004 B  TIME  1.30732e+06 1.5377e+07 5.81396e+06 2.56194e+06 373630 8992
+1 1 1 1 1 1 1 2004 1 2004.5 M  TIME  84601.2 5.87584e+06 7.39904e+06 2.34008e+06 348704 8887.19
+1 1 1 1 1 1 1 2005 1 2005 B  TIME  776667 1.00351e+07 6.77122e+06 2.31098e+06 325863 8620.46
+1 1 1 1 1 1 1 2005 1 2005.5 M  TIME  50537.7 3.7274e+06 6.58065e+06 2.35167e+06 292534 8007.06
+1 1 1 1 1 1 1 2006 1 2006 B  TIME  597275 7.53285e+06 5.36585e+06 2.3757e+06 278408 7576.38
+1 1 1 1 1 1 1 2006 1 2006.5 M  TIME  38716.1 2.81395e+06 4.99591e+06 2.3102e+06 285519 7216.26
+1 1 1 1 1 1 1 2007 1 2007 B  TIME  620421 7.5596e+06 4.21518e+06 2.15205e+06 294237 7149.57
+1 1 1 1 1 1 1 2007 1 2007.5 M  TIME  40082.7 2.84734e+06 4.35239e+06 1.9357e+06 288392 7012.93
+1 1 1 1 1 1 1 2008 1 2008 B  TIME  672337 8.13737e+06 3.94636e+06 1.76011e+06 276674 7010.51
+1 1 1 1 1 1 1 2008 1 2008.5 M  TIME  43115.1 3.0438e+06 4.28989e+06 1.52707e+06 235725 6254.83
+1 1 1 1 1 1 1 2009 1 2009 B  TIME  632545 7.73737e+06 3.8949e+06 1.40529e+06 203375 5654.21
+1 1 1 1 1 1 1 2009 1 2009.5 M  TIME  40524.6 2.87849e+06 4.15303e+06 1.30798e+06 171530 4766.59
+1 1 1 1 1 1 1 2010 1 2010 B  TIME  489164 6.1103e+06 3.61043e+06 1.26436e+06 153136 4361.52
+1 1 1 1 1 1 1 2010 1 2010.5 M  TIME  31256 2.24753e+06 3.51456e+06 1.16797e+06 129723 3402.91
+1 1 1 1 1 1 1 2011 1 2011 B  TIME  404198 5.01551e+06 2.94605e+06 1.09828e+06 116307 2736.42
+1 1 1 1 1 1 1 2011 1 2011.5 M  TIME  25749 1.84313e+06 2.83747e+06 968729 100973 2184.73
+1 1 1 1 1 1 1 2012 1 2012 B  TIME  370599 4.54418e+06 2.41831e+06 880340 90862.6 1811.94
+1 1 1 1 1 1 1 2012 1 2012.5 M  TIME  23805.9 1.69473e+06 2.51812e+06 840974 89489.3 1745.09
+1 1 1 1 1 1 1 2013 1 2013 B  TIME  382347 4.64267e+06 2.2649e+06 812052 88690.1 1753.98
+1 1 1 1 1 1 1 2013 1 2013.5 M  TIME  24606.3 1.74168e+06 2.48315e+06 792275 88344 1768.24
+1 1 1 1 1 1 1 2014 1 2014 B  TIME  359236 4.39933e+06 2.25457e+06 785070 88663.1 1873.64
+1 1 1 1 1 1 1 2014 1 2014.5 M  TIME  23307.8 1.66124e+06 2.47589e+06 829641 95653.9 2045.59
+1 1 1 1 1 1 1 2015 1 2015 B  TIME  450124 5.38948e+06 2.34779e+06 858641 103558 2372.25
+1 1 1 1 1 1 1 2015 1 2015.5 M  TIME  29301.8 2.06019e+06 2.83038e+06 925362 116868 2695.56
+1 1 1 1 1 1 1 2016 1 2016 B  TIME  540812 6.49283e+06 2.79668e+06 984794 130829 3224.18
+1 1 1 1 1 1 1 2016 1 2016.5 M  TIME  35201.8 2.47866e+06 3.3962e+06 1.06633e+06 142421 3566.78
+1 1 1 1 1 1 1 2017 1 2017 B  TIME  430156 5.3724e+06 3.13756e+06 1.14801e+06 155152 4117.53
+1 1 1 1 1 1 1 2017 1 2017.5 M  TIME  28111.6 2.03235e+06 3.31451e+06 1.26208e+06 169234 4504.26
+1 1 1 1 1 1 1 2018 1 2018 B  TIME  552393 6.61805e+06 3.06413e+06 1.32314e+06 186090 5128.18
+1 1 1 1 1 1 1 2018 1 2018.5 M  TIME  36098.2 2.54191e+06 3.62046e+06 1.41257e+06 210757 5775.8
+1 1 1 1 1 1 1 2019 1 2019 B  TIME  701813 8.39693e+06 3.58659e+06 1.47243e+06 236269 6763.51
+1 1 1 1 1 1 1 2019 1 2019.5 M  TIME  45890.4 3.22716e+06 4.43833e+06 1.58676e+06 260764 7622.64
+1 1 1 1 1 1 1 2020 1 2020 B  TIME  810411 9.76877e+06 4.39202e+06 1.69882e+06 284602 8684.52
+1 1 1 1 1 1 1 2020 1 2020.5 M  TIME  53177.4 3.76002e+06 5.35103e+06 1.92585e+06 320210 10032.8
+
+ BIOMASS_AT_LENGTH report:38
+Area Bio_Pattern Sex BirthSeas Settlement Platoon Morph Yr Seas Time Beg/Mid Era  8 12 16 20 24 28
+1 1 1 1 1 1 1 1978 1 1978 B  TIME  4.12155e+09 1.47696e+11 2.09524e+11 7.14836e+10 3.69534e+09 2.84533e+07
+1 1 1 1 1 1 1 1978 1 1978.5 M  TIME  2.68258e+08 5.45515e+10 2.04047e+11 9.89639e+10 6.63299e+09 5.64396e+07
+1 1 1 1 1 1 1 1979 1 1979 B  TIME  4.39205e+09 1.46832e+11 1.7265e+11 1.14766e+11 1.07049e+10 1.10151e+08
+1 1 1 1 1 1 1 1979 1 1979.5 M  TIME  2.84963e+08 5.55554e+10 1.80196e+11 1.21419e+11 1.5779e+10 2.02456e+08
+1 1 1 1 1 1 1 1980 1 1980 B  TIME  4.62596e+09 1.54139e+11 1.63385e+11 1.21348e+11 2.0324e+10 3.45958e+08
+1 1 1 1 1 1 1 1980 1 1980.5 M  TIME  2.99057e+08 5.80926e+10 1.78469e+11 1.17831e+11 2.31272e+10 5.02236e+08
+1 1 1 1 1 1 1 1981 1 1981 B  TIME  4.36017e+09 1.4661e+11 1.62024e+11 1.14686e+11 2.46366e+10 6.85344e+08
+1 1 1 1 1 1 1 1981 1 1981.5 M  TIME  2.81385e+08 5.4931e+10 1.72344e+11 1.11069e+11 2.47226e+10 7.95403e+08
+1 1 1 1 1 1 1 1982 1 1982 B  TIME  4.14205e+09 1.39179e+11 1.54217e+11 1.07703e+11 2.46942e+10 9.73481e+08
+1 1 1 1 1 1 1 1982 1 1982.5 M  TIME  2.67311e+08 5.21639e+10 1.63681e+11 1.05143e+11 2.41206e+10 9.84655e+08
+1 1 1 1 1 1 1 1983 1 1983 B  TIME  4.9527e+09 1.63106e+11 1.52351e+11 1.0212e+11 2.39895e+10 1.10934e+09
+1 1 1 1 1 1 1 1983 1 1983.5 M  TIME  3.19695e+08 6.16223e+10 1.77171e+11 1.01667e+11 2.3707e+10 1.07757e+09
+1 1 1 1 1 1 1 1984 1 1984 B  TIME  4.17275e+09 1.41747e+11 1.62814e+11 1.02602e+11 2.33998e+10 1.04164e+09
+1 1 1 1 1 1 1 1984 1 1984.5 M  TIME  2.69433e+08 5.29229e+10 1.7036e+11 1.03773e+11 2.27694e+10 1.00471e+09
+1 1 1 1 1 1 1 1985 1 1985 B  TIME  3.91597e+09 1.31833e+11 1.50257e+11 1.03564e+11 2.23537e+10 9.7307e+08
+1 1 1 1 1 1 1 1985 1 1985.5 M  TIME  2.52547e+08 4.93349e+10 1.56583e+11 1.0118e+11 2.20094e+10 9.37969e+08
+1 1 1 1 1 1 1 1986 1 1986 B  TIME  3.66353e+09 1.23276e+11 1.38728e+11 9.78199e+10 2.17054e+10 9.19941e+08
+1 1 1 1 1 1 1 1986 1 1986.5 M  TIME  2.3644e+08 4.61819e+10 1.4607e+11 9.52572e+10 2.14752e+10 9.00705e+08
+1 1 1 1 1 1 1 1987 1 1987 B  TIME  3.98332e+09 1.3222e+11 1.33146e+11 9.22919e+10 2.11381e+10 8.9456e+08
+1 1 1 1 1 1 1 1987 1 1987.5 M  TIME  2.56849e+08 4.97384e+10 1.48112e+11 8.98839e+10 2.07264e+10 8.79756e+08
+1 1 1 1 1 1 1 1988 1 1988 B  TIME  3.44452e+09 1.16719e+11 1.33927e+11 8.83981e+10 2.02499e+10 8.71049e+08
+1 1 1 1 1 1 1 1988 1 1988.5 M  TIME  2.2337e+08 4.39101e+10 1.42676e+11 8.78249e+10 1.84799e+10 7.99907e+08
+1 1 1 1 1 1 1 1989 1 1989 B  TIME  3.29817e+09 1.10953e+11 1.27193e+11 8.85353e+10 1.76641e+10 7.3521e+08
+1 1 1 1 1 1 1 1989 1 1989.5 M  TIME  2.14092e+08 4.19181e+10 1.35646e+11 8.8604e+10 1.74793e+10 6.99177e+08
+1 1 1 1 1 1 1 1990 1 1990 B  TIME  3.30473e+09 1.10677e+11 1.22412e+11 8.8498e+10 1.76916e+10 6.58105e+08
+1 1 1 1 1 1 1 1990 1 1990.5 M  TIME  2.14311e+08 4.183e+10 1.3237e+11 8.57495e+10 1.72978e+10 6.38846e+08
+1 1 1 1 1 1 1 1991 1 1991 B  TIME  4.49673e+09 1.46817e+11 1.27386e+11 8.46136e+10 1.70891e+10 6.06994e+08
+1 1 1 1 1 1 1 1991 1 1991.5 M  TIME  2.91312e+08 5.59278e+10 1.56236e+11 8.39635e+10 1.68493e+10 6.06934e+08
+1 1 1 1 1 1 1 1992 1 1992 B  TIME  3.81288e+09 1.295e+11 1.47043e+11 8.7128e+10 1.68762e+10 6.04708e+08
+1 1 1 1 1 1 1 1992 1 1992.5 M  TIME  2.48084e+08 4.88678e+10 1.59446e+11 9.32834e+10 1.7141e+10 6.17228e+08
+1 1 1 1 1 1 1 1993 1 1993 B  TIME  2.93352e+09 1.01163e+11 1.38624e+11 9.85113e+10 1.79809e+10 6.43424e+08
+1 1 1 1 1 1 1 1993 1 1993.5 M  TIME  1.90903e+08 3.8002e+10 1.36933e+11 9.96011e+10 1.84954e+10 6.44281e+08
+1 1 1 1 1 1 1 1994 1 1994 B  TIME  2.64713e+09 8.97974e+10 1.16373e+11 9.80348e+10 1.93836e+10 6.5678e+08
+1 1 1 1 1 1 1 1994 1 1994.5 M  TIME  1.72255e+08 3.39415e+10 1.17644e+11 9.38107e+10 1.99865e+10 6.84649e+08
+1 1 1 1 1 1 1 1995 1 1995 B  TIME  2.34594e+09 7.96425e+10 1.01654e+11 8.91241e+10 2.04007e+10 7.20677e+08
+1 1 1 1 1 1 1 1995 1 1995.5 M  TIME  1.52798e+08 3.01238e+10 1.04021e+11 8.44916e+10 2.0373e+10 7.5867e+08
+1 1 1 1 1 1 1 1996 1 1996 B  TIME  2.48121e+09 8.28067e+10 9.25913e+10 8.02022e+10 2.01703e+10 7.9437e+08
+1 1 1 1 1 1 1 1996 1 1996.5 M  TIME  1.61058e+08 3.13791e+10 9.97768e+10 7.38518e+10 1.87399e+10 7.77693e+08
+1 1 1 1 1 1 1 1997 1 1997 B  TIME  2.14793e+09 7.29569e+10 8.88911e+10 6.98537e+10 1.76641e+10 7.77745e+08
+1 1 1 1 1 1 1 1997 1 1997.5 M  TIME  1.39388e+08 2.74538e+10 9.19183e+10 6.54428e+10 1.59009e+10 7.17953e+08
+1 1 1 1 1 1 1 1998 1 1998 B  TIME  2.17385e+09 7.27732e+10 8.16228e+10 6.27105e+10 1.46915e+10 6.58031e+08
+1 1 1 1 1 1 1 1998 1 1998.5 M  TIME  1.40908e+08 2.74963e+10 8.74734e+10 5.94579e+10 1.35815e+10 6.04927e+08
+1 1 1 1 1 1 1 1999 1 1999 B  TIME  2.07952e+09 6.99067e+10 7.87961e+10 5.75875e+10 1.28378e+10 5.40213e+08
+1 1 1 1 1 1 1 1999 1 1999.5 M  TIME  1.3509e+08 2.6439e+10 8.49993e+10 5.65814e+10 1.24483e+10 5.21034e+08
+1 1 1 1 1 1 1 2000 1 2000 B  TIME  2.9886e+09 9.72564e+10 8.23403e+10 5.61842e+10 1.22272e+10 4.91561e+08
+1 1 1 1 1 1 1 2000 1 2000.5 M  TIME  1.93851e+08 3.71476e+10 1.02749e+11 5.62329e+10 1.21408e+10 4.88344e+08
+1 1 1 1 1 1 1 2001 1 2001 B  TIME  2.2571e+09 7.76677e+10 9.58318e+10 5.8575e+10 1.21886e+10 4.77584e+08
+1 1 1 1 1 1 1 2001 1 2001.5 M  TIME  1.46867e+08 2.91712e+10 9.98283e+10 6.14962e+10 1.18985e+10 4.67502e+08
+1 1 1 1 1 1 1 2002 1 2002 B  TIME  1.73886e+09 6.00208e+10 8.49359e+10 6.37455e+10 1.20458e+10 4.58881e+08
+1 1 1 1 1 1 1 2002 1 2002.5 M  TIME  1.13231e+08 2.25632e+10 8.28004e+10 6.38907e+10 1.24092e+10 4.56467e+08
+1 1 1 1 1 1 1 2003 1 2003 B  TIME  1.57849e+09 5.35303e+10 7.00182e+10 6.21003e+10 1.29611e+10 4.5763e+08
+1 1 1 1 1 1 1 2003 1 2003.5 M  TIME  1.02705e+08 2.02342e+10 7.04032e+10 5.82622e+10 1.31308e+10 4.70866e+08
+1 1 1 1 1 1 1 2004 1 2004 B  TIME  2.61464e+09 8.43892e+10 6.7814e+10 5.4559e+10 1.31338e+10 4.85568e+08
+1 1 1 1 1 1 1 2004 1 2004.5 M  TIME  1.69202e+08 3.22466e+10 8.63025e+10 4.98343e+10 1.22577e+10 4.79909e+08
+1 1 1 1 1 1 1 2005 1 2005 B  TIME  1.55333e+09 5.50725e+10 7.89795e+10 4.92146e+10 1.14547e+10 4.65505e+08
+1 1 1 1 1 1 1 2005 1 2005.5 M  TIME  1.01075e+08 2.0456e+10 7.67567e+10 5.00811e+10 1.02832e+10 4.32381e+08
+1 1 1 1 1 1 1 2006 1 2006 B  TIME  1.19455e+09 4.13403e+10 6.25873e+10 5.05929e+10 9.78661e+09 4.09124e+08
+1 1 1 1 1 1 1 2006 1 2006.5 M  TIME  7.74322e+07 1.5443e+10 5.82723e+10 4.91981e+10 1.00366e+10 3.89678e+08
+1 1 1 1 1 1 1 2007 1 2007 B  TIME  1.24084e+09 4.14871e+10 4.91659e+10 4.58301e+10 1.0343e+10 3.86077e+08
+1 1 1 1 1 1 1 2007 1 2007.5 M  TIME  8.01654e+07 1.56262e+10 5.07662e+10 4.12228e+10 1.01376e+10 3.78698e+08
+1 1 1 1 1 1 1 2008 1 2008 B  TIME  1.34467e+09 4.46579e+10 4.60304e+10 3.74833e+10 9.72566e+09 3.78568e+08
+1 1 1 1 1 1 1 2008 1 2008.5 M  TIME  8.62303e+07 1.67044e+10 5.00372e+10 3.25204e+10 8.28622e+09 3.37761e+08
+1 1 1 1 1 1 1 2009 1 2009 B  TIME  1.26509e+09 4.24627e+10 4.54302e+10 2.99271e+10 7.14905e+09 3.05327e+08
+1 1 1 1 1 1 1 2009 1 2009.5 M  TIME  8.10492e+07 1.57971e+10 4.84409e+10 2.78547e+10 6.02963e+09 2.57396e+08
+1 1 1 1 1 1 1 2010 1 2010 B  TIME  9.78327e+08 3.35333e+10 4.21121e+10 2.69258e+10 5.38305e+09 2.35522e+08
+1 1 1 1 1 1 1 2010 1 2010.5 M  TIME  6.25121e+07 1.23344e+10 4.09939e+10 2.48732e+10 4.56002e+09 1.83757e+08
+1 1 1 1 1 1 1 2011 1 2011 B  TIME  8.08397e+08 2.75251e+10 3.43628e+10 2.33891e+10 4.08844e+09 1.47766e+08
+1 1 1 1 1 1 1 2011 1 2011.5 M  TIME  5.14981e+07 1.01151e+10 3.30963e+10 2.06301e+10 3.54939e+09 1.17975e+08
+1 1 1 1 1 1 1 2012 1 2012 B  TIME  7.41198e+08 2.49384e+10 2.82072e+10 1.87477e+10 3.194e+09 9.78445e+07
+1 1 1 1 1 1 1 2012 1 2012.5 M  TIME  4.76119e+07 9.30067e+09 2.93714e+10 1.79094e+10 3.14573e+09 9.42349e+07
+1 1 1 1 1 1 1 2013 1 2013 B  TIME  7.64695e+08 2.5479e+10 2.64178e+10 1.72935e+10 3.11763e+09 9.47151e+07
+1 1 1 1 1 1 1 2013 1 2013.5 M  TIME  4.92126e+07 9.55836e+09 2.89634e+10 1.68723e+10 3.10547e+09 9.54849e+07
+1 1 1 1 1 1 1 2014 1 2014 B  TIME  7.18471e+08 2.41435e+10 2.62973e+10 1.67188e+10 3.11668e+09 1.01177e+08
+1 1 1 1 1 1 1 2014 1 2014.5 M  TIME  4.66157e+07 9.11688e+09 2.88788e+10 1.7668e+10 3.36243e+09 1.10462e+08
+1 1 1 1 1 1 1 2015 1 2015 B  TIME  9.00247e+08 2.95774e+10 2.73846e+10 1.82856e+10 3.64027e+09 1.28101e+08
+1 1 1 1 1 1 1 2015 1 2015.5 M  TIME  5.86037e+07 1.13063e+10 3.30136e+10 1.97065e+10 4.10815e+09 1.4556e+08
+1 1 1 1 1 1 1 2016 1 2016 B  TIME  1.08162e+09 3.56327e+10 3.26205e+10 2.09722e+10 4.59889e+09 1.74106e+08
+1 1 1 1 1 1 1 2016 1 2016.5 M  TIME  7.04037e+07 1.36029e+10 3.96133e+10 2.27085e+10 5.00639e+09 1.92606e+08
+1 1 1 1 1 1 1 2017 1 2017 B  TIME  8.60313e+08 2.94837e+10 3.65966e+10 2.44479e+10 5.45391e+09 2.22346e+08
+1 1 1 1 1 1 1 2017 1 2017.5 M  TIME  5.62232e+07 1.11535e+10 3.86605e+10 2.68773e+10 5.94892e+09 2.4323e+08
+1 1 1 1 1 1 1 2018 1 2018 B  TIME  1.10479e+09 3.63198e+10 3.574e+10 2.81777e+10 6.54145e+09 2.76922e+08
+1 1 1 1 1 1 1 2018 1 2018.5 M  TIME  7.21965e+07 1.395e+10 4.2229e+10 3.0082e+10 7.40852e+09 3.11893e+08
+1 1 1 1 1 1 1 2019 1 2019 B  TIME  1.40363e+09 4.60824e+10 4.18339e+10 3.13569e+10 8.30532e+09 3.6523e+08
+1 1 1 1 1 1 1 2019 1 2019.5 M  TIME  9.17808e+07 1.77106e+10 5.17687e+10 3.37915e+10 9.16637e+09 4.11622e+08
+1 1 1 1 1 1 1 2020 1 2020 B  TIME  1.62082e+09 5.3611e+10 5.12285e+10 3.6178e+10 1.00043e+10 4.68964e+08
+1 1 1 1 1 1 1 2020 1 2020.5 M  TIME  1.06355e+08 2.0635e+10 6.24144e+10 4.10129e+10 1.1256e+10 5.41773e+08
+
+ F_AT_AGE report:39
+Area Fleet Sex Morph Yr Seas Era 0 1 2 3 4 5 6
+1 1 1 1 1977 1 INIT  0 0 0 0 0 0 0
+1 1 1 1 1978 1 TIME  0.0270097 0.136148 0.313672 0.313671 0.313671 0.313671 0.279411
+1 1 1 1 1979 1 TIME  0.0228391 0.115125 0.265238 0.265237 0.265237 0.265237 0.236267
+1 1 1 1 1980 1 TIME  0.0293958 0.148176 0.341382 0.341381 0.341381 0.341381 0.304095
+1 1 1 1 1981 1 TIME  0.0339379 0.171071 0.394131 0.394129 0.394129 0.394129 0.351081
+1 1 1 1 1982 1 TIME  0.0338078 0.170415 0.39262 0.392619 0.392619 0.392619 0.349736
+1 1 1 1 1983 1 TIME  0.0307069 0.154784 0.356608 0.356607 0.356607 0.356607 0.317657
+1 1 1 1 1984 1 TIME  0.0343372 0.173084 0.398768 0.398766 0.398766 0.398766 0.355212
+1 1 1 1 1985 1 TIME  0.0353375 0.178126 0.410385 0.410384 0.410384 0.410384 0.36556
+1 1 1 1 1986 1 TIME  0.0339107 0.170934 0.393815 0.393813 0.393813 0.393813 0.3508
+1 1 1 1 1987 1 TIME  0.033786 0.170305 0.392367 0.392366 0.392366 0.392366 0.349511
+1 1 1 1 1988 1 TIME  0.0263172 0.0977128 0.257742 0.642561 0.642561 0.642561 0.363729
+1 1 1 1 1989 1 TIME  0.0232886 0.0864679 0.22808 0.568615 0.568615 0.568615 0.32187
+1 1 1 1 1990 1 TIME  0.0245013 0.0909708 0.239958 0.598225 0.598225 0.598225 0.338632
+1 1 1 1 1991 1 TIME  0.0228468 0.0848276 0.223754 0.557828 0.557828 0.557828 0.315764
+1 1 1 1 1992 1 TIME  0.0202962 0.0753576 0.198774 0.495553 0.495553 0.495553 0.280513
+1 1 1 1 1993 1 TIME  0.0220797 0.0819796 0.216241 0.539099 0.539099 0.539099 0.305163
+1 1 1 1 1994 1 TIME  0.0197323 0.073264 0.193252 0.481785 0.481785 0.481785 0.27272
+1 1 1 1 1995 1 TIME  0.0181036 0.0672167 0.177301 0.442018 0.442018 0.442018 0.250209
+1 1 1 1 1996 1 TIME  0.0221509 0.082244 0.216939 0.540838 0.540838 0.540838 0.306147
+1 1 1 1 1997 1 TIME  0.025265 0.0938064 0.247438 0.616873 0.616873 0.616873 0.349187
+1 1 1 1 1998 1 TIME  0.0253295 0.0940458 0.248069 0.618447 0.618447 0.618447 0.350078
+1 1 1 1 1999 1 TIME  0.0217318 0.0806877 0.212834 0.530604 0.530604 0.530604 0.300354
+1 1 1 1 2000 1 TIME  0.0199486 0.0740669 0.19537 0.487065 0.487065 0.487065 0.275708
+1 1 1 1 2001 1 TIME  0.022115 0.0821107 0.216587 0.539962 0.539962 0.539962 0.305651
+1 1 1 1 2002 1 TIME  0.0209716 0.0778655 0.205389 0.512045 0.512045 0.512045 0.289848
+1 1 1 1 2003 1 TIME  0.0198805 0.0738143 0.194703 0.485404 0.485404 0.485404 0.274768
+1 1 1 1 2004 1 TIME  0.023269 0.0863954 0.227889 0.568138 0.568138 0.568138 0.3216
+1 1 1 1 2005 1 TIME  0.0265737 0.0986653 0.260254 0.648825 0.648825 0.648825 0.367274
+1 1 1 1 2006 1 TIME  0.0298669 0.117294 0.283292 0.428939 0.428939 0.428939 0.424151
+1 1 1 1 2007 1 TIME  0.0314088 0.123349 0.297918 0.451085 0.451085 0.451085 0.446049
+1 1 1 1 2008 1 TIME  0.0448956 0.176315 0.425842 0.644777 0.644777 0.644777 0.63758
+1 1 1 1 2009 1 TIME  0.0482072 0.18932 0.457253 0.692338 0.692338 0.692338 0.68461
+1 1 1 1 2010 1 TIME  0.0560556 0.220143 0.531696 0.805054 0.805054 0.805054 0.796067
+1 1 1 1 2011 1 TIME  0.0608923 0.239138 0.577573 0.874518 0.874518 0.874518 0.864756
+1 1 1 1 2012 1 TIME  0.0433753 0.170344 0.411422 0.622944 0.622944 0.622944 0.61599
+1 1 1 1 2013 1 TIME  0.0384732 0.151093 0.364925 0.552541 0.552541 0.552541 0.546374
+1 1 1 1 2014 1 TIME  0.0240462 0.0944348 0.228082 0.345345 0.345345 0.345345 0.34149
+1 1 1 1 2015 1 TIME  0.014345 0.056336 0.136065 0.206019 0.206019 0.206019 0.203719
+1 1 1 1 2016 1 TIME  0.0149736 0.0588045 0.142027 0.215046 0.215046 0.215046 0.212645
+1 1 1 1 2017 1 TIME  0.0131674 0.0517114 0.124895 0.189107 0.189107 0.189107 0.186996
+1 1 1 1 2018 1 TIME  0.00693821 0.0272479 0.0658101 0.0996446 0.0996446 0.0996446 0.0985323
+1 1 1 1 2019 1 TIME  0.00563112 0.0221147 0.0534121 0.0808726 0.0808726 0.0808726 0.0799698
+1 1 1 1 2020 1 TIME  0 0 0 0 0 0 0
+
+ CATCH_AT_AGE report:40
+Area Fleet Sex  XX XX Type Morph Yr Seas XX Era 0 1 2 3 4 5 6
+1 1 1 XX XX dead 1 1977 1 XX INIT  3.5697e+06 5.29565e+06 2.30396e+06 259312 30996.8 3817.85 537.987
+1 1 1 XX XX dead 1 1978 1 XX TIME  453538 1.7232e+06 1.11903e+06 127129 16679.5 2085.7 280.392
+1 1 1 XX XX dead 1 1979 1 XX TIME  411384 796915 1.59952e+06 455296 54769.3 7380.85 981.783
+1 1 1 XX XX dead 1 1980 1 XX TIME  556162 1.08705e+06 1.10207e+06 984265 296503 36627.5 5258.43
+1 1 1 XX XX dead 1 1981 1 XX TIME  603707 1.30016e+06 1.29393e+06 569479 538403 166590 22223.1
+1 1 1 XX XX dead 1 1982 1 XX TIME  571376 1.21487e+06 1.31908e+06 560225 261088 253581 83907.5
+1 1 1 XX XX dead 1 1983 1 XX TIME  622092 1.05562e+06 1.14178e+06 529423 238122 114008 141848
+1 1 1 XX XX dead 1 1984 1 XX TIME  584060 1.40627e+06 1.21009e+06 565396 277544 128225 139249
+1 1 1 XX XX dead 1 1985 1 XX TIME  564224 1.20988e+06 1.46111e+06 535687 265027 133650 129780
+1 1 1 XX XX dead 1 1986 1 XX TIME  506840 1.09262e+06 1.17714e+06 603449 234296 119087 118716
+1 1 1 XX XX dead 1 1987 1 XX TIME  549539 1.02017e+06 1.1089e+06 509889 276786 110400 112421
+1 1 1 XX XX dead 1 1988 1 XX TIME  370825 657625 723998 710530 345678 192730 109509
+1 1 1 XX XX dead 1 1989 1 XX TIME  314776 508862 759640 695531 232515 116285 91475.7
+1 1 1 XX XX dead 1 1990 1 XX TIME  331743 513425 699550 871240 278997 95852.5 81219.4
+1 1 1 XX XX dead 1 1991 1 XX TIME  421843 480550 628498 718493 309714 101941 62052.8
+1 1 1 XX XX dead 1 1992 1 XX TIME  317308 585171 568619 637167 255818 113334 53313.2
+1 1 1 XX XX dead 1 1993 1 XX TIME  265176 538235 845818 702691 282645 116603 64472.1
+1 1 1 XX XX dead 1 1994 1 XX TIME  214291 370560 643288 871346 255941 105800 58901.4
+1 1 1 XX XX dead 1 1995 1 XX TIME  174334 308665 460140 700939 342564 103394 57028
+1 1 1 XX XX dead 1 1996 1 XX TIME  225460 332984 503921 646745 360316 180908 73370.1
+1 1 1 XX XX dead 1 1997 1 XX TIME  222072 398446 495809 625591 283575 162347 96674.5
+1 1 1 XX XX dead 1 1998 1 XX TIME  225532 344301 517984 531549 230544 107414 89450.7
+1 1 1 XX XX dead 1 1999 1 XX TIME  185323 300998 389005 492923 173827 77497.8 63190.3
+1 1 1 XX XX dead 1 2000 1 XX TIME  245145 265961 369431 411476 184896 67007.1 50457.1
+1 1 1 XX XX dead 1 2001 1 XX TIME  204342 423813 391971 465946 186846 86266.9 50398.5
+1 1 1 XX XX dead 1 2002 1 XX TIME  149366 302376 534555 422905 177669 73218.5 47247.2
+1 1 1 XX XX dead 1 2003 1 XX TIME  128738 221493 383978 586769 165699 71535.2 43167.4
+1 1 1 XX XX dead 1 2004 1 XX TIME  249950 234544 342972 505457 278224 80726.2 49675.1
+1 1 1 XX XX dead 1 2005 1 XX TIME  168333 441045 346900 418135 215525 121916 52295.1
+1 1 1 XX XX dead 1 2006 1 XX TIME  145586 306080 611312 263867 108143 57308.8 62359.8
+1 1 1 XX XX dead 1 2007 1 XX TIME  159250 246559 369032 439248 122067 51397 58363.8
+1 1 1 XX XX dead 1 2008 1 XX TIME  245366 357867 381062 329392 251163 71702.2 66216.1
+1 1 1 XX XX dead 1 2009 1 XX TIME  247360 408640 397933 232966 124028 97208.8 54795.1
+1 1 1 XX XX dead 1 2010 1 XX TIME  221428 439360 473400 247157 88210.9 48274.7 60517.5
+1 1 1 XX XX dead 1 2011 1 XX TIME  198452 362756 458419 255893 79513.2 29180.3 37082.6
+1 1 1 XX XX dead 1 2012 1 XX TIME  130650 219016 263309 175223 57395.3 18345.8 15755.7
+1 1 1 XX XX dead 1 2013 1 XX TIME  119871 182920 209980 142112 58534.7 19708.8 12009.1
+1 1 1 XX XX dead 1 2014 1 XX TIME  70778.5 121590 132619 89648.3 38122.7 16140 8938.1
+1 1 1 XX XX dead 1 2015 1 XX TIME  53195.9 70280.6 90494.5 62098.5 27492.4 12010.2 8059.18
+1 1 1 XX XX dead 1 2016 1 XX TIME  66682 92844.7 93234.8 77704.2 35857.7 16300.8 12147.7
+1 1 1 XX XX dead 1 2017 1 XX TIME  46563.1 98322.3 104425 68014 38058.1 18034.4 14616.8
+1 1 1 XX XX dead 1 2018 1 XX TIME  31674 41634.4 68329.3 47991 21094.3 12120.7 10625.8
+1 1 1 XX XX dead 1 2019 1 XX TIME  32677.5 43881.7 45430.5 50389.5 24281.7 10956.6 12073.6
+1 1 1 XX XX dead 1 2020 1 XX TIME  0 0 0 0 0 0 0
+
+ DISCARD_AT_AGE report:41
+Area Fleet Sex  XX XX Type Morph Yr Seas XX Era 0 1 2 3 4 5 6
+
+ BIOLOGY report:42
+1 6 6 1 N_Used_morphs;_lengths;_ages;_season;_by_season_in_endyr
+GP Bin Low Mean_Size Wt_len Mat_len Spawn Fecundity
+1 1 8 10 2000 1 1 2000
+1 2 12 14 5488 1 1 5488
+1 3 16 18 11664 1 1 11664
+1 4 20 22 21296 1 1 21296
+1 5 24 26 35152 1 1 35152
+1 6 28 30 54000 1 1 54000
+
+ Natural_Mortality report:43
+Method: 3
+Bio_Pattern Sex Settlement Seas  0 1 2 3 4 5 6
+1 1 1 1  0.98 0.61 0.47 0.4 0.36 0.35 0.32
+#
+Natural_Mortality_Bmark
+Bio_Pattern Sex Settlement Seas  0 1 2 3 4 5 6
+1 1 1 1  0.98 0.61 0.47 0.4 0.36 0.35 0.32
+#
+Natural_Mortality_endyr
+Bio_Pattern Sex Settlement Seas  0 1 2 3 4 5 6
+1 1 1 1  0.98 0.61 0.47 0.4 0.36 0.35 0.32
+
+ Growth_Parameters report:45
+ Count Yr Sex Platoon A1 A2 L_a_A1 L_a_A2 K A_a_L0 Linf CVmin CVmax natM_amin natM_max M_age0 M_nages WtLen1 WtLen2 Mat1 Mat2 Fec1 Fec2
+ 1 1978 1  1 0 6 14 23 0.4 -2.20367 23.8979 0.1 0.1 0 0 0.98 0.32 2 3 55 -0.25 1 0
+
+ Biology_at_age_in_endyr report:47
+in_endyr_with_CV=f(LAA)
+Seas Morph Bio_Pattern Sex Settlement Platoon int_Age Real_Age Age_Beg Age_Mid M Len_Beg Len_Mid SD_Beg SD_Mid Wt_Beg Wt_Mid Len_Mat Age_Mat Mat*Fecund Mat_F_wtatage Mat_F_Natage Len:_1 SelWt:_1 RetWt:_1 Len:_2 SelWt:_2 RetWt:_2 Len:_3 SelWt:_3 RetWt:_3
+1 1 1 1 1 1 0 0 0 0.5 0.98 14 15.7942 1.4 1.57942 0 0.027 1 -1 0 0 0 15.7756 0.027 0.027 15.7756 0 0 15.7756 0 0
+1 1 1 1 1 1 1 1 1 1.5 0.61 17.2631 18.4658 1.72631 1.84658 0.029 0.045 1 -1 0.029 0 0 18.4532 0.045 0.045 18.4532 0.029 0.029 18.4532 0.029 0.029
+1 1 1 1 1 1 2 2 2 2.5 0.47 19.4505 20.2567 1.94505 2.02567 0.046 0.06 1 -1 0.047 0 0 20.2598 0.06 0.06 20.2598 0.046 0.046 20.2598 0.046 0.046
+1 1 1 1 1 1 3 3 3 3.5 0.4 20.9167 21.4571 2.09167 2.14571 0.062 0.075 1 -1 0.062 0 0 21.4604 0.075 0.075 21.4604 0.062 0.062 21.4604 0.062 0.062
+1 1 1 1 1 1 4 4 4 4.5 0.36 21.8996 22.2618 2.18996 2.22618 0.065 0.085 1 -1 0.066 0 0 22.2607 0.085 0.085 22.2607 0.065 0.065 22.2607 0.065 0.065
+1 1 1 1 1 1 5 5 5 5.5 0.35 22.5584 22.8012 2.25584 2.28012 0.07 0.091 1 -1 0.071 0 0 22.7991 0.091 0.091 22.7991 0.07 0.07 22.7991 0.07 0.07
+1 1 1 1 1 1 6 6 6 6.5 0.32 23.3331 23.4354 2.33331 2.34354 0.072 0.097 1 -1 0.074 0 0 23.4338 0.097 0.097 23.4338 0.072 0.072 23.4338 0.072 0.072
+
+ MEAN_BODY_WT(Begin) report:48
+ as read from wtatage.ss#NOTE: yr=_1975_stores_values_for_benchmark
+Morph Yr Seas 0 1 2 3 4 5 6
+1 1975 1  0 0 0 0 0 0 0
+1 1976 1  0 0 0 0 0 0 0
+1 1977 1  0 0 0 0 0 0 0
+1 1978 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1979 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1980 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1981 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1982 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1983 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1984 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1985 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1986 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1987 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1988 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1989 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1990 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1991 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1992 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1993 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1994 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1995 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1996 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1997 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1998 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 1999 1  0 0.03 0.043 0.05 0.054 0.059 0.062
+1 2000 1  0 0.027 0.041 0.05 0.059 0.06 0.063
+1 2001 1  0 0.024 0.039 0.051 0.064 0.061 0.064
+1 2002 1  0 0.022 0.037 0.052 0.069 0.062 0.066
+1 2003 1  0 0.021 0.041 0.054 0.068 0.065 0.072
+1 2004 1  0 0.02 0.045 0.056 0.067 0.068 0.079
+1 2005 1  0 0.019 0.049 0.058 0.066 0.072 0.086
+1 2006 1  0 0.024 0.052 0.06 0.067 0.072 0.084
+1 2007 1  0 0.029 0.054 0.062 0.069 0.072 0.081
+1 2008 1  0 0.033 0.057 0.064 0.07 0.072 0.079
+1 2009 1  0 0.03 0.054 0.063 0.07 0.069 0.075
+1 2010 1  0 0.027 0.051 0.062 0.07 0.067 0.072
+1 2011 1  0 0.024 0.048 0.061 0.07 0.064 0.068
+1 2012 1  0 0.027 0.048 0.062 0.068 0.068 0.073
+1 2013 1  0 0.03 0.049 0.063 0.067 0.073 0.077
+1 2014 1  0 0.032 0.049 0.065 0.066 0.077 0.081
+1 2015 1  0 0.03 0.048 0.063 0.066 0.073 0.077
+1 2016 1  0 0.029 0.046 0.062 0.065 0.07 0.072
+1 2017 1  0 0.027 0.045 0.06 0.065 0.066 0.068
+1 2018 1  0 0.027 0.045 0.06 0.065 0.066 0.068
+1 2019 1  0 0.027 0.045 0.06 0.065 0.066 0.068
+1 2020 1  0 0.029 0.046 0.062 0.065 0.07 0.072
+
+ MEAN_SIZE_TIMESERIES report:49
+Morph Yr Seas SubSeas 0 1 2 3 4 5 6
+1 1975 1 1  0 0 0 0 0 0 0
+1 1975 1 2  0 0 0 0 0 0 0
+1 1976 1 1  0 0 0 0 0 0 0
+1 1976 1 2  0 0 0 0 0 0 0
+1 1977 1 1  0 0 0 0 0 0 0
+1 1977 1 2  0 0 0 0 0 0 0
+1 1978 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1978 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1979 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1979 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1980 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1980 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1981 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1981 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1982 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1982 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1983 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1983 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1984 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1984 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1985 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1985 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1986 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1986 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1987 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1987 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1988 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1988 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1989 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1989 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1990 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1990 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1991 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1991 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1992 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1992 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1993 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1993 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1994 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1994 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1995 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1995 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1996 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1996 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1997 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1997 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1998 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1998 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 1999 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 1999 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2000 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2000 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2001 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2001 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2002 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2002 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2003 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2003 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2004 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2004 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2005 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2005 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2006 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2006 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2007 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2007 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2008 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2008 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2009 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2009 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2010 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2010 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2011 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2011 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2012 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2012 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2013 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2013 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2014 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2014 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2015 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2015 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2016 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2016 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2017 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2017 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2018 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2018 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2019 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2019 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+1 2020 1 1  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+1 2020 1 2  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+#
+mean_size_Jan_1_for_sex: 1#NOTE: combines_all_settlements_areas_GP_and_platoons
+Sex Yr Seas Beg  0 1 2 3 4 5 6
+1 1978 1 0 14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+
+ AGE_LENGTH_KEY report:50
+#
+ sdratio 1
+ sdwithin 1
+ sdbetween 1e-06
+#
+ Seas: 1 Sub_Seas: 1   Morph: 1
+Age: 0 1 2 3 4 5 6
+28 0 2.50366e-10 5.5299e-06 0.00035411 0.00267114 0.00792746 0.0227422 
+24 4.60298e-13 4.7631e-05 0.00966175 0.0698769 0.166077 0.253464 0.364759 
+20 9.11405e-06 0.056393 0.379108 0.599175 0.63839 0.610235 0.535921 
+16 0.0765547 0.711384 0.573193 0.321223 0.189331 0.12655 0.0757419 
+12 0.846872 0.231027 0.0379685 0.00936101 0.00352783 0.0018215 0.000836245 
+8 0.0765638 0.00114895 6.39664e-05 1.00935e-05 3.08849e-06 1.43272e-06 5.96463e-07 
+mean  14 17.2631 19.4505 20.9167 21.8996 22.5584 23.3331
+sdsize  1.4 1.72631 1.94505 2.09167 2.18996 2.25584 2.33331
+#
+ Seas: 1 Sub_Seas: 2   Morph: 1
+Age: 0 1 2 3 4 5 6
+28 5.55112e-15 1.21641e-07 6.60485e-05 0.00114702 0.00497453 0.0113021 0.0257245 
+24 1.023e-07 0.00136328 0.0322391 0.116843 0.212486 0.288224 0.379092 
+20 0.00387363 0.201675 0.518111 0.633469 0.627725 0.59085 0.523848 
+16 0.444287 0.70608 0.43178 0.243051 0.152359 0.108196 0.0705803 
+12 0.543692 0.0906503 0.0177813 0.00548583 0.00245364 0.00142699 0.000754586 
+8 0.00814686 0.00023136 2.29178e-05 5.234e-06 2.01932e-06 1.0852e-06 5.32385e-07 
+mean  15.7942 18.4658 20.2567 21.4571 22.2618 22.8012 23.4354
+sdsize  1.57942 1.84658 2.02567 2.14571 2.22618 2.28012 2.34354
+
+ AGE_AGE_KEY report:51
+KEY: 1
+mean  0.5 1.5 2.5 3.5 4.5 5.5 6.5
+SD  0.1 0.2 0.3 0.3 0.3 0.3 0.4
+6 0 0 0 0 2.87105e-07 0.0477903 0.89435 
+5 0 0 0 2.87105e-07 0.04779 0.904419 0.105561 
+4 0 0 2.87105e-07 0.04779 0.904419 0.04779 8.84444e-05 
+3 0 3.21965e-14 0.04779 0.904419 0.04779 2.87105e-07 2.06094e-10 
+2 0 0.00620968 0.904419 0.04779 2.87105e-07 3.97571e-17 1.0812e-18 
+1 2.87105e-07 0.987581 0.04779 2.87105e-07 3.97571e-17 9.70768e-32 1.18881e-29 
+0 1 0.00620968 2.87105e-07 3.97571e-17 9.70768e-32 3.85217e-51 2.65245e-43 
+
+ SELEX_database report:53
+Fleet Yr Kind Sex Bin Selex
+1 1975 L 1 8 0
+1 1975 L 1 12 0
+1 1975 L 1 16 0
+1 1975 L 1 20 0
+1 1975 L 1 24 0
+1 1975 L 1 28 0
+1 1975 A 1 0 0
+1 1975 A 1 1 0
+1 1975 A 1 2 0
+1 1975 A 1 3 0
+1 1975 A 1 4 0
+1 1975 A 1 5 0
+1 1975 A 1 6 0
+1 1977 L 1 8 0
+1 1977 L 1 12 0
+1 1977 L 1 16 0
+1 1977 L 1 20 0
+1 1977 L 1 24 0
+1 1977 L 1 28 0
+1 1978 L 1 8 1
+1 1978 L 1 12 1
+1 1978 L 1 16 1
+1 1978 L 1 20 1
+1 1978 L 1 24 1
+1 1978 L 1 28 1
+1 1978 A 1 0 0.0861082
+1 1978 A 1 1 0.434046
+1 1978 A 1 2 1
+1 1978 A 1 3 0.999996
+1 1978 A 1 4 0.999996
+1 1978 A 1 5 0.999996
+1 1978 A 1 6 0.890774
+1 1979 L 1 8 1
+1 1979 L 1 12 1
+1 1979 L 1 16 1
+1 1979 L 1 20 1
+1 1979 L 1 24 1
+1 1979 L 1 28 1
+1 1980 L 1 8 1
+1 1980 L 1 12 1
+1 1980 L 1 16 1
+1 1980 L 1 20 1
+1 1980 L 1 24 1
+1 1980 L 1 28 1
+1 1981 L 1 8 1
+1 1981 L 1 12 1
+1 1981 L 1 16 1
+1 1981 L 1 20 1
+1 1981 L 1 24 1
+1 1981 L 1 28 1
+1 1982 L 1 8 1
+1 1982 L 1 12 1
+1 1982 L 1 16 1
+1 1982 L 1 20 1
+1 1982 L 1 24 1
+1 1982 L 1 28 1
+1 1983 L 1 8 1
+1 1983 L 1 12 1
+1 1983 L 1 16 1
+1 1983 L 1 20 1
+1 1983 L 1 24 1
+1 1983 L 1 28 1
+1 1984 L 1 8 1
+1 1984 L 1 12 1
+1 1984 L 1 16 1
+1 1984 L 1 20 1
+1 1984 L 1 24 1
+1 1984 L 1 28 1
+1 1985 L 1 8 1
+1 1985 L 1 12 1
+1 1985 L 1 16 1
+1 1985 L 1 20 1
+1 1985 L 1 24 1
+1 1985 L 1 28 1
+1 1986 L 1 8 1
+1 1986 L 1 12 1
+1 1986 L 1 16 1
+1 1986 L 1 20 1
+1 1986 L 1 24 1
+1 1986 L 1 28 1
+1 1987 L 1 8 1
+1 1987 L 1 12 1
+1 1987 L 1 16 1
+1 1987 L 1 20 1
+1 1987 L 1 24 1
+1 1987 L 1 28 1
+1 1988 L 1 8 1
+1 1988 L 1 12 1
+1 1988 L 1 16 1
+1 1988 L 1 20 1
+1 1988 L 1 24 1
+1 1988 L 1 28 1
+1 1988 A 1 0 0.0409567
+1 1988 A 1 1 0.152068
+1 1988 A 1 2 0.401116
+1 1988 A 1 3 1
+1 1988 A 1 4 1
+1 1988 A 1 5 1
+1 1988 A 1 6 0.566061
+1 1989 L 1 8 1
+1 1989 L 1 12 1
+1 1989 L 1 16 1
+1 1989 L 1 20 1
+1 1989 L 1 24 1
+1 1989 L 1 28 1
+1 1990 L 1 8 1
+1 1990 L 1 12 1
+1 1990 L 1 16 1
+1 1990 L 1 20 1
+1 1990 L 1 24 1
+1 1990 L 1 28 1
+1 1991 L 1 8 1
+1 1991 L 1 12 1
+1 1991 L 1 16 1
+1 1991 L 1 20 1
+1 1991 L 1 24 1
+1 1991 L 1 28 1
+1 1992 L 1 8 1
+1 1992 L 1 12 1
+1 1992 L 1 16 1
+1 1992 L 1 20 1
+1 1992 L 1 24 1
+1 1992 L 1 28 1
+1 1993 L 1 8 1
+1 1993 L 1 12 1
+1 1993 L 1 16 1
+1 1993 L 1 20 1
+1 1993 L 1 24 1
+1 1993 L 1 28 1
+1 1994 L 1 8 1
+1 1994 L 1 12 1
+1 1994 L 1 16 1
+1 1994 L 1 20 1
+1 1994 L 1 24 1
+1 1994 L 1 28 1
+1 1995 L 1 8 1
+1 1995 L 1 12 1
+1 1995 L 1 16 1
+1 1995 L 1 20 1
+1 1995 L 1 24 1
+1 1995 L 1 28 1
+1 1996 L 1 8 1
+1 1996 L 1 12 1
+1 1996 L 1 16 1
+1 1996 L 1 20 1
+1 1996 L 1 24 1
+1 1996 L 1 28 1
+1 1997 L 1 8 1
+1 1997 L 1 12 1
+1 1997 L 1 16 1
+1 1997 L 1 20 1
+1 1997 L 1 24 1
+1 1997 L 1 28 1
+1 1998 L 1 8 1
+1 1998 L 1 12 1
+1 1998 L 1 16 1
+1 1998 L 1 20 1
+1 1998 L 1 24 1
+1 1998 L 1 28 1
+1 1999 L 1 8 1
+1 1999 L 1 12 1
+1 1999 L 1 16 1
+1 1999 L 1 20 1
+1 1999 L 1 24 1
+1 1999 L 1 28 1
+1 2000 L 1 8 1
+1 2000 L 1 12 1
+1 2000 L 1 16 1
+1 2000 L 1 20 1
+1 2000 L 1 24 1
+1 2000 L 1 28 1
+1 2001 L 1 8 1
+1 2001 L 1 12 1
+1 2001 L 1 16 1
+1 2001 L 1 20 1
+1 2001 L 1 24 1
+1 2001 L 1 28 1
+1 2002 L 1 8 1
+1 2002 L 1 12 1
+1 2002 L 1 16 1
+1 2002 L 1 20 1
+1 2002 L 1 24 1
+1 2002 L 1 28 1
+1 2003 L 1 8 1
+1 2003 L 1 12 1
+1 2003 L 1 16 1
+1 2003 L 1 20 1
+1 2003 L 1 24 1
+1 2003 L 1 28 1
+1 2004 L 1 8 1
+1 2004 L 1 12 1
+1 2004 L 1 16 1
+1 2004 L 1 20 1
+1 2004 L 1 24 1
+1 2004 L 1 28 1
+1 2005 L 1 8 1
+1 2005 L 1 12 1
+1 2005 L 1 16 1
+1 2005 L 1 20 1
+1 2005 L 1 24 1
+1 2005 L 1 28 1
+1 2006 L 1 8 1
+1 2006 L 1 12 1
+1 2006 L 1 16 1
+1 2006 L 1 20 1
+1 2006 L 1 24 1
+1 2006 L 1 28 1
+1 2006 A 1 0 0.0696296
+1 2006 A 1 1 0.273451
+1 2006 A 1 2 0.660448
+1 2006 A 1 3 1
+1 2006 A 1 4 1
+1 2006 A 1 5 1
+1 2006 A 1 6 0.988837
+1 2007 L 1 8 1
+1 2007 L 1 12 1
+1 2007 L 1 16 1
+1 2007 L 1 20 1
+1 2007 L 1 24 1
+1 2007 L 1 28 1
+1 2008 L 1 8 1
+1 2008 L 1 12 1
+1 2008 L 1 16 1
+1 2008 L 1 20 1
+1 2008 L 1 24 1
+1 2008 L 1 28 1
+1 2009 L 1 8 1
+1 2009 L 1 12 1
+1 2009 L 1 16 1
+1 2009 L 1 20 1
+1 2009 L 1 24 1
+1 2009 L 1 28 1
+1 2010 L 1 8 1
+1 2010 L 1 12 1
+1 2010 L 1 16 1
+1 2010 L 1 20 1
+1 2010 L 1 24 1
+1 2010 L 1 28 1
+1 2011 L 1 8 1
+1 2011 L 1 12 1
+1 2011 L 1 16 1
+1 2011 L 1 20 1
+1 2011 L 1 24 1
+1 2011 L 1 28 1
+1 2012 L 1 8 1
+1 2012 L 1 12 1
+1 2012 L 1 16 1
+1 2012 L 1 20 1
+1 2012 L 1 24 1
+1 2012 L 1 28 1
+1 2013 L 1 8 1
+1 2013 L 1 12 1
+1 2013 L 1 16 1
+1 2013 L 1 20 1
+1 2013 L 1 24 1
+1 2013 L 1 28 1
+1 2014 L 1 8 1
+1 2014 L 1 12 1
+1 2014 L 1 16 1
+1 2014 L 1 20 1
+1 2014 L 1 24 1
+1 2014 L 1 28 1
+1 2015 L 1 8 1
+1 2015 L 1 12 1
+1 2015 L 1 16 1
+1 2015 L 1 20 1
+1 2015 L 1 24 1
+1 2015 L 1 28 1
+1 2016 L 1 8 1
+1 2016 L 1 12 1
+1 2016 L 1 16 1
+1 2016 L 1 20 1
+1 2016 L 1 24 1
+1 2016 L 1 28 1
+1 2017 L 1 8 1
+1 2017 L 1 12 1
+1 2017 L 1 16 1
+1 2017 L 1 20 1
+1 2017 L 1 24 1
+1 2017 L 1 28 1
+1 2018 L 1 8 1
+1 2018 L 1 12 1
+1 2018 L 1 16 1
+1 2018 L 1 20 1
+1 2018 L 1 24 1
+1 2018 L 1 28 1
+1 2019 L 1 8 1
+1 2019 L 1 12 1
+1 2019 L 1 16 1
+1 2019 L 1 20 1
+1 2019 L 1 24 1
+1 2019 L 1 28 1
+1 2020 L 1 8 1
+1 2020 L 1 12 1
+1 2020 L 1 16 1
+1 2020 L 1 20 1
+1 2020 L 1 24 1
+1 2020 L 1 28 1
+2 1975 L 1 8 0
+2 1975 L 1 12 0
+2 1975 L 1 16 0
+2 1975 L 1 20 0
+2 1975 L 1 24 0
+2 1975 L 1 28 0
+2 1975 A 1 0 0
+2 1975 A 1 1 0
+2 1975 A 1 2 0
+2 1975 A 1 3 0
+2 1975 A 1 4 0
+2 1975 A 1 5 0
+2 1975 A 1 6 0
+2 1977 L 1 8 0
+2 1977 L 1 12 0
+2 1977 L 1 16 0
+2 1977 L 1 20 0
+2 1977 L 1 24 0
+2 1977 L 1 28 0
+2 1978 L 1 8 1
+2 1978 L 1 12 1
+2 1978 L 1 16 1
+2 1978 L 1 20 1
+2 1978 L 1 24 1
+2 1978 L 1 28 1
+2 1978 A 1 0 0
+2 1978 A 1 1 1
+2 1978 A 1 2 1
+2 1978 A 1 3 1
+2 1978 A 1 4 1
+2 1978 A 1 5 1
+2 1978 A 1 6 1
+2 1979 L 1 8 1
+2 1979 L 1 12 1
+2 1979 L 1 16 1
+2 1979 L 1 20 1
+2 1979 L 1 24 1
+2 1979 L 1 28 1
+2 1980 L 1 8 1
+2 1980 L 1 12 1
+2 1980 L 1 16 1
+2 1980 L 1 20 1
+2 1980 L 1 24 1
+2 1980 L 1 28 1
+2 1981 L 1 8 1
+2 1981 L 1 12 1
+2 1981 L 1 16 1
+2 1981 L 1 20 1
+2 1981 L 1 24 1
+2 1981 L 1 28 1
+2 1982 L 1 8 1
+2 1982 L 1 12 1
+2 1982 L 1 16 1
+2 1982 L 1 20 1
+2 1982 L 1 24 1
+2 1982 L 1 28 1
+2 1983 L 1 8 1
+2 1983 L 1 12 1
+2 1983 L 1 16 1
+2 1983 L 1 20 1
+2 1983 L 1 24 1
+2 1983 L 1 28 1
+2 1984 L 1 8 1
+2 1984 L 1 12 1
+2 1984 L 1 16 1
+2 1984 L 1 20 1
+2 1984 L 1 24 1
+2 1984 L 1 28 1
+2 1985 L 1 8 1
+2 1985 L 1 12 1
+2 1985 L 1 16 1
+2 1985 L 1 20 1
+2 1985 L 1 24 1
+2 1985 L 1 28 1
+2 1986 L 1 8 1
+2 1986 L 1 12 1
+2 1986 L 1 16 1
+2 1986 L 1 20 1
+2 1986 L 1 24 1
+2 1986 L 1 28 1
+2 1987 L 1 8 1
+2 1987 L 1 12 1
+2 1987 L 1 16 1
+2 1987 L 1 20 1
+2 1987 L 1 24 1
+2 1987 L 1 28 1
+2 1988 L 1 8 1
+2 1988 L 1 12 1
+2 1988 L 1 16 1
+2 1988 L 1 20 1
+2 1988 L 1 24 1
+2 1988 L 1 28 1
+2 1989 L 1 8 1
+2 1989 L 1 12 1
+2 1989 L 1 16 1
+2 1989 L 1 20 1
+2 1989 L 1 24 1
+2 1989 L 1 28 1
+2 1990 L 1 8 1
+2 1990 L 1 12 1
+2 1990 L 1 16 1
+2 1990 L 1 20 1
+2 1990 L 1 24 1
+2 1990 L 1 28 1
+2 1991 L 1 8 1
+2 1991 L 1 12 1
+2 1991 L 1 16 1
+2 1991 L 1 20 1
+2 1991 L 1 24 1
+2 1991 L 1 28 1
+2 1992 L 1 8 1
+2 1992 L 1 12 1
+2 1992 L 1 16 1
+2 1992 L 1 20 1
+2 1992 L 1 24 1
+2 1992 L 1 28 1
+2 1993 L 1 8 1
+2 1993 L 1 12 1
+2 1993 L 1 16 1
+2 1993 L 1 20 1
+2 1993 L 1 24 1
+2 1993 L 1 28 1
+2 1994 L 1 8 1
+2 1994 L 1 12 1
+2 1994 L 1 16 1
+2 1994 L 1 20 1
+2 1994 L 1 24 1
+2 1994 L 1 28 1
+2 1995 L 1 8 1
+2 1995 L 1 12 1
+2 1995 L 1 16 1
+2 1995 L 1 20 1
+2 1995 L 1 24 1
+2 1995 L 1 28 1
+2 1996 L 1 8 1
+2 1996 L 1 12 1
+2 1996 L 1 16 1
+2 1996 L 1 20 1
+2 1996 L 1 24 1
+2 1996 L 1 28 1
+2 1997 L 1 8 1
+2 1997 L 1 12 1
+2 1997 L 1 16 1
+2 1997 L 1 20 1
+2 1997 L 1 24 1
+2 1997 L 1 28 1
+2 1998 L 1 8 1
+2 1998 L 1 12 1
+2 1998 L 1 16 1
+2 1998 L 1 20 1
+2 1998 L 1 24 1
+2 1998 L 1 28 1
+2 1999 L 1 8 1
+2 1999 L 1 12 1
+2 1999 L 1 16 1
+2 1999 L 1 20 1
+2 1999 L 1 24 1
+2 1999 L 1 28 1
+2 2000 L 1 8 1
+2 2000 L 1 12 1
+2 2000 L 1 16 1
+2 2000 L 1 20 1
+2 2000 L 1 24 1
+2 2000 L 1 28 1
+2 2001 L 1 8 1
+2 2001 L 1 12 1
+2 2001 L 1 16 1
+2 2001 L 1 20 1
+2 2001 L 1 24 1
+2 2001 L 1 28 1
+2 2002 L 1 8 1
+2 2002 L 1 12 1
+2 2002 L 1 16 1
+2 2002 L 1 20 1
+2 2002 L 1 24 1
+2 2002 L 1 28 1
+2 2003 L 1 8 1
+2 2003 L 1 12 1
+2 2003 L 1 16 1
+2 2003 L 1 20 1
+2 2003 L 1 24 1
+2 2003 L 1 28 1
+2 2004 L 1 8 1
+2 2004 L 1 12 1
+2 2004 L 1 16 1
+2 2004 L 1 20 1
+2 2004 L 1 24 1
+2 2004 L 1 28 1
+2 2005 L 1 8 1
+2 2005 L 1 12 1
+2 2005 L 1 16 1
+2 2005 L 1 20 1
+2 2005 L 1 24 1
+2 2005 L 1 28 1
+2 2006 L 1 8 1
+2 2006 L 1 12 1
+2 2006 L 1 16 1
+2 2006 L 1 20 1
+2 2006 L 1 24 1
+2 2006 L 1 28 1
+2 2007 L 1 8 1
+2 2007 L 1 12 1
+2 2007 L 1 16 1
+2 2007 L 1 20 1
+2 2007 L 1 24 1
+2 2007 L 1 28 1
+2 2008 L 1 8 1
+2 2008 L 1 12 1
+2 2008 L 1 16 1
+2 2008 L 1 20 1
+2 2008 L 1 24 1
+2 2008 L 1 28 1
+2 2009 L 1 8 1
+2 2009 L 1 12 1
+2 2009 L 1 16 1
+2 2009 L 1 20 1
+2 2009 L 1 24 1
+2 2009 L 1 28 1
+2 2010 L 1 8 1
+2 2010 L 1 12 1
+2 2010 L 1 16 1
+2 2010 L 1 20 1
+2 2010 L 1 24 1
+2 2010 L 1 28 1
+2 2011 L 1 8 1
+2 2011 L 1 12 1
+2 2011 L 1 16 1
+2 2011 L 1 20 1
+2 2011 L 1 24 1
+2 2011 L 1 28 1
+2 2012 L 1 8 1
+2 2012 L 1 12 1
+2 2012 L 1 16 1
+2 2012 L 1 20 1
+2 2012 L 1 24 1
+2 2012 L 1 28 1
+2 2013 L 1 8 1
+2 2013 L 1 12 1
+2 2013 L 1 16 1
+2 2013 L 1 20 1
+2 2013 L 1 24 1
+2 2013 L 1 28 1
+2 2014 L 1 8 1
+2 2014 L 1 12 1
+2 2014 L 1 16 1
+2 2014 L 1 20 1
+2 2014 L 1 24 1
+2 2014 L 1 28 1
+2 2015 L 1 8 1
+2 2015 L 1 12 1
+2 2015 L 1 16 1
+2 2015 L 1 20 1
+2 2015 L 1 24 1
+2 2015 L 1 28 1
+2 2016 L 1 8 1
+2 2016 L 1 12 1
+2 2016 L 1 16 1
+2 2016 L 1 20 1
+2 2016 L 1 24 1
+2 2016 L 1 28 1
+2 2017 L 1 8 1
+2 2017 L 1 12 1
+2 2017 L 1 16 1
+2 2017 L 1 20 1
+2 2017 L 1 24 1
+2 2017 L 1 28 1
+2 2018 L 1 8 1
+2 2018 L 1 12 1
+2 2018 L 1 16 1
+2 2018 L 1 20 1
+2 2018 L 1 24 1
+2 2018 L 1 28 1
+2 2019 L 1 8 1
+2 2019 L 1 12 1
+2 2019 L 1 16 1
+2 2019 L 1 20 1
+2 2019 L 1 24 1
+2 2019 L 1 28 1
+2 2020 L 1 8 1
+2 2020 L 1 12 1
+2 2020 L 1 16 1
+2 2020 L 1 20 1
+2 2020 L 1 24 1
+2 2020 L 1 28 1
+3 1975 L 1 8 0
+3 1975 L 1 12 0
+3 1975 L 1 16 0
+3 1975 L 1 20 0
+3 1975 L 1 24 0
+3 1975 L 1 28 0
+3 1975 A 1 0 0
+3 1975 A 1 1 0
+3 1975 A 1 2 0
+3 1975 A 1 3 0
+3 1975 A 1 4 0
+3 1975 A 1 5 0
+3 1975 A 1 6 0
+3 1977 L 1 8 0
+3 1977 L 1 12 0
+3 1977 L 1 16 0
+3 1977 L 1 20 0
+3 1977 L 1 24 0
+3 1977 L 1 28 0
+3 1978 L 1 8 1
+3 1978 L 1 12 1
+3 1978 L 1 16 1
+3 1978 L 1 20 1
+3 1978 L 1 24 1
+3 1978 L 1 28 1
+3 1978 A 1 0 0
+3 1978 A 1 1 1
+3 1978 A 1 2 1
+3 1978 A 1 3 1
+3 1978 A 1 4 1
+3 1978 A 1 5 1
+3 1978 A 1 6 1
+3 1979 L 1 8 1
+3 1979 L 1 12 1
+3 1979 L 1 16 1
+3 1979 L 1 20 1
+3 1979 L 1 24 1
+3 1979 L 1 28 1
+3 1980 L 1 8 1
+3 1980 L 1 12 1
+3 1980 L 1 16 1
+3 1980 L 1 20 1
+3 1980 L 1 24 1
+3 1980 L 1 28 1
+3 1981 L 1 8 1
+3 1981 L 1 12 1
+3 1981 L 1 16 1
+3 1981 L 1 20 1
+3 1981 L 1 24 1
+3 1981 L 1 28 1
+3 1982 L 1 8 1
+3 1982 L 1 12 1
+3 1982 L 1 16 1
+3 1982 L 1 20 1
+3 1982 L 1 24 1
+3 1982 L 1 28 1
+3 1983 L 1 8 1
+3 1983 L 1 12 1
+3 1983 L 1 16 1
+3 1983 L 1 20 1
+3 1983 L 1 24 1
+3 1983 L 1 28 1
+3 1984 L 1 8 1
+3 1984 L 1 12 1
+3 1984 L 1 16 1
+3 1984 L 1 20 1
+3 1984 L 1 24 1
+3 1984 L 1 28 1
+3 1985 L 1 8 1
+3 1985 L 1 12 1
+3 1985 L 1 16 1
+3 1985 L 1 20 1
+3 1985 L 1 24 1
+3 1985 L 1 28 1
+3 1986 L 1 8 1
+3 1986 L 1 12 1
+3 1986 L 1 16 1
+3 1986 L 1 20 1
+3 1986 L 1 24 1
+3 1986 L 1 28 1
+3 1987 L 1 8 1
+3 1987 L 1 12 1
+3 1987 L 1 16 1
+3 1987 L 1 20 1
+3 1987 L 1 24 1
+3 1987 L 1 28 1
+3 1988 L 1 8 1
+3 1988 L 1 12 1
+3 1988 L 1 16 1
+3 1988 L 1 20 1
+3 1988 L 1 24 1
+3 1988 L 1 28 1
+3 1989 L 1 8 1
+3 1989 L 1 12 1
+3 1989 L 1 16 1
+3 1989 L 1 20 1
+3 1989 L 1 24 1
+3 1989 L 1 28 1
+3 1990 L 1 8 1
+3 1990 L 1 12 1
+3 1990 L 1 16 1
+3 1990 L 1 20 1
+3 1990 L 1 24 1
+3 1990 L 1 28 1
+3 1991 L 1 8 1
+3 1991 L 1 12 1
+3 1991 L 1 16 1
+3 1991 L 1 20 1
+3 1991 L 1 24 1
+3 1991 L 1 28 1
+3 1992 L 1 8 1
+3 1992 L 1 12 1
+3 1992 L 1 16 1
+3 1992 L 1 20 1
+3 1992 L 1 24 1
+3 1992 L 1 28 1
+3 1993 L 1 8 1
+3 1993 L 1 12 1
+3 1993 L 1 16 1
+3 1993 L 1 20 1
+3 1993 L 1 24 1
+3 1993 L 1 28 1
+3 1994 L 1 8 1
+3 1994 L 1 12 1
+3 1994 L 1 16 1
+3 1994 L 1 20 1
+3 1994 L 1 24 1
+3 1994 L 1 28 1
+3 1995 L 1 8 1
+3 1995 L 1 12 1
+3 1995 L 1 16 1
+3 1995 L 1 20 1
+3 1995 L 1 24 1
+3 1995 L 1 28 1
+3 1996 L 1 8 1
+3 1996 L 1 12 1
+3 1996 L 1 16 1
+3 1996 L 1 20 1
+3 1996 L 1 24 1
+3 1996 L 1 28 1
+3 1997 L 1 8 1
+3 1997 L 1 12 1
+3 1997 L 1 16 1
+3 1997 L 1 20 1
+3 1997 L 1 24 1
+3 1997 L 1 28 1
+3 1998 L 1 8 1
+3 1998 L 1 12 1
+3 1998 L 1 16 1
+3 1998 L 1 20 1
+3 1998 L 1 24 1
+3 1998 L 1 28 1
+3 1999 L 1 8 1
+3 1999 L 1 12 1
+3 1999 L 1 16 1
+3 1999 L 1 20 1
+3 1999 L 1 24 1
+3 1999 L 1 28 1
+3 2000 L 1 8 1
+3 2000 L 1 12 1
+3 2000 L 1 16 1
+3 2000 L 1 20 1
+3 2000 L 1 24 1
+3 2000 L 1 28 1
+3 2001 L 1 8 1
+3 2001 L 1 12 1
+3 2001 L 1 16 1
+3 2001 L 1 20 1
+3 2001 L 1 24 1
+3 2001 L 1 28 1
+3 2002 L 1 8 1
+3 2002 L 1 12 1
+3 2002 L 1 16 1
+3 2002 L 1 20 1
+3 2002 L 1 24 1
+3 2002 L 1 28 1
+3 2003 L 1 8 1
+3 2003 L 1 12 1
+3 2003 L 1 16 1
+3 2003 L 1 20 1
+3 2003 L 1 24 1
+3 2003 L 1 28 1
+3 2004 L 1 8 1
+3 2004 L 1 12 1
+3 2004 L 1 16 1
+3 2004 L 1 20 1
+3 2004 L 1 24 1
+3 2004 L 1 28 1
+3 2005 L 1 8 1
+3 2005 L 1 12 1
+3 2005 L 1 16 1
+3 2005 L 1 20 1
+3 2005 L 1 24 1
+3 2005 L 1 28 1
+3 2006 L 1 8 1
+3 2006 L 1 12 1
+3 2006 L 1 16 1
+3 2006 L 1 20 1
+3 2006 L 1 24 1
+3 2006 L 1 28 1
+3 2007 L 1 8 1
+3 2007 L 1 12 1
+3 2007 L 1 16 1
+3 2007 L 1 20 1
+3 2007 L 1 24 1
+3 2007 L 1 28 1
+3 2008 L 1 8 1
+3 2008 L 1 12 1
+3 2008 L 1 16 1
+3 2008 L 1 20 1
+3 2008 L 1 24 1
+3 2008 L 1 28 1
+3 2009 L 1 8 1
+3 2009 L 1 12 1
+3 2009 L 1 16 1
+3 2009 L 1 20 1
+3 2009 L 1 24 1
+3 2009 L 1 28 1
+3 2010 L 1 8 1
+3 2010 L 1 12 1
+3 2010 L 1 16 1
+3 2010 L 1 20 1
+3 2010 L 1 24 1
+3 2010 L 1 28 1
+3 2011 L 1 8 1
+3 2011 L 1 12 1
+3 2011 L 1 16 1
+3 2011 L 1 20 1
+3 2011 L 1 24 1
+3 2011 L 1 28 1
+3 2012 L 1 8 1
+3 2012 L 1 12 1
+3 2012 L 1 16 1
+3 2012 L 1 20 1
+3 2012 L 1 24 1
+3 2012 L 1 28 1
+3 2013 L 1 8 1
+3 2013 L 1 12 1
+3 2013 L 1 16 1
+3 2013 L 1 20 1
+3 2013 L 1 24 1
+3 2013 L 1 28 1
+3 2014 L 1 8 1
+3 2014 L 1 12 1
+3 2014 L 1 16 1
+3 2014 L 1 20 1
+3 2014 L 1 24 1
+3 2014 L 1 28 1
+3 2015 L 1 8 1
+3 2015 L 1 12 1
+3 2015 L 1 16 1
+3 2015 L 1 20 1
+3 2015 L 1 24 1
+3 2015 L 1 28 1
+3 2016 L 1 8 1
+3 2016 L 1 12 1
+3 2016 L 1 16 1
+3 2016 L 1 20 1
+3 2016 L 1 24 1
+3 2016 L 1 28 1
+3 2017 L 1 8 1
+3 2017 L 1 12 1
+3 2017 L 1 16 1
+3 2017 L 1 20 1
+3 2017 L 1 24 1
+3 2017 L 1 28 1
+3 2018 L 1 8 1
+3 2018 L 1 12 1
+3 2018 L 1 16 1
+3 2018 L 1 20 1
+3 2018 L 1 24 1
+3 2018 L 1 28 1
+3 2019 L 1 8 1
+3 2019 L 1 12 1
+3 2019 L 1 16 1
+3 2019 L 1 20 1
+3 2019 L 1 24 1
+3 2019 L 1 28 1
+3 2020 L 1 8 1
+3 2020 L 1 12 1
+3 2020 L 1 16 1
+3 2020 L 1 20 1
+3 2020 L 1 24 1
+3 2020 L 1 28 1
+ end selex output 
+
+ SPR/YPR_Profile report:54
+This output only included after the Hessian is inverted

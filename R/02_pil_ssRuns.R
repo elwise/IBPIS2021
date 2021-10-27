@@ -55,6 +55,16 @@ run2020.DEPM <- SS_output(dir = paste0(res.ss,"/2020_DEPM"),forecast=FALSE,ncols
 # Setup a - Same settings as the current model but with new recruitment index
 runa <- SS_output(dir = paste0(res.ss,'/Setupa'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
+#Setup a with sd extra parameter for q_All
+runa1 <- SS_output(dir = paste0(res.ss,'/SetupaSD'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+
+#Setup a with sd extra parameter for q_Rec
+runa2 <- SS_output(dir = paste0(res.ss,'/SetupaSD_Rec'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+
+#Setup a with power oprion for Q parameter of the recruitment survey
+runa3 <- SS_output(dir = paste0(res.ss,'/SetupaQ'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+
+
 # Setup a - Same settings as the current model but with different recruitment index estimates (years and areas)
 run1 <-  SS_output(dir = paste0(res.ss,'/run1'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC all years
 run2 <-  SS_output(dir = paste0(res.ss,'/run2'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS all years
@@ -204,8 +214,8 @@ SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim
                   legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
 SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
                   legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
-                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+SSplotComparisons(summaryoutput=SSsummarize(biglist=list(run3,run6,run9)),subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+                  legendlabels = c("All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
 
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
                          names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
@@ -276,10 +286,14 @@ rm(list = ls(pattern = "^sso\\."))
 
 cpl <- list(run2020,run2020.DEPM,runa,runb,runc)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.plots)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.plots)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.plots)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.plots)
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
+SSplotComparisons(summaryoutput=SSsummarize(biglist=list(runa,runb,runc)),subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
 
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
                          names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
@@ -341,6 +355,114 @@ ssos %>%
   summarise (mean= mean(value), sd=sd(value))%>%
   filter(Variable %in% c("SSB","Recr","F"))
 
+#==============================================================================
+#  Compare setupa with ExtraSD for Q                                       ----
+#==============================================================================
+
+cpl <- list(runa,runa1,runa2)
+cpl.sum <- SSsummarize(biglist=cpl)
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup a","Setup aSD","Setup aSDREC"),legendloc = "topright",filenameprefix = "ExtraSD")
+
+xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
+                         names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
+                         verbose = TRUE,mcmc = FALSE)
+xx <- rbind(xx,as.numeric(format(cpl.sum$maxgrad,digits = 3)))
+xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
+xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
+AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+xx <- rbind(xx,AIC)
+xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
+xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
+              "Recr_2020","F_2019","AIC","Max Grad")
+colnames(xx) <- c("Label", "SetupA","SetupA_SD","SetupA_SDREC")
+xx[xx$Label=="Catch",2:4] <- format(as.numeric(xx[xx$Label=="Catch",2:4]),digits=3)
+xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=3)
+xx[xx$Label=="Recruitment",2:4] <- format(as.numeric(xx[xx$Label=="Recruitment",2:4]),digits=3)
+xx[xx$Label=="Parm_devs",2:4] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:4]),scientific = T,digits=3)
+
+xx%>%
+  gt::gt()%>%
+  gt::gtsave("tblCompSetupsAs.png")
+
+
+sso.dq2020 <- diff(file.path=paste0(res.ss,'/2020_Update'),"Assm2020")
+sso.dqDEPM <- diff(file.path=paste0(res.ss,'/2020_DEPM'),"DEPM2020")
+sso.runa <- diff(file.path=paste0(res.ss,'/Setupa'),"Assm2020")
+sso.runb <- diff(file.path=paste0(res.ss,'/Setupb'),"Assm2020")
+sso.runc <- diff(file.path=paste0(res.ss,'/Setupc'),"Assm2020")
+
+
+ssos <- 
+  
+  full_join(
+    sso.dq2020 %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type") %>%
+      select(Variable, Yr, Type, Ass2020 = "value"),
+    bind_rows(sso.dq2020,sso.dqDEPM,sso.dqa,sso.dqb,sso.dqc) %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type"),
+    by = c("Variable", "Yr", "Type")
+  ) %>%
+  mutate(delta = Ass2020 - value)
+
+rm(list = ls(pattern = "^sso\\."))
+
+ssos %>%
+  filter(Yr %in% 1978:2020,Type == "Value", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"DiffBetweenSetups.png"))
+
+ssos %>%
+  filter(Yr %in% 1978:2020,Type == "SE", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"SE_DiffBetweenSetups.png"))
+
+ssos %>% 
+  group_by(Variable, Type, Run)%>% 
+  summarise (mean= mean(value), sd=sd(value))%>%
+  filter(Variable %in% c("SSB","Recr","F"))
+
+#==============================================================================
+#  Compare setupa with Q power                                     ----
+#==============================================================================
+
+cpl <- list(runa,runa3)
+cpl.sum <- SSsummarize(biglist=cpl)
+SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Setup a","Setup aQ"),legendloc = "topright",filenameprefix = "PowerQ")
+
+xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
+                         names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
+                         verbose = TRUE,mcmc = FALSE)
+xx <- rbind(xx,as.numeric(format(cpl.sum$maxgrad,digits = 3)))
+xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
+xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
+AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+xx <- rbind(xx,AIC)
+xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
+xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
+              "Recr_2020","F_2019","AIC","Max Grad")
+colnames(xx) <- c("Label", "SetupA","SetupA_Q")
+xx[xx$Label=="Catch",2:3] <- format(as.numeric(xx[xx$Label=="Catch",2:3]),digits=3)
+xx[xx$Label=="Equil_catch",2:3] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:3]),digits=3)
+xx[xx$Label=="Recruitment",2:3] <- format(as.numeric(xx[xx$Label=="Recruitment",2:3]),digits=3)
+xx[xx$Label=="Parm_devs",2:3] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:3]),scientific = T,digits=3)
+
+xx%>%
+  gt::gt()%>%
+  gt::gtsave("tblCompSetupsQ.png")
 
 #==============================================================================
 #  Check percentage of catch that comes from recruitment areas             ----

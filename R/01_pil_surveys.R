@@ -99,6 +99,25 @@ srv %>%
   xlab("Year") 
 ggsave(paste0(res.plots,'/',"EstimatesAgeZeroRecruitmentsurveys.png"))
 
+# - For age zero
+srv %>%
+  filter(age==0 & type =="REC")%>%
+  group_by(survey2,year)%>%
+  summarise(number=sum(number,na.rm=T),
+            biomass=sum(biomass,na.rm=T))%>%
+  group_by(survey2)%>%
+  mutate(Number=(number-(mean(number,na.rm=T)))/sd(number,na.rm=T),Biomass=(biomass-(mean(biomass,na.rm=T)))/sd(biomass,na.rm=T))%>%
+  pivot_longer(.,cols=c(5:6),names_to = "estimate")%>%
+  ggplot(aes(y=value,x=year,colour=survey2))+
+  geom_point(alpha=0.4) + geom_line()+
+  scale_size( range=c(.1,10),name="")+
+  facet_grid(estimate ~ ., scales = 'free') +
+  viridis::scale_fill_viridis(discrete=TRUE, guide=FALSE, option="A") +
+  hrbrthemes::theme_ipsum() +
+  theme(legend.position="bottom") +
+  ylab("Age Zero") +
+  xlab("Year") 
+
 # - For age zero in npor (9aCN)
 srv %>%
   filter(type== "REC" & age==0 & area=='npor')%>%
