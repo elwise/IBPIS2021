@@ -47,7 +47,7 @@ diagSS <- function(file.path,run){
   ## Instead we have to do the retrospective 'manually'. The outputs are in folder retrosectives within each SS run
   
   # run retrospective analysis (select number of years)
-  r4ss::SS_doRetro(masterdir=file.path, oldsubdir="", newsubdir="retrospectives", years=0:-5)
+  #r4ss::SS_doRetro(masterdir=file.path, oldsubdir="", newsubdir="retrospectives", years=0:-5)
   
   # read in outputs
   retroModels <- r4ss::SSgetoutput(dirvec=file.path(file.path,"retrospectives",paste("retro",0:-5,sep="")))
@@ -142,4 +142,43 @@ diagSS(file.path='D:/ICES/IBPIS2021/SS_runs/Setupa',run="Setupa")
 diagSS(file.path='D:/ICES/IBPIS2021/SS_runs/Setupb',run="Setupb")
 
 diagSS(file.path='D:/ICES/IBPIS2021/SS_runs/Setupc',run="Setupc")
+
+diagSS(file.path='D:/ICES/IBPIS2021/SS_runs/SetupaSDTune2',run="SetupaSDTune2")
+
+diagSS(file.path='D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2',run="SetupaSDQTune2")
+
+
+#Mohn's rho
+retroModels <- r4ss::SSgetoutput(dirvec=file.path('D:/ICES/IBPIS2021/SS_runs/SetupaSDTune2',"retrospectives",paste("retro",0:-5,sep="")))
+retroSummary <- SSsummarize(retroModels)
+endyrvec <- retroSummary[["endyrs"]]
+
+
+x <- round(icesAdvice::mohn(retroSummary$recruits,details = T)$rho,3)
+y <- round(icesAdvice::mohn(retroSummary$Fvalue,details = T)$rho,3)
+z <- round(icesAdvice::mohn(retroSummary$SpawnBio,details = T)$rho,3)
+Label <- c("SSB","Recruits","Fvalue")
+
+dd <- data.frame(Label=Label,Rho=c(x,y,z))
+
+dd%>%
+  gt::gt()%>%
+  gt::gtsave("MohnRhoSDTune2.png")
+
+#Mohn's rho
+retroModels <- r4ss::SSgetoutput(dirvec=file.path('D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2',"retrospectives",paste("retro",0:-5,sep="")))
+retroSummary <- SSsummarize(retroModels)
+endyrvec <- retroSummary[["endyrs"]]
+
+
+x <- round(icesAdvice::mohn(retroSummary$recruits,details = T)$rho,3)
+y <- round(icesAdvice::mohn(retroSummary$Fvalue,details = T)$rho,3)
+z <- round(icesAdvice::mohn(retroSummary$SpawnBio,details = T)$rho,3)
+Label <- c("SSB","Recruits","Fvalue")
+
+dd <- data.frame(Label=Label,Rho=c(x,y,z))
+
+dd%>%
+  gt::gt()%>%
+  gt::gtsave("MohnRhoSDQTune2.png")
 

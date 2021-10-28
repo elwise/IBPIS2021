@@ -48,7 +48,7 @@ library(ggplot2)
 ass.yr <- endyr <- 2020 
 
 #set working directory
-stf.dir <- paste0(res.ss,"/Setupa")
+stf.dir <- paste0(res.ss,"/SetupaSDQTune2")
 setwd(stf.dir)
 
 # Load stock FLR object
@@ -69,15 +69,15 @@ pil.stock_sr <- as.FLSR(pil.stock, model="geomean")
 params(pil.stock_sr)['a',] <- mean_rec
 
 # what if we used the estimate from the last year only?
-recEndyr <- as.numeric(rec(pil.stock_stf[,ac(2020)]))
-pil.stock_sr2 <- as.FLSR(pil.stock, model="geomean")
-params(pil.stock_sr2)['a',] <- recEndyr
+#recEndyr <- as.numeric(rec(pil.stock_stf[,ac(2020)]))
+#pil.stock_sr2 <- as.FLSR(pil.stock, model="geomean")
+#params(pil.stock_sr2)['a',] <- recEndyr
 
 # or the last 10 years?
-rec10 <- exp(mean(log(rec(pil.stock)[,ac((endyr-9):(endyr))])))
+#rec10 <- exp(mean(log(rec(pil.stock)[,ac((endyr-9):(endyr))])))
 # set up an FLSR object with a geometric mean model
-pil.stock_sr3 <- as.FLSR(pil.stock, model="geomean")
-params(pil.stock_sr3)['a',] <- rec10
+#pil.stock_sr3 <- as.FLSR(pil.stock, model="geomean")
+#params(pil.stock_sr3)['a',] <- rec10
 
 # Do a 2 year forecast
 pil.stock_stf <- stf(pil.stock, nyears = 2, wts.nyears=1)
@@ -163,7 +163,7 @@ for (scenario in 1:nrow(fbar_scenarios)) {
   # Run the forward projection. We include an additional argument, maxF.
   # By default the value of maxF is 2.0
   # Here we increase it to 10.0 so that F is not limited
-  pil.stock_fwd <- fwd(pil.stock_stf, ctrl = ctrl_f, sr = pil.stock_sr3)#, maxF = 10.0)
+  pil.stock_fwd <- fwd(pil.stock_stf, ctrl = ctrl_f, sr = pil.stock_sr)#, maxF = 10.0)
   ## Check it has worked - uncomment out to check scenario by scenario
   # plot(pil.stock_fwd[,ac(2001:2018)])
   # Store the result - if you want to, comment out if unnecessary
@@ -188,30 +188,40 @@ for (scenario in 1:nrow(fbar_scenarios)) {
 
 # export this if necessary
 write.csv(stf_results,file="scenariosGeoMean.csv",row.names=F)
-write.csv(stf_results,file="scenariosLastYear.csv",row.names=F)
-write.csv(stf_results,file="scenariosGeoMean.csv",row.names=F)
+#write.csv(stf_results,file="scenariosLastYear.csv",row.names=F)
+#write.csv(stf_results,file="scenariosGeoMean.csv",row.names=F)
 
+rm(list=ls())
 
-stfGeoMean <- read.csv(file="scenariosGeoMean.csv")
-stfGeoMean$STF <- "Geomean"
-stfGeoMean$rec <- mean_rec
-stfLastYr <- read.csv(file="scenariosLastYear.csv")
-stfLastYr$STF <- "LastYr"
-stfLastYr$rec <- recEndyr
-stf10Yr <- read.csv(file="scenarios10years.csv")
-stf10Yr$STF <- "tenYrs"
-stf10Yr$rec <- rec10
+wd <- "D:/ICES/IBPIS2021"
+setwd(wd)
+
+endyr <- 2020
+
+stfSD <- read.csv(file="./SS_runs/SetupaSDTune2/scenariosGeoMean.csv")
+stfSD$run <- "SD"
+load("D:/ICES/IBPIS2021/SS_runs/SetupaSDTune2/pil.stock.RData")
+pil.SD <- pil.stock
+stfSD$rec <- exp(mean(log(rec(pil.SD)[,ac((endyr-4):(endyr))])))
+
+stfSDQ <- read.csv(file="./SS_runs/SetupaSDQTune2/scenariosGeoMean.csv")
+stfSDQ$run <- "SDQ"
+load("D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2/pil.stock.RData")
+pil.SDQ <- pil.stock
+rm(pil.stock)
+stfSDQ$rec <- exp(mean(log(rec(pil.SDQ)[,ac((endyr-4):(endyr))])))
+
 stf2020 <- read.csv("D:/IPMA/SARDINE/WGHANSA2020/STF/pil.27.8c9a_stf_scenarios2020_OptionB_HCR12.csv")
-stf2020$STF <- "A2020"
+stf2020$run <- "A2020"
 stf2020$rec <- 7584483
 
-stfs <- bind_rows(stfGeoMean,stfLastYr,stf10Yr,stf2020)
+stfs <- bind_rows(stf2020,stfSD,stfSDQ)
 stfs %>%
   filter(F < 0.18) %>%
-  group_by(STF) %>%
+  group_by(run) %>%
   mutate(lbl = case_when(F == max(F) ~ round(rec,0), TRUE ~ NA_real_)) %>%
-  ggplot(aes(x=F,y=Catch_2021,colour=STF))+
+  ggplot(aes(x=F,y=Catch_2021,colour=run))+
   geom_line(size=1)+
-  geom_text(aes(label = lbl, vjust = -(STF == "Geomean")), hjust = -0.2, show.legend = F) +
+  geom_text(aes(label = lbl, vjust = -(run == "Geomean")), hjust = -0.2, show.legend = F) +
   expand_limits(x= 0.2) +
   coord_cartesian(clip = 'off') 
