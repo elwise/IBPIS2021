@@ -4,9 +4,9 @@
 #_user_support_available_at:NMFS.Stock.Synthesis@noaa.gov
 #_user_info_available_at:https://vlab.ncep.noaa.gov/group/stock-synthesis
 
-StartTime: Thu Oct 28 11:12:26 2021
-EndTime: Thu Oct 28 11:12:39 2021
-This run took: 0 hours, 0 minutes, 13 seconds.
+StartTime: Thu Oct 28 14:26:13 2021
+EndTime: Thu Oct 28 14:26:27 2021
+This run took: 0 hours, 0 minutes, 14 seconds.
 Data_File: sardine.dat
 Control_File: sardine.ctl
 

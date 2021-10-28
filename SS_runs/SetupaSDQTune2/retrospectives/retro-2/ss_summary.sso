@@ -3,7 +3,7 @@
 #Foreign copyrights may apply. See copyright.txt for more information.
 sardine.dat #_DataFile 
 sardine.ctl #_Control 
-Run_Date: Thu Oct 28 11:12:26 2021
+Run_Date: Thu Oct 28 14:26:13 2021
 Final_phase: 2  N_iterations: 461
 #_LIKELIHOOD 
 Label logL*Lambda

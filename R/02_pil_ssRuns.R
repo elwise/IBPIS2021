@@ -559,5 +559,8 @@ cor.Setupa <- f.cor(runa,run2020)
 cor.Setupb <- f.cor(runb,run2020)
 cor.Setupc <- f.cor(runc,run2020)
 
+cpl.sum$likelihoods_by_fleet%>%
+  pivot_longer(cols=3:7,names_to="Fleet",values_to="Value")%>%
+  ggplot(aes(x=Label,y=Value,colour=model)) + geom_col() + facet_wrap(.~Label)
 
 

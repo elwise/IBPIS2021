@@ -1,7 +1,7 @@
 #V3.30.16.02;_2020_09_21;_safe;_Stock_Synthesis_by_Richard_Methot_(NOAA)_using_ADMB_12.2
 #Stock Synthesis (SS) is a work of the U.S. Government and is not subject to copyright protection in the United States.
 #Foreign copyrights may apply. See copyright.txt for more information.
-StartTime: Thu Oct 28 11:12:26 2021
+StartTime: Thu Oct 28 14:26:13 2021
 
 Size_Bins_pop;_(Pop_len_mid_used_for_calc_of_selex_and_bio_quantities)
 Pop_Bin:  1 2 3 4 5 6
