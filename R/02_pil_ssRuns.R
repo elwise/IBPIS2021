@@ -487,6 +487,11 @@ cpl.sum <- SSsummarize(biglist=cpl)
 SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2025),print = TRUE,plotdir = res.plots,
                   legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final")
 
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final")
+
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
                          names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
                          verbose = TRUE,mcmc = FALSE)

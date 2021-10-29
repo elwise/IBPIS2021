@@ -36,7 +36,7 @@ res.ss <- file.path("./SS_runs")
 library(FLCore)
 
 #==============================================================================
-#  Convert SS outputs to a FLStock object                                  ----
+#  Convert SS outputs to a FLStock object for stock with rec index         ----
 #==============================================================================
 
 ss3flr <- function(file.path,desc){
@@ -203,3 +203,17 @@ ss3flr(file.path = paste0(res.ss,"/Setupb"), desc = "Setupb")
 ss3flr(file.path = paste0(res.ss,"/Setupc"), desc = "Setupc")
 ss3flr(file.path = paste0(res.ss,"/SetupaSDTune2"), desc = "SetupaSDTune2")
 ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2"), desc = "SetupaSDQTune2")
+ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro0"), desc = "Final_retro0")
+ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-1"), desc = "Final_retro1")
+ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-2"), desc = "Final_retro2")
+ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-3"), desc = "Final_retro3")
+ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-4"), desc = "Final_retro4")
+ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-5"), desc = "Final_retro5")
+
+ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-0"), desc = "Final_retro0")
+ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-1"), desc = "Final_retro1")
+ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-2"), desc = "Final_retro2")
+ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-3"), desc = "Final_retro3")
+ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-4"), desc = "Final_retro4")
+ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-5"), desc = "Final_retro5")
+
