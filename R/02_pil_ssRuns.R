@@ -420,6 +420,7 @@ xx%>%
 #==============================================================================
 runaSDQTune <- SS_output(dir = paste0(res.ss,'/SetupaSDQTune'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 runaSDQTune2 <- SS_output(dir = paste0(res.ss,'/SetupaSDQTune2'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+
 cpl <- list(runaSDQ,runaSDQTune,runaSDQTune2)
 cpl.sum <- SSsummarize(biglist=cpl)
 SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
@@ -476,6 +477,38 @@ xx[xx$Label=="Parm_devs",2:3] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:3]
 xx%>%
   gt::gt()%>%
   gt::gtsave("tblCompTuneS.png")
+
+#==============================================================================
+#  Compare final model with Assm2020                                       ----
+#==============================================================================
+
+cpl <- list(run2020,run2020.DEPM,runaSDQTune2)
+cpl.sum <- SSsummarize(biglist=cpl)
+SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2025),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final")
+
+xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
+                         names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
+                         verbose = TRUE,mcmc = FALSE)
+xx <- rbind(xx,as.numeric(format(cpl.sum$maxgrad,digits = 3)))
+xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
+xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
+AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+xx <- rbind(xx,AIC)
+xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
+xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
+              "Recr_2020","F_2019","AIC","Max Grad")
+colnames(xx) <- c("Label", "A2020","D2020","Final")
+
+xx[xx$Label=="Catch",2:4] <- format(as.numeric(xx[xx$Label=="Catch",2:4]),digits=3)
+xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=3)
+xx[xx$Label=="Recruitment",2:4] <- format(as.numeric(xx[xx$Label=="Recruitment",2:4]),digits=3)
+xx[xx$Label=="Parm_devs",2:4] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:4]),scientific = T,digits=3)
+
+xx%>%
+  gt::gt()%>%
+  gt::gtsave("tblCompFinal.png")
+
 
 #==============================================================================
 #  Check percentage of catch that comes from recruitment areas             ----

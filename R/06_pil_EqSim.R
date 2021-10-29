@@ -23,7 +23,7 @@ rm(list=ls())
 # WORKING DIRECTORY                                                        ----
 #==============================================================================
 
-setwd('D:/ICES/IBPIS2021/SS_runs/Setupa')
+setwd('D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2')
 load("pil.stock.RData")
 
 #==============================================================================
@@ -108,13 +108,19 @@ t(sim_06_19_trigger_fixedBlim$Refs)
 rm(pil)
 
 #==============================================================================
-# Estimate Reference points in EqSim (with Setup A)                        ----
+# Estimate Reference points in EqSim (with Setup ASDQTune2)                ----
 #==============================================================================
 
-setwd('D:/ICES/IBPIS2021/SS_runs/Setupa')
+setwd('D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2')
 load("pil.stock.RData")
 pil <- pil.stock
 mat(pil) <- c(0,1,1,1,1,1,1)
+
+Blim <- 196334
+Bpa <- 252523
+sigmaB <- 0.163
+
+noSims <- 1000
 
 #Calculate for the Short Series with fixed Blim
 ### Get Blim and Bloss
@@ -128,7 +134,16 @@ SegregBlim  <- function(ab, ssb) log(ifelse(ssb >= Blim, ab$a * Blim, ab$a * ssb
 
 
 ### Create EQSIM SRR fits
-FIT_segreg2020 <- eqsr_fit(stk,nsamp=noSims, models = "SegregBlim")
+FIT_segreg2020 <- eqsr_fit(stk,nsamp=noSims, models = "SegregBlim") #with Blim fixed
+FIT_segreg <- eqsr_fit(stk,nsamp=noSims,models = "Segreg")
+#Blim if not fixed:
+FIT_segreg$sr.det$b
+#CI of Blim if not fixed
+paste0(round(quantile(FIT_segreg$sr.sto$b,0.025),0),' - ',round(quantile(FIT_segreg$sr.sto$b,0.975),0))
+
+#Plots
+eqsr_plot(FIT_segreg)
+eqsr_plot(FIT_segreg2020)
 
 ### Run EQSIM with the FIT_segregBlim
 
@@ -173,3 +188,6 @@ sim_06_20_trigger_fixedBlim <- eqsim_run (FIT_segreg2020, # choose SR-fit
                                           Btrigger = Bpa # apply HCR (to check precautionarity)
 )
 
+t(sim_06_20_fixedBlim$Refs)
+t(sim_06_20_cv_fixedBlim$Refs)
+t(sim_06_20_trigger_fixedBlim$Refs)
