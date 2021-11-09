@@ -52,6 +52,9 @@ run2020 <- SS_output(dir = paste0(res.ss,"/2020_Update"),forecast=FALSE,ncols=62
 # The 2020 assessment model with the 2020 DEPM point estimate (was not available at the time)
 run2020.DEPM <- SS_output(dir = paste0(res.ss,"/2020_DEPM"),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
+# The 2020 assessment model with the 2020 DEPM point estimate (was not available at the time) and 2020 total catch
+run2020.DEPMCatch <- SS_output(dir = paste0(res.ss,"/2020_DEPMCatch"),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+
 # Setup a - Same settings as the current model but with new recruitment index
 runa <- SS_output(dir = paste0(res.ss,'/Setupa'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
@@ -482,9 +485,9 @@ xx%>%
 #  Compare final model with Assm2020                                       ----
 #==============================================================================
 
-cpl <- list(run2020,run2020.DEPM,runaSDQTune2)
+cpl <- list(run2020,run2020.DEPMCatch,runaSDQTune2)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2025),print = TRUE,plotdir = res.plots,
+SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
                   legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final")
 
 SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
@@ -498,7 +501,7 @@ xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", 
 xx <- rbind(xx,as.numeric(format(cpl.sum$maxgrad,digits = 3)))
 xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
 xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
-AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+AIC <- c(Label="AIC", round(cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]),2))
 xx <- rbind(xx,AIC)
 xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
 xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
@@ -506,14 +509,65 @@ xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","P
 colnames(xx) <- c("Label", "A2020","D2020","Final")
 
 xx[xx$Label=="Catch",2:4] <- format(as.numeric(xx[xx$Label=="Catch",2:4]),digits=3)
-xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=3)
+xx[xx$Label=="Equil_catch",2:4] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:4]),digits=1)
 xx[xx$Label=="Recruitment",2:4] <- format(as.numeric(xx[xx$Label=="Recruitment",2:4]),digits=3)
-xx[xx$Label=="Parm_devs",2:4] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:4]),scientific = T,digits=3)
+xx[xx$Label=="Parm_softbounds",2:4] <- format(as.numeric(xx[xx$Label=="Parm_softbounds",2:4]),scientific = T,digits=3)
 
 xx%>%
   gt::gt()%>%
   gt::gtsave("tblCompFinal.png")
 
+#compare selectivity in the end year
+selYr2020Final <- subset(runaSDQTune2$ageselex, Yr==2020 & Factor =="Asel" & Fleet==1)
+selYr2020Final$Run <- "Final"
+selYr2020DEPM <- subset(run2020.DEPMCatch$ageselex, Yr==2020 & Factor =="Asel" & Fleet==1)
+selYr2020DEPM$Run <- "2020"
+#selYr2020Assm <- subset(run2020$ageselex, Yr==2020 & Factor =="Asel" & Fleet==1)
+selYr2020 <- rbind(selYr2020DEPM,selYr2020Final)
+
+selYr2020%>%
+  pivot_longer(.,cols=8:14,names_to="Age",values_to="Selectivity") %>%
+  ggplot(.,aes(x=Age,y=Selectivity,colour=Run))+
+  geom_line()+
+  geom_point()
+
+#relative difference
+sso.dq2020 <- diff(file.path=paste0(res.ss,'/2020_Update'),"Assm2020")
+sso.run1 <- diff(file.path=paste0(res.ss,'/2020_DEPMCatch'),"DEPMCatch")
+sso.run2 <- diff(file.path=paste0(res.ss,'/SetupaSDQTune2'),"Final")
+
+
+dd <- 
+  
+  full_join(
+    sso.dq2020 %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type") %>%
+      select(Variable, Yr, Type, Ass2020 = "value"),
+    bind_rows(sso.dq2020,sso.run1,sso.run2) %>%
+      pivot_longer(cols = c(Value, SE), names_to = "Type"),
+    by = c("Variable", "Yr", "Type")
+  ) %>%
+  mutate(delta = Ass2020 - value)
+
+
+dd %>%
+  filter(Yr %in% 1978:2020,Type == "Value", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"DiffFinal.png"))
+
+dd %>%
+  filter(Yr %in% 1978:2020,Type == "SE", Variable %in% c('SSB','Recr','F')) %>%
+  mutate(Yr = as.numeric(as.character(Yr))) %>%
+  ggplot(aes(x=Yr,y=delta,color=Run))+
+  geom_line()+
+  facet_wrap(Variable ~ .,scale="free_y",nrow=3)
+ggsave(paste0(res.plots,'/',"SE_DiffFinal.png"))
+
+
+rm(list = ls(pattern = "^sso\\."))
 
 #==============================================================================
 #  Check percentage of catch that comes from recruitment areas             ----

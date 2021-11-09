@@ -210,10 +210,4 @@ ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-3"), desc
 ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-4"), desc = "Final_retro4")
 ss3flr(file.path = paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-5"), desc = "Final_retro5")
 
-ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-0"), desc = "Final_retro0")
-ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-1"), desc = "Final_retro1")
-ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-2"), desc = "Final_retro2")
-ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-3"), desc = "Final_retro3")
-ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-4"), desc = "Final_retro4")
-ss3flr(file.path = paste0(res.ss,"/2020_Update/retrospectives/retro-5"), desc = "Final_retro5")
 

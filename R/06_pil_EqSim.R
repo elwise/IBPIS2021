@@ -118,13 +118,15 @@ mat(pil) <- c(0,1,1,1,1,1,1)
 
 Blim <- 196334
 Bpa <- 252523
-sigmaB <- 0.163
+#sigmaB <- 0.163 #with data up until 2020
+sigmaB <- 0.169 #with data up until 2019
 
 noSims <- 1000
 
 #Calculate for the Short Series with fixed Blim
 ### Get Blim and Bloss
-stk <- window(pil, start=2006, end=2020)
+#stk <- window(pil, start=2006, end=2020)
+stk <- window(pil, start=2006, end=2019)
 # set age0 stock.wt close to 0 needed to get things running
 stock.wt(stk)[1] <- rep (0.00000001, ncol(stock.wt(stk)))
 
@@ -149,6 +151,53 @@ eqsr_plot(FIT_segreg2020)
 
 set.seed(1919)
 sim_06_20_fixedBlim <- eqsim_run (FIT_segreg2020, # choose SR-fit
+                                  bio.years = c(2014, 2019), # years to generate noise in mat,M and wi
+                                  bio.const = FALSE,  # average maturity used (TRUE)
+                                  sel.years = c(2014, 2019), # noise in selection at age
+                                  sel.const = FALSE, # average selection used (TRUE)
+                                  Fscan = seq(0, 2, by = 0.01), # range of F values tested
+                                  Blim = Blim , # set BRP?s
+                                  Bpa = Bpa, # set BRP?s
+                                  Nrun = 200)
+
+set.seed(1919)
+sim_06_20_cv_fixedBlim <- eqsim_run (FIT_segreg2020, # choose SR-fit
+                                     bio.years = c(2014, 2019), # years to generate noise in mat,M and wi
+                                     bio.const = FALSE,  # average maturity used (TRUE)
+                                     sel.years = c(2014, 2019), # noise in selection at age
+                                     sel.const = FALSE, # average selection used (TRUE)
+                                     Fscan = seq(0, 2, by = 0.01), # range of F values tested
+                                     Blim = Blim , # set BRP?s
+                                     Bpa = Bpa, # set BRP?s
+                                     Nrun = 200,
+                                     Fcv = 0.058 , # F CV assessment error last year
+                                     Fphi = 0.423 , # autocorrelation in F assessment error; default value
+                                     SSBcv = sigmaB)
+
+set.seed(1919)
+sim_06_20_trigger_fixedBlim <- eqsim_run (FIT_segreg2020, # choose SR-fit
+                                          bio.years = c(2014, 2019), # years to generate noise in mat,M and wi
+                                          bio.const = FALSE,  # average maturity used (TRUE)
+                                          sel.years = c(2014, 2019), # noise in selection at age
+                                          sel.const = FALSE, # average selection used (TRUE)
+                                          Fscan = seq(0, 2, by = 0.01), # range of F values tested
+                                          Blim = Blim , # set BRP?s
+                                          Bpa = Bpa, # set BRP?s
+                                          Nrun = 200,
+                                          Fcv = 0.058 , # F CV assessment error last year
+                                          Fphi = 0.423 , # autocorrelation in F assessment error; default value
+                                          SSBcv = sigmaB,
+                                          Btrigger = Bpa # apply HCR (to check precautionarity)
+)
+
+t(sim_06_20_fixedBlim$Refs)
+t(sim_06_20_cv_fixedBlim$Refs)
+t(sim_06_20_trigger_fixedBlim$Refs)
+
+### Run EQSIM with the FIT_segregBlim
+
+set.seed(1919)
+sim_06_21 <- eqsim_run (FIT_segreg2020, # choose SR-fit
                                   bio.years = c(2014, 2019), # years to generate noise in mat,M and wi
                                   bio.const = FALSE,  # average maturity used (TRUE)
                                   sel.years = c(2014, 2019), # noise in selection at age
