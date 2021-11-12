@@ -34,18 +34,15 @@ library(ggplot2)
 # WORKING DIRECTORY                                                        ----
 #==============================================================================
 
-wd <- "D:/ICES/IBPIS2021"
-setwd(wd)
-
 # directory with SS runs
-res.ss <- file.path("./SS_runs")
+res.ss <- file.path("D:/ICES/IBPIS2021/SS_runs")
 
 #==============================================================================
 #  Run short term forecast the new procedure                               ----
 #==============================================================================
 
 #set working directory
-stf.dir <- paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-1")
+stf.dir <- paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-2")
 setwd(stf.dir)
 
 # Load stock FLR object
@@ -87,7 +84,7 @@ summary(pil.stock_stf)
 harvest(pil.stock_stf)[,ac((endyr+1):(endyr+2))] <- harvest(pil.stock_stf)[,ac(endyr-1)] 
 landings(pil.stock_stf)[,ac((endyr+1):(endyr+2))] <- NA
 landings.n(pil.stock_stf)[,ac((endyr):(endyr+2))] <- 1.0
-catch(pil.stock_stf)[ac((endyr+1):(endyr+2))] <- NA
+catch(pil.stock_stf)[,ac((endyr+1):(endyr+2))] <- NA
 
 
 # Set Fsqtatus quo equal to the mean of the last 3 years in the assessment
@@ -114,17 +111,8 @@ fbar_multiplier <- seq(from = 0, to = 2, by = 0.1)
 #or just select the Fbar scenarios you want
 
 # As we already have the projection for the interim year, we use the multiplier already in the first projection year 
-fbar_scenarios <- cbind(c(0,0.032,0.064,0.118,0.156,as.numeric(fbar(pil.stock_stf)[,ac(endyr)]),
-                          fbar_multiplier*fbar_status_quo),c(0,0.032,0.064,0.118,0.156,
-                                                             as.numeric(fbar(pil.stock_stf)[,ac(endyr)]),fbar_multiplier*fbar_status_quo))
+fbar_scenarios <- cbind(0,0)
 colnames(fbar_scenarios) <- c("2021","2022")
-
-
-fbar_scenarios
-
-
-## change SRR accordingly!!
-
 
 # There are various results we want to extract from the STF
 # Like predicted Catch, SSB and the relative change in these
@@ -192,9 +180,9 @@ write.csv(stf_results,file="STF.csv",row.names=F)
 stf_results <- as.data.frame(stf_results)
 stf_results$endyr_rec <- as.numeric(rec(pil.stock_fwd[,ac(endyr)]))
 stf_results$georec <- mean_rec
-stf_results$retro <- "retro-0"
+stf_results$retro <- "retro-2"
 xx0 <- stf_results[1,]
-save(xx0,file="retro-0.RData")
+save(xx0,file="retro-2.RData")
 
 
 rm(list=ls())
@@ -237,15 +225,12 @@ stfs %>%
 #  Run short term forecast the old procedure                               ----
 #==============================================================================
 
-wd <- "D:/ICES/IBPIS2021"
-setwd(wd)
-
 # directory with SS runs
-res.ss <- file.path("./SS_runs")
-
+res.ss <- file.path("D:/ICES/IBPIS2021/SS_runs")
+setwd(res.ss)
 
 #set working directory
-stf.dir <- paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-5")
+stf.dir <- paste0(res.ss,"/SetupaSDQTune2/retrospectives/retro-2")
 setwd(stf.dir)
 
 # Load stock FLR object
@@ -406,9 +391,9 @@ write.csv(stf_results,file="STF.csv",row.names=F)
 stf_results <- as.data.frame(stf_results)
 stf_results$endyr_rec <- as.numeric(rec(pil[,ac(endyr)]))
 stf_results$georec <- mean_rec
-stf_results$retro <- "retro-5"
+stf_results$retro <- "retro-2"
 xx5 <- stf_results[1,]
-save(xx5,file="Take2_retro-5.RData")
+save(xx5,file="Take2_retro-2.RData")
 
 
 rm(list=ls())

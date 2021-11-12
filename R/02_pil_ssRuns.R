@@ -50,7 +50,7 @@ library(tidyverse)
 run2020 <- SS_output(dir = paste0(res.ss,"/2020_Update"),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
 # The 2020 assessment model with the 2020 DEPM point estimate (was not available at the time)
-run2020.DEPM <- SS_output(dir = paste0(res.ss,"/2020_DEPM"),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
+# run2020.DEPM <- SS_output(dir = paste0(res.ss,"/2020_DEPM"),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
 
 # The 2020 assessment model with the 2020 DEPM point estimate (was not available at the time) and 2020 total catch
 run2020.DEPMCatch <- SS_output(dir = paste0(res.ss,"/2020_DEPMCatch"),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
@@ -66,18 +66,18 @@ runaSDQ <- SS_output(dir = paste0(res.ss,'/SetupaSDQ'),forecast=FALSE,ncols=62,v
 
 
 # Setup a - Same settings as the current model but with different recruitment index estimates (years and areas)
-run1 <-  SS_output(dir = paste0(res.ss,'/run1'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC all years
-run2 <-  SS_output(dir = paste0(res.ss,'/run2'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS all years
+#run1 <-  SS_output(dir = paste0(res.ss,'/run1'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC all years
+#run2 <-  SS_output(dir = paste0(res.ss,'/run2'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS all years
 run3 <-  SS_output(dir = paste0(res.ss,'/run3'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN all years
-run4 <-  SS_output(dir = paste0(res.ss,'/run4'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC from 1997
-run5 <-  SS_output(dir = paste0(res.ss,'/run5'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS from 1997
+#run4 <-  SS_output(dir = paste0(res.ss,'/run4'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC from 1997
+#run5 <-  SS_output(dir = paste0(res.ss,'/run5'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS from 1997
 run6 <-  SS_output(dir = paste0(res.ss,'/run6'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN from 1997
-run7 <-  SS_output(dir = paste0(res.ss,'/run7'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC from 2013
-run8 <-  SS_output(dir = paste0(res.ss,'/run8'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS from 2013
+#run7 <-  SS_output(dir = paste0(res.ss,'/run7'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # w/o ECO-REC from 2013
+#run8 <-  SS_output(dir = paste0(res.ss,'/run8'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN and 9aCS from 2013
 run9 <-  SS_output(dir = paste0(res.ss,'/run9'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # 9aCN from 2013
-run10 <- SS_output(dir = paste0(res.ss,'/run10'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas and years
-run11 <- SS_output(dir = paste0(res.ss,'/run11'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas from 1997
-run12 <- SS_output(dir = paste0(res.ss,'/run12'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas from 2013
+#run10 <- SS_output(dir = paste0(res.ss,'/run10'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas and years
+#run11 <- SS_output(dir = paste0(res.ss,'/run11'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas from 1997
+#run12 <- SS_output(dir = paste0(res.ss,'/run12'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE) # all areas from 2013
 
 # Setup b - Different selectivity, no time blocks, S-at-age is not dome shaped
 runb <- SS_output(dir = paste0(res.ss,'/Setupb'),forecast=FALSE,ncols=62,verbose = TRUE, printstats = TRUE)
@@ -90,7 +90,7 @@ runc <- SS_output(dir = paste0(res.ss,'/Setupc'),forecast=FALSE,ncols=62,verbose
 #SS_plots(runb)
 #SS_plots(runc)
 #SS_plots(run2020.DEPM)
-
+#SS_plots(run2020.DEPMCatch)
 
 #==============================================================================
 #  Compare models with same settings but different recruitment input data  ----
@@ -131,19 +131,20 @@ xx%>%
   gt::gtsave("tblCompModelAreas.tex")
 
 #pearson residuals plots
-run2020$agedbase$Model <- rep("2020 assm",dim(run2020$agedbase)[1])
-run2020.DEPM$agedbase$Model <- rep("2020 DEPM", dim(run2020.DEPM$agedbase)[1])
+run2020$agedbase$Model <- rep("Current",dim(run2020$agedbase)[1])
+run2020.DEPMCatch$agedbase$Model <- rep("Update", dim(run2020.DEPMCatch$agedbase)[1])
 runa$agedbase$Model <- rep("Setup A",dim(runa$agedbase)[1])
 runb$agedbase$Model <- rep("Setup B",dim(runb$agedbase)[1])
 runc$agedbase$Model <- rep("Setup C",dim(runc$agedbase)[1])
-PearsonRes <- bind_rows(run2020$agedbase,run2020.DEPM$agedbase,runa$agedbase,runb$agedbase,runc$agedbase)
+PearsonRes <- bind_rows(run2020$agedbase,run2020.DEPMCatch$agedbase,runa$agedbase,runb$agedbase,runc$agedbase)
 
-ggplot(subset(PearsonRes,!(Fleet==2 & Bin==0)), aes(Pearson,colour=Model))+
-  geom_density()+
+ggplot(subset(PearsonRes,!(Fleet==2 & Bin==0)), aes(Pearson,fill=Model,colour=Model),adjust=2)+
+  geom_density(alpha=0.05)+
   facet_grid(Fleet~Bin, labeller=label_both)+
   ylab("Density")+
   xlab("Pearson residuals for age composition")+
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 90))
 ggsave(paste0(res.plots,'/',"PearsonDensity.png"))
 
 diff <- function(file.path, name){
@@ -206,15 +207,15 @@ rm(list = ls(pattern = "^sso\\."))
 #  Compare models with for 9aCN but different time series                  ----
 #==============================================================================
 
-cpl <- list(run2020,run2020.DEPM,run3,run6,run9)
+cpl <- list(run2020,run2020.DEPMCatch,run3,run6,run9)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
-                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
-                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
-                  legendlabels = c("Assm2020","AssmDEPM","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
-SSplotComparisons(summaryoutput=SSsummarize(biglist=list(run3,run6,run9)),subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.dir,
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Current","Updated","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Current","Updated","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Current","Updated","All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
+SSplotComparisons(summaryoutput=SSsummarize(biglist=list(run3,run6,run9)),subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
                   legendlabels = c("All","1997","2013"),legendloc = "topright",filenameprefix = "SameAreaDiffYears")
 
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
@@ -223,7 +224,7 @@ xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", 
 xx <- rbind(xx,c("Maximum Gradient", as.numeric(format(cpl.sum$maxgrad,digits = 3))))
 xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
 xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
-AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+AIC <- c(Label="AIC", round(cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]),2))
 xx <- rbind(xx,AIC)
 xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
 xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
@@ -233,11 +234,7 @@ xx[xx$Label=="Equil_catch",2:6] <- format(as.numeric(xx[xx$Label=="Equil_catch",
 xx[xx$Label=="Recruitment",2:6] <- format(as.numeric(xx[xx$Label=="Recruitment",2:6]),digits=3)
 xx[xx$Label=="Parm_softbounds",2:6] <- format(as.numeric(xx[xx$Label=="Parm_softbounds",2:6]),scientific = T,digits=3)
 
-colnames(xx) <- c("Label", "Assm2020","AssmDEPM","1984-2020","1997-2020","2013-2020")
-
-xx%>%
-  gt::gt()%>%
-  gt::gtsave("tblCompModel9aCNDiffYears.tex")
+colnames(xx) <- c("Label", "Current","Updated","1984-2020","1997-2020","2013-2020")
 
 xx%>%
   gt::gt()%>%
@@ -284,33 +281,40 @@ rm(list = ls(pattern = "^sso\\."))
 #  Compare models with same input data but different selectivity settings  ----
 #==============================================================================
 
-cpl <- list(run2020,run2020.DEPM,runa,runb,runc)
+cpl <- list(run2020,run2020.DEPMCatch,runa,runb,runc)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
-SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(2,8,10,12),xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Current","Updated","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Current","Updated","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
+SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(3),xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("Current","Updated","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
 SSplotComparisons(summaryoutput=SSsummarize(biglist=list(runa,runb,runc)),subplots = c(13),indexfleets = c(4),xlim=c(1978,2021),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("Assm2020","AssmDEPM","Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
+                  legendlabels = c("Setup a","Setup b","Setup c"),legendloc = "topright",filenameprefix = "DiffSetups")
 
 xx <- SStableComparisons(cpl.sum,models = "all",likenames = c("TOTAL","Survey", "Age_comp"),
                          names = c("SSB_2020","Recr_2020","F_2019"), digits = rep(2,16),
                          verbose = TRUE,mcmc = FALSE)
-xx <- rbind(xx,c("Maximum Gradient",cpl.sum$maxgrad))
+xx <- rbind(xx,c("Maximum Gradient",as.numeric(format(cpl.sum$maxgrad,digits = 3))))
 xx <- rbind(xx,cpl.sum$likelihoods[c(2,3,6,9,10),c(ncol(cpl.sum$likelihoods),1:(ncol(cpl.sum$likelihoods)-1))])
 xx <- rbind(xx,c("Number parameters",cpl.sum$npars))
-AIC <- c(Label="AIC", cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]))
+AIC <- c(Label="AIC", round(cpl.sum$npars*2+(2*cpl.sum$likelihoods[1,-ncol(cpl.sum$likelihoods)]),2))
 xx <- rbind(xx,AIC)
 xx <- xx[c(1,8,9,2,3,10:13,4:6,14,7),]
 xx$Label <- c("Total","Catch","Equil_catch","Survey","Age_comp","Recruitment","Parm_softbounds","Parm_devs","N parm","SSB_2020",
                "Recr_2020","F_2019","AIC","Max Grad")
-colnames(xx) <- c("Label", "Assm2020", "AssmDEPM","SetupA","SetupB","SetupC")
+
+xx[xx$Label=="Catch",2:6] <- format(as.numeric(xx[xx$Label=="Catch",2:6]),digits=3)
+xx[xx$Label=="Equil_catch",2:6] <- format(as.numeric(xx[xx$Label=="Equil_catch",2:6]),digits=2)
+xx[xx$Label=="Recruitment",2:6] <- format(as.numeric(xx[xx$Label=="Recruitment",2:6]),digits=3)
+xx[xx$Label=="Parm_devs",5:6] <- format(as.numeric(xx[xx$Label=="Parm_devs",5:6]),digits=3)
+xx[xx$Label=="Parm_softbounds",2:6] <- format(as.numeric(xx[xx$Label=="Parm_softbounds",2:6]),scientific = T,digits=3)
+
+colnames(xx) <- c("Label", "Current", "Updated","SetupA","SetupB","SetupC")
 
 xx%>%
   gt::gt()%>%
-  gt::gtsave("tblCompModel2020.tex")
+  gt::gtsave("tblCompDiffSetups.png")
 
 
 sso.dq2020 <- diff(file.path=paste0(res.ss,'/2020_Update'),"Assm2020")
@@ -384,6 +388,19 @@ xx[xx$Label=="Parm_devs",2:4] <- format(as.numeric(xx[xx$Label=="Parm_devs",2:4]
 xx%>%
   gt::gt()%>%
   gt::gtsave("tblCompSetupsAs.png")
+
+runaSDQ$likelihoods_by_fleet$Run <- "Setup aSDQ"
+runaSD$likelihoods_by_fleet$Run <- "Setup aSD"
+runa$likelihoods_by_fleet$Run <- "Setup a"
+
+logByFleet <- rbind(runa$likelihoods_by_fleet,runaSD$likelihoods_by_fleet,runaSDQ$likelihoods_by_fleet)
+
+logByFleet%>%
+  filter(Label=="Surv_like")%>%
+  pivot_longer(cols=c(2,4:6),names_to="Survey",values_to="Likelihood")%>%
+  mutate(Survey = fct_relevel(Survey,"ALL","Acoustic_survey","DEPM_survey","Rec_survey")) %>%
+  ggplot(aes(x=Survey,y=Likelihood,fill=Run,colour=Run,group=Run)) + 
+  geom_col(position="dodge")
 
 
 #==============================================================================
@@ -487,8 +504,8 @@ xx%>%
 
 cpl <- list(run2020,run2020.DEPMCatch,runaSDQTune2)
 cpl.sum <- SSsummarize(biglist=cpl)
-SSplotComparisons(summaryoutput=cpl.sum,xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
-                  legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final")
+SSplotComparisons(summaryoutput=cpl.sum,xlim=c(2010,2020),print = TRUE,plotdir = res.plots,
+                  legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final_CloseUP")
 
 SSplotComparisons(summaryoutput=cpl.sum,subplots = c(13),indexfleets = c(2),xlim=c(1978,2020),print = TRUE,plotdir = res.plots,
                   legendlabels = c("A2020","D2020","Final"),legendloc = "topright",filenameprefix = "Final")

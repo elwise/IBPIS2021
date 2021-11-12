@@ -114,7 +114,7 @@
 -2001 # F ballpark year (neg value to disable)
 3 # F_Method:  1=Pope; 2=instan. F; 3=hybrid (hybrid is recommended)
 2 # max F or harvest rate, depends on F_Method
-4 # N iterations for tuning F in hybrid method (recommend 3 to 7)
+7 # N iterations for tuning F in hybrid method (recommend 3 to 7)
 #
 #_initial_F_parms
 #_LO	HI	INIT	PRIOR	PR_SD	PR_type	PHASE

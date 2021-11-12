@@ -150,7 +150,7 @@ diagSS(file.path='D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2',run="SetupaSDQTune2"
 
 #Mohn's rho
 retroModels <- r4ss::SSgetoutput(dirvec=file.path('D:/ICES/IBPIS2021/SS_runs/SetupaSDTune2',"retrospectives",paste("retro",0:-5,sep="")))
-retroSummary <- SSsummarize(retroModels)
+retroSummary <- r4ss::SSsummarize(retroModels)
 endyrvec <- retroSummary[["endyrs"]]
 
 
@@ -160,14 +160,15 @@ z <- round(icesAdvice::mohn(retroSummary$SpawnBio,details = T)$rho,3)
 Label <- c("SSB","Recruits","Fvalue")
 
 dd <- data.frame(Label=Label,Rho=c(x,y,z))
+dd$Run <- "Setup aSDTune2"
 
 dd%>%
   gt::gt()%>%
   gt::gtsave("MohnRhoSDTune2.png")
 
 #Mohn's rho
-retroModels <- r4ss::SSgetoutput(dirvec=file.path('D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2',"retrospectives",paste("retro",0:-5,sep="")))
-retroSummary <- SSsummarize(retroModels)
+retroModels <- r4ss::SSgetoutput(dirvec=file.path('D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2',"retrospectives",paste("retro",-0:-5,sep="")))
+retroSummary <- r4ss::SSsummarize(retroModels)
 endyrvec <- retroSummary[["endyrs"]]
 
 
@@ -176,9 +177,18 @@ y <- round(icesAdvice::mohn(retroSummary$Fvalue,details = T)$rho,3)
 z <- round(icesAdvice::mohn(retroSummary$SpawnBio,details = T)$rho,3)
 Label <- c("SSB","Recruits","Fvalue")
 
-dd <- data.frame(Label=Label,Rho=c(x,y,z))
+ff <- data.frame(Label=Label,Rho=c(x,y,z))
+ff$Run <- "Setup aSDQTune2"
 
-dd%>%
+ff%>%
   gt::gt()%>%
   gt::gtsave("MohnRhoSDQTune2.png")
 
+tt <- data.frame(Label= ff$Label, Rho = c(-0.112,-0.24,0.059),Run="Current")
+
+rr <- rbind(tt,dd,ff)
+
+rr%>%
+  pivot_wider(names_from="Label",values_from="Rho")%>%
+  gt::gt()%>%
+  gt::gtsave("MohnRhoComparison.png")

@@ -240,3 +240,133 @@ sim_06_20_trigger_fixedBlim <- eqsim_run (FIT_segreg2020, # choose SR-fit
 t(sim_06_20_fixedBlim$Refs)
 t(sim_06_20_cv_fixedBlim$Refs)
 t(sim_06_20_trigger_fixedBlim$Refs)
+
+
+########################################
+##HS plot with both functions in the same plot
+##########################################
+
+# Segmented regression in WKSARMPHCR (inflexion point at Blim from WKSARMP 2019)
+setwd("D:/IPMA/SARDINE/CAS/2020/regimeProductividade")
+load("pil.stock.RData")
+mat(pil) <- c(0,1,1,1,1,1,1)
+
+#Calculate for the Short Series with fixed Blim
+### Get Blim and Bloss
+stk <- window(pil, start=2006, end=2019)
+
+SR <- as.FLSR(stk)
+newssb <- FLQuant(seq(0, max.ssb, length.out=20000))
+
+model(SR) <- segreg()
+#params for sr low regime with 2019 data point
+yrs.srlow <- 2006:2019
+params_low <- fmle(window(SR, start=2006, end=2019), fixed=list(b=196334))@params
+
+pilsr <- fmle(SR, fixed=list(a=c(params_low)[1],b=196334))
+segrec <- predict(pilsr, ssb = newssb)
+residsd_low <- sqrt(var(log(exp(residuals(pilsr)[,ac(yrs.srlow)])),na.rm=T))
+res <- exp(rnorm(20000, 0, residsd_low))
+
+#Calculate for the Short Series with fixed Blim
+### Get Blim and Bloss
+stk4 <- window(pil, start=2006, end=2019)
+
+SR4 <- as.FLSR(stk4)
+newssb4 <- FLQuant(seq(0, max(pil@stock), length.out=20000))
+
+model(SR4) <- segreg()
+#params for sr low regime with 2019 data point
+
+params_low4 <- fmle(window(SR4, start=2006, end=2019))@params
+
+pilsr4 <- fmle(SR4)
+segrec4 <- predict(pilsr4, ssb = newssb4)
+residsd_low4 <- sqrt(var(log(exp(residuals(pilsr4)[,ac(yrs.srlow)])),na.rm=T))
+res4 <- exp(rnorm(20000, 0, residsd_low4))
+
+# Segmented regression in IBPIS (inflexion point at Blim from WKSARMP 2019)
+setwd('D:/ICES/IBPIS2021/SS_runs/SetupaSDQTune2')
+load("pil.stock.RData")
+mat(pil.stock) <- c(0,1,1,1,1,1,1)
+
+#Calculate for the Short Series with fixed Blim
+### Get Blim and Bloss
+stk2 <- window(pil.stock, start=2006, end=2020)
+
+SR2 <- as.FLSR(stk2)
+newssb2 <- FLQuant(seq(0, max(pil@stock), length.out=20000))
+
+model(SR2) <- segreg()
+#params for sr low regime with 2019 data point
+params_low2 <- fmle(window(SR2, start=2006, end=2020), fixed=list(b=196334))@params
+
+pilsr2 <- fmle(SR2, fixed=list(a=c(params_low2)[1],b=196334))
+segrec2 <- predict(pilsr2, ssb = newssb2)
+residsd_low2 <- sqrt(var(log(exp(residuals(pilsr2)[,ac(yrs.srlow)])),na.rm=T))
+res2 <- exp(rnorm(20000, 0, residsd_low2))
+
+# Segmented regression in IBPIS (without inflexion point at Blim from WKSARMP 2019)
+
+#Calculate for the Short Series with fixed Blim
+### Get Blim and Bloss
+stk3 <- window(pil.stock, start=2006, end=2020)
+
+SR3 <- as.FLSR(stk3)
+newssb3 <- FLQuant(seq(0, max(pil@stock), length.out=20000))
+
+model(SR3) <- segreg()
+#params for sr low regime with 2019 data point
+params_low3 <- fmle(window(SR3, start=2006, end=2020))@params
+
+pilsr3 <- fmle(SR3)
+segrec3 <- predict(pilsr3, ssb = newssb3)
+residsd_low3 <- sqrt(var(log(exp(residuals(pilsr3)[,ac(yrs.srlow)])),na.rm=T))
+res3 <- exp(rnorm(20000, 0, residsd_low3))
+
+# comparison of two recruitment scenarios:
+
+dat1 <- data.frame(
+  ssb=seq(0, max(pil@stock), length.out=20000), 
+  rec=c(segrec),
+  low=c(segrec)*qlnorm(0.025, 0, residsd_low),
+  up=c(segrec)*qlnorm(0.975, 0, residsd_low), 
+  regime="WKSARHCR",
+  Blim = "fixed")
+
+dat2 <- data.frame(
+  ssb=seq(0, max(pil@stock), length.out=20000), 
+  rec=c(segrec2),
+  low=c(segrec2)*qlnorm(0.025, 0, residsd_low2),
+  up=c(segrec2)*qlnorm(0.975, 0, residsd_low2), 
+  regime="IBPIS",
+  Blim = "fixed")
+
+dat3 <- data.frame(
+  ssb=seq(0, max(pil@stock), length.out=20000), 
+  rec=c(segrec3),
+  low=c(segrec3)*qlnorm(0.025, 0, residsd_low3),
+  up=c(segrec3)*qlnorm(0.975, 0, residsd_low3), 
+  regime="IBPIS",
+  Blim = " not fixed")
+
+dat4 <- data.frame(
+  ssb=seq(0, max(pil@stock), length.out=20000), 
+  rec=c(segrec4),
+  low=c(segrec4)*qlnorm(0.025, 0, residsd_low4),
+  up=c(segrec4)*qlnorm(0.975, 0, residsd_low4), 
+  regime="WKSARHCR",
+  Blim = " not fixed")
+
+dat <- rbind(dat1, dat2,dat3, dat4)
+dat[,2:4] <- dat[,2:4]/1000000
+
+
+ggplot(dat, aes(ssb, rec, fill=regime, col=regime))+
+  geom_line(lwd=1)+
+  geom_ribbon(aes(ssb, ymin=low, ymax=up), alpha=0.3, linetype="dashed")+
+  xlab("Spawning stock biomass")+
+  ylab("Recruits (billion)")+ facet_grid(Blim~.,scales="free_y")+
+  theme(legend.position = "bottom")+
+  geom_point(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec), inherit.aes = F)+
+  geom_text(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec,label=year), inherit.aes = F,vjust=-0.3,size=2)
