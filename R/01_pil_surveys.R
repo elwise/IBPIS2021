@@ -67,7 +67,7 @@ srv <- srv %>%
 
 # - For all ages
 srv %>%
-  group_by(type,survey2,year)%>%
+  group_by(year,type,survey2)%>%
   summarise(number=sum(number,na.rm=T),
             biomass=sum(biomass,na.rm=T))%>%
   pivot_longer(.,cols=c(4,5),names_to = "estimate")%>%
@@ -149,7 +149,7 @@ srv%>%
   scale_fill_discrete(name="Area",
                       breaks=c("sgal","npor","swpor","spor","cad"),
                       labels=c("9aN","9aCN","9aCS","9aS-Algarve","9aS-Cadiz"))+
-  xlab('Year')+ylab('Proportion (%)')
+  xlab('Year')+ylab('Proportion')
 
 #==============================================================================
 # Check correlation between autumn survey-based recruitment estimate (Age zero) 

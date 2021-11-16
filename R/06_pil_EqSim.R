@@ -251,6 +251,8 @@ setwd("D:/IPMA/SARDINE/CAS/2020/regimeProductividade")
 load("pil.stock.RData")
 mat(pil) <- c(0,1,1,1,1,1,1)
 
+max.ssb <- max(max(ssb(pil)),max(ssb(pil.stock)))
+
 #Calculate for the Short Series with fixed Blim
 ### Get Blim and Bloss
 stk <- window(pil, start=2006, end=2019)
@@ -331,7 +333,7 @@ dat1 <- data.frame(
   rec=c(segrec),
   low=c(segrec)*qlnorm(0.025, 0, residsd_low),
   up=c(segrec)*qlnorm(0.975, 0, residsd_low), 
-  regime="WKSARHCR",
+  wk="WKSARHCR",
   Blim = "fixed")
 
 dat2 <- data.frame(
@@ -339,7 +341,7 @@ dat2 <- data.frame(
   rec=c(segrec2),
   low=c(segrec2)*qlnorm(0.025, 0, residsd_low2),
   up=c(segrec2)*qlnorm(0.975, 0, residsd_low2), 
-  regime="IBPIS",
+  wk="IBPIS",
   Blim = "fixed")
 
 dat3 <- data.frame(
@@ -347,7 +349,7 @@ dat3 <- data.frame(
   rec=c(segrec3),
   low=c(segrec3)*qlnorm(0.025, 0, residsd_low3),
   up=c(segrec3)*qlnorm(0.975, 0, residsd_low3), 
-  regime="IBPIS",
+  wk="IBPIS",
   Blim = " not fixed")
 
 dat4 <- data.frame(
@@ -355,14 +357,14 @@ dat4 <- data.frame(
   rec=c(segrec4),
   low=c(segrec4)*qlnorm(0.025, 0, residsd_low4),
   up=c(segrec4)*qlnorm(0.975, 0, residsd_low4), 
-  regime="WKSARHCR",
+  wk="WKSARHCR",
   Blim = " not fixed")
 
 dat <- rbind(dat1, dat2,dat3, dat4)
 dat[,2:4] <- dat[,2:4]/1000000
 
 
-ggplot(dat, aes(ssb, rec, fill=regime, col=regime))+
+ggplot(dat, aes(ssb, rec, fill=wk, col=wk))+
   geom_line(lwd=1)+
   geom_ribbon(aes(ssb, ymin=low, ymax=up), alpha=0.3, linetype="dashed")+
   xlab("Spawning stock biomass")+
@@ -370,3 +372,42 @@ ggplot(dat, aes(ssb, rec, fill=regime, col=regime))+
   theme(legend.position = "bottom")+
   geom_point(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec), inherit.aes = F)+
   geom_text(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec,label=year), inherit.aes = F,vjust=-0.3,size=2)
+
+ggplot(subset(dat,Blim == "fixed"), aes(ssb, rec, fill=wk, col=wk))+
+  geom_line(lwd=1)+
+  geom_ribbon(aes(ssb, ymin=low, ymax=up), alpha=0.3, linetype="dashed")+
+  xlab("Spawning stock biomass")+
+  ylab("Recruits (billion)")+
+  theme(legend.position = "bottom") + ggtitle("Blim is fixed at 196 334 tonnes") +
+  geom_point(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec), inherit.aes = F)+
+  geom_text(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec,label=year), inherit.aes = F,vjust=-0.3,size=2)
+
+ggplot(subset(dat,Blim == "fixed"), aes(ssb, rec, fill=wk, col=wk))+
+  geom_line(lwd=1)+
+  geom_ribbon(aes(ssb, ymin=low, ymax=up), alpha=0.3, linetype="dashed")+
+  xlab("Spawning stock biomass")+
+  ylab("Recruits (billion)")+
+  theme(legend.position = "bottom")+
+  xlim(c(0,300000))+ylim(c(0,20))+ggtitle("Blim is fixed at 196 334 tonnes")+
+  geom_point(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec), inherit.aes = F)+
+  geom_text(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec,label=year), inherit.aes = F,vjust=-0.3,size=2)
+
+ggplot(subset(dat,Blim == " not fixed"), aes(ssb, rec, fill=wk, col=wk))+
+  geom_line(lwd=1)+
+  geom_ribbon(aes(ssb, ymin=low, ymax=up), alpha=0.3, linetype="dashed")+
+  xlab("Spawning stock biomass")+
+  ylab("Recruits (billion)")+
+  theme(legend.position = "bottom")+ ggtitle("Blim is not fixed")+
+  geom_point(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec), inherit.aes = F)+
+  geom_text(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec,label=year), inherit.aes = F,vjust=-0.3,size=2)
+
+ggplot(subset(dat,Blim == " not fixed"), aes(ssb, rec, fill=wk, col=wk))+
+  geom_line(lwd=1)+
+  geom_ribbon(aes(ssb, ymin=low, ymax=up), alpha=0.3, linetype="dashed")+
+  xlab("Spawning stock biomass")+
+  ylab("Recruits (billion)")+
+  theme(legend.position = "bottom")+
+  xlim(c(0,300000))+ylim(c(0,20))+ ggtitle("Blim is not fixed")+
+  geom_point(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec), inherit.aes = F)+
+  geom_text(data=data.frame(ssb=c(ssb(pil.stock)), rec=c(rec(pil.stock)/1000000), year=dimnames(pil.stock)$year), aes(ssb, rec,label=year), inherit.aes = F,vjust=-0.3,size=2)
+
